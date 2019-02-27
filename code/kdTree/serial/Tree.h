@@ -37,12 +37,27 @@ class Tree {
 
 		double *SplitData(double *data, int numCols, int numRows);
 		void SortData(double *data, int numCols, int numRows);
+		double *ImportData(int *numCols, int *numRows);
 
 
 	public:
+		//
+		// Constructors
+		//
+
+		// Called by main to import data and begin tree construction
 		Tree(string filename);
+
+		// Used to create child nodes
+		Tree(Tree *parent, double *data, int numCols, int numRows);
+
+		// Probably do not need this one
 		Tree();
+
+		// Deconstructor to clean up our mess
 		~Tree();
+
+		// Public methods
 		int SearchTree(double x, double y, double z, double radius);
 		double *GetRange();
 		double *GetCenter();
