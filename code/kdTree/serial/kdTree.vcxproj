@@ -119,8 +119,10 @@
     <ClInclude Include="Tree.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ImportData.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SearchTree.cpp" />
+    <ClCompile Include="SortData.cpp" />
     <ClCompile Include="Tree.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
