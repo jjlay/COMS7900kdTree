@@ -39,6 +39,7 @@ class Tree {
 		double *SplitData(double *data, int numCols, int numRows);
 		void SortData(double *data, int numCols, int numRows, int dimension);
 		double *ImportData(string filename, int *numCols, int *numRows);
+		unsigned long int CalculateIndex(string filename);
 
 		static int compareX(const void *a, const void *b);
 		static int compareY(const void *a, const void *b);

@@ -23,6 +23,9 @@
 
 double *Tree::ImportData(string filename, int *numCols, int *numRows)
 {
+	// Start the clock!
+	auto start = std::chrono::system_clock::now();
+
 	*numCols = _MAX_COLS_;
 	*numRows = 0;
 
@@ -54,16 +57,17 @@ double *Tree::ImportData(string filename, int *numCols, int *numRows)
 	auto maxLen = _countof(tempString);
 	int recLen = 4; // Record length
 
-	auto start = std::chrono::system_clock::now();
-
+	auto index = CalculateIndex(filename);
 	auto array = new double[recLen * _MAX_ROWS_];
 
 	while (fscanf_s(inFile, "%s %lf %lf %lf\n", tempString, maxLen, &array[offset + _X_], &array[offset + _Y_], &array[offset + _Z_]) != EOF)  // Windows
-	// while (fscanf(inFile, "%s %lf %lf %lf\n", tempString, &X[lines], &Y[lines], &Z[lines]) != EOF)  // Linux
+	// while (fscanf(inFile, "%s %lf %lf %lf\n", tempString, &array[offset + _X_], &array[offset + _Y_], &array[offset + _Z_]) != EOF)  // Linux
 	{
-		lines++;
-		array[offset + _Index_] = static_cast<double>(lines);
+		array[offset + _Index_] = static_cast<double>(index);
+
 		offset += 4;
+		lines++;
+		index++;
 	}
 
 	fclose(inFile);
