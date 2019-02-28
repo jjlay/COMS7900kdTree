@@ -3,6 +3,8 @@
 //
 
 #include <string>
+#include <iostream>
+#include "definitions.h"
 
 using namespace std;
 
@@ -22,7 +24,20 @@ using namespace std;
 //
 unsigned long int Tree::CalculateIndex(string filename)
 {
-	
+	string prefix = "datafile";
+	string suffix = ".txt";
 
-	return 0;
+	// How many characters is the numeric portion?
+	auto len = filename.length() - prefix.length() - suffix.length();
+
+	// Extract the numeric string
+	auto s = filename.substr(prefix.length(), len);
+
+	// Convert it to an integer
+	auto n = stoi(s);
+
+	// Figure out the starting index
+	unsigned long int r = _MAX_ROWS_ * n;
+
+	return r;
 }
