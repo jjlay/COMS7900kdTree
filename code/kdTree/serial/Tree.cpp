@@ -48,4 +48,6 @@ Tree::Tree(string filename) {
 
 	// Clean up our temporary array
 	delete data;
+
 }
+
