@@ -123,6 +123,9 @@
     <ClInclude Include="Tree.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="compareX.cpp" />
+    <ClCompile Include="compareY.cpp" />
+    <ClCompile Include="compareZ.cpp" />
     <ClCompile Include="ImportData.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SearchTree.cpp" />

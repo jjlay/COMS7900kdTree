@@ -31,6 +31,7 @@ class Tree {
 		double x, y, z;
 		int index; // index from the row in the file
 
+
 		//
 		// Private methods that cannot be called outside of the class
 		//
@@ -38,6 +39,10 @@ class Tree {
 		double *SplitData(double *data, int numCols, int numRows);
 		void SortData(double *data, int numCols, int numRows);
 		double *ImportData(string filename, int *numCols, int *numRows);
+
+		int compareX(const void *a, const void *b);
+		int compareY(const void *a, const void *b);
+		int compareZ(const void *a, const void *b);
 
 
 	public:
