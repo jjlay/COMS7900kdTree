@@ -38,7 +38,7 @@ Tree::Tree(string filename) {
 	// Import the raw data
 	auto data = ImportData(filename, &cols, &rows);
 
-	cout << "Imported " << rows << " << rows and " << cols << " columns" << endl;
+	cout << "Imported " << rows << " rows and " << cols << " columns" << endl;
 
 	// Sort the data
 
