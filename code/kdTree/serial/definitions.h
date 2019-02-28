@@ -30,6 +30,6 @@
 // Controls
 //
 
-#define _MAX_ROWS_  21000000
+#define _MAX_ROWS_  20000000
 #define _MAX_COLS_  4
 
