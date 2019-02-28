@@ -20,11 +20,26 @@
 //
 // Method: ImportData()
 //
+// Parameters:
+//    filename - File to be imported
+//    *numCols - Location to store the number of columns in the file
+//    *numRows - Location to store the number of rows in the file
+//
+// Returns:
+//    Pointer to a 1D array containing the data from the file
+//
+// Description:
+//
+// Imports the ASCII data from the requested file and stores it in an
+// array. The array is a 1D array with each row located every _MAX_COLS_
+// apart.
+//
 
 double *Tree::ImportData(string filename, int *numCols, int *numRows)
 {
 	// Start the clock!
 	auto start = std::chrono::system_clock::now();
+
 
 	*numCols = _MAX_COLS_;
 	*numRows = 0;
@@ -36,12 +51,15 @@ double *Tree::ImportData(string filename, int *numCols, int *numRows)
 	// Read in file
 	//
 
+	// Just for fun lets set the working directory. This is probably
+	// unnecessary and can be removed.
 	if (!SetCurrentDirectory("C:/Users/jj.lay/source/github/COMS7900kdTree/code/kdTree/serial"))
 	{
 		cout << "Unable to change directories" << endl;
 		exit(_FAIL_);
 	}
 
+	// Open the file
 	FILE *inFile;
 	errno_t err = fopen_s(&inFile, cstrFileName, "r");
 
@@ -59,6 +77,12 @@ double *Tree::ImportData(string filename, int *numCols, int *numRows)
 
 	auto index = CalculateIndex(filename);
 	auto array = new double[recLen * _MAX_ROWS_];
+
+	//
+	// Read in each row of the file and parse it.
+	// We ignore the index column since it is corrupted, but instead
+	// calculate the index based on the filename
+	//
 
 	while (fscanf_s(inFile, "%s %lf %lf %lf\n", tempString, maxLen, &array[offset + _X_], &array[offset + _Y_], &array[offset + _Z_]) != EOF)  // Windows
 	// while (fscanf(inFile, "%s %lf %lf %lf\n", tempString, &array[offset + _X_], &array[offset + _Y_], &array[offset + _Z_]) != EOF)  // Linux

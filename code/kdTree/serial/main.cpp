@@ -24,7 +24,9 @@ int main(int argc, char *argv[]) {
 	auto theTree = new Tree("datafile00501.txt");
 
 	auto contained = theTree->SearchTree(0.0, 0.0, 0.0, 0.1);
-	
+
+	delete theTree;
+
 	return _OKAY_;
 }
 

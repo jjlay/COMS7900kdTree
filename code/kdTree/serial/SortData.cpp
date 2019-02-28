@@ -17,6 +17,20 @@
 //
 // Method: SortData()
 //
+// Parameters:
+//    data - Array of data to be sorted
+//    numCols - Number of columns in each row
+//    numRows - Number of rows in the data
+//    dimension - Dimension to be sorted on (see definions.h)
+//
+// Returns:
+//    The data is sorted in place in the data array
+//
+// Description:
+//
+// This method uses the qsort function and depends on the four
+// comparison methods (compareX, compareY, compareZ, compareIndex).
+//
 
 void Tree::SortData(double *data, int numCols, int numRows, int dimension)
 {

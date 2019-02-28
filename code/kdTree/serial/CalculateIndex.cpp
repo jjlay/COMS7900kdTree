@@ -19,9 +19,18 @@ using namespace std;
 //
 // Method: CalculateIndex()
 //
+// Parameters:
+//    filename - The filename to be imported
+//
+// Returns:
+//    Starting index of first row
+//
+// Description:
+//
 // This function extracts the numeric part of the file name and
 // calculates the starting index of the first row in the file.
 //
+
 unsigned long int Tree::CalculateIndex(string filename)
 {
 	string prefix = "datafile";
