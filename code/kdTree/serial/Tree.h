@@ -37,7 +37,7 @@ class Tree {
 
 		double *SplitData(double *data, int numCols, int numRows);
 		void SortData(double *data, int numCols, int numRows);
-		double *ImportData(int *numCols, int *numRows);
+		double *ImportData(string filename, int *numCols, int *numRows);
 
 
 	public:
