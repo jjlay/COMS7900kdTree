@@ -6,7 +6,12 @@
 #include <chrono>
 #include <iostream>
 #include <stdio.h>
+
+#ifdef _WIN32
 #include <windows.h>
+#endif
+
+using namespace std;
 
 
 //
@@ -51,6 +56,7 @@ double *Tree::ImportData(string filename, int *numCols, int *numRows)
 	// Read in file
 	//
 
+#ifdef _WIN32
 	// Just for fun lets set the working directory. This is probably
 	// unnecessary and can be removed.
 	if (!SetCurrentDirectory("C:/Users/jj.lay/source/github/COMS7900kdTree/code/kdTree/serial"))
@@ -58,21 +64,31 @@ double *Tree::ImportData(string filename, int *numCols, int *numRows)
 		cout << "Unable to change directories" << endl;
 		exit(_FAIL_);
 	}
+#endif
 
 	// Open the file
 	FILE *inFile;
+
+#ifdef _WIN32
 	errno_t err = fopen_s(&inFile, cstrFileName, "r");
+#else
+	inFile = fopen(cstrFileName, "r");
+	int err = 0;
+
+	if (inFile == NULL)
+		err = 1;
+#endif
 
 	if (err != 0)
 	{
 		exit(_FAIL_);
 	}
 
-	char tempString[10000];
+	int maxLen = 10000;
+	char tempString[maxLen];
 	double tempX = 0.0, tempY = 0.0, tempZ = 0.0;
 
 	long unsigned int lines = 0, offset = 0;
-	auto maxLen = _countof(tempString);
 	int recLen = 4; // Record length
 
 	auto index = CalculateIndex(filename);
@@ -84,8 +100,11 @@ double *Tree::ImportData(string filename, int *numCols, int *numRows)
 	// calculate the index based on the filename
 	//
 
+#ifdef _WIN32
 	while (fscanf_s(inFile, "%s %lf %lf %lf\n", tempString, maxLen, &array[offset + _X_], &array[offset + _Y_], &array[offset + _Z_]) != EOF)  // Windows
-	// while (fscanf(inFile, "%s %lf %lf %lf\n", tempString, &array[offset + _X_], &array[offset + _Y_], &array[offset + _Z_]) != EOF)  // Linux
+#else
+	while (fscanf(inFile, "%s %lf %lf %lf\n", tempString, &array[offset + _X_], &array[offset + _Y_], &array[offset + _Z_]) != EOF)  // Linux
+#endif
 	{
 		array[offset + _Index_] = static_cast<double>(index);
 
