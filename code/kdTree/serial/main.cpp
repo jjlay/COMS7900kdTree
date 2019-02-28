@@ -21,7 +21,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 	
-	auto theTree = new Tree("datafile501.txt");
+	auto theTree = new Tree("datafile00501.txt");
 
 	auto contained = theTree->SearchTree(0.0, 0.0, 0.0, 0.1);
 	
