@@ -58,9 +58,6 @@ class Tree {
 		// Used to create child nodes
 		Tree(Tree *parent, double *data, int numCols, int numRows);
 
-		// Probably do not need this one
-		Tree();
-
 		// Deconstructor to clean up our mess
 		~Tree();
 
