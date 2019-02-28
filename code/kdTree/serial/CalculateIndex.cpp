@@ -33,8 +33,8 @@ unsigned long int Tree::CalculateIndex(string filename)
 	// Extract the numeric string
 	auto s = filename.substr(prefix.length(), len);
 
-	// Convert it to an integer
-	auto n = stoi(s);
+	// Convert it to an integer. Filenames start with 1.
+	auto n = stoi(s) - 1;
 
 	// Figure out the starting index
 	unsigned long int r = _MAX_ROWS_ * n;
