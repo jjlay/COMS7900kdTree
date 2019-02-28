@@ -41,7 +41,7 @@ Tree::Tree(string filename) {
 	cout << "Imported " << rows << " rows and " << cols << " columns" << endl;
 
 	// Sort the data
-
+	SortData(data, cols, rows, _X_);
 
 	// Build the tree
 

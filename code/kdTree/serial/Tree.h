@@ -37,12 +37,13 @@ class Tree {
 		//
 
 		double *SplitData(double *data, int numCols, int numRows);
-		void SortData(double *data, int numCols, int numRows);
+		void SortData(double *data, int numCols, int numRows, int dimension);
 		double *ImportData(string filename, int *numCols, int *numRows);
 
-		int compareX(const void *a, const void *b);
-		int compareY(const void *a, const void *b);
-		int compareZ(const void *a, const void *b);
+		static int compareX(const void *a, const void *b);
+		static int compareY(const void *a, const void *b);
+		static int compareZ(const void *a, const void *b);
+		static int compareIndex(const void *a, const void *b);
 
 
 	public:
