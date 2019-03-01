@@ -84,7 +84,7 @@ double *Tree::ImportData(string filename, int *numCols, int *numRows)
 		exit(_FAIL_);
 	}
 
-	int maxLen = 10000;
+	const int maxLen = 10000;
 	char tempString[maxLen];
 	double tempX = 0.0, tempY = 0.0, tempZ = 0.0;
 

@@ -47,15 +47,12 @@ Tree::Tree(string filename) {
 	SortData(data, cols, rows, _X_);
 
 	// Split the data
-	unsigned long int leftElements = 0;
+
+	int leftRows = rows / 2;
+	int rightRows = rows - leftRows;
+
+	unsigned long int leftElements = leftRows * cols;
 	unsigned long int rightElements = (cols * rows) - leftElements;
-
-	int leftRows = 0;
-	int rightRows = 0;
-
-	// Need to find the median and determine how many elements go on
-	// each side
-
 
 	// Build the tree
 	left = new Tree(this, data, cols, leftRows);
