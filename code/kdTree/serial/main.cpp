@@ -25,6 +25,8 @@ int main(int argc, char *argv[]) {
 
 	auto contained = theTree->SearchTree(0.0, 0.0, 0.0, 0.1);
 
+	theTree->Dump(0, 0);
+
 	delete theTree;
 
 	return _OKAY_;
