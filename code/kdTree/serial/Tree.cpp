@@ -12,6 +12,7 @@
 
 #include <string>
 #include <iostream>
+#include <chrono>
 
 using namespace std;
 
@@ -33,7 +34,7 @@ using namespace std;
 //
 
 Tree::Tree(string filename) {
-	
+	auto start = std::chrono::system_clock::now();
 
 	int rows = 0;
 	int cols = 0;
@@ -61,6 +62,9 @@ Tree::Tree(string filename) {
 	// Clean up our temporary array
 	delete data;
 
+	auto end = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsed = end - start;
+	std::cout << "Built tree with " << rows << " rows in " << elapsed.count() << " seconds" << std::endl;
 }
 
 
@@ -82,8 +86,23 @@ Tree::Tree(string filename) {
 // create the child nodes from a subset of the data.
 //
 
-Tree::Tree(Tree *parent, double *data, int numCols, int numRows)
+Tree::Tree(Tree *parent, double *data, int cols, int rows)
 {
-	cout << "I am a child node" << endl;
-	
+	if (rows > 1) {
+		// Split the data
+
+		int leftRows = rows / 2;
+		int rightRows = rows - leftRows;
+
+		unsigned long int leftElements = leftRows * cols;
+		unsigned long int rightElements = (cols * rows) - leftElements;
+
+		// Build the tree
+		left = new Tree(this, data, cols, leftRows);
+		right = new Tree(this, &data[leftElements], cols, rightRows);
+	}
+	else
+	{
+		// We are at the end!
+	}
 }
