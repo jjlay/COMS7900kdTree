@@ -67,6 +67,6 @@ class Tree {
 		double *GetCenter();
 		int GetCount();
 		int GetSortDimension();
-		unsigned long int Dump(unsigned long int key);
+		unsigned long int Dump(unsigned long int parent, unsigned long int key);
 };
 
