@@ -1,3 +1,20 @@
+//
+// Local includes
+//
+
+#include "tree.h"
+#include "importData .h"
+
+
+//
+// Standard includes
+//
+
+#include <string>
+
+using namespace std;
+
+
 // % Concerns:
 // % 1) for non 2^n data, check for dataL/dataR are empty
 // % 2) pass structs by reference so they get changed at all levels
@@ -16,6 +33,11 @@ int main(int argc, char *argv) {
 	// % generate data
 	// data = rand( nPts, 2 );
 	// 
+
+	string filename = "datafile00501.txt";
+	auto data = importData(filename);
+
+
 	// tree = struct( 'p',{}, 'l',{}, 'r',{}, 'i',{}, 'v',{}, 'x1',{}, 'x2',{}, 'y1',{}, 'y2',{}, 'n',{}, 'd', {}, 'c',{} );
 	// tree(1).x1 = 0;
 	// tree(1).x2 = 1;
