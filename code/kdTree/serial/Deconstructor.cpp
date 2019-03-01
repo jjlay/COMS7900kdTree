@@ -20,8 +20,6 @@ using namespace std;
 
 Tree::~Tree()
 {
-	cout << "Destroyed!" << endl;
-
 	if (left != nullptr) {
 		delete left;
 		left = nullptr;

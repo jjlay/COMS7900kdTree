@@ -62,7 +62,7 @@ class Tree {
 		~Tree();
 
 		// Public methods
-		int SearchTree(double x, double y, double z, double radius);
+		void searchTree(double *found, Tree tree, double *c0, double rad);
 		double *GetRange();
 		double *GetCenter();
 		int GetCount();
