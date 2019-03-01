@@ -129,6 +129,7 @@
     <ClCompile Include="compareY.cpp" />
     <ClCompile Include="compareZ.cpp" />
     <ClCompile Include="Deconstructor.cpp" />
+    <ClCompile Include="Dump.cpp" />
     <ClCompile Include="ImportData.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SearchTree.cpp" />
