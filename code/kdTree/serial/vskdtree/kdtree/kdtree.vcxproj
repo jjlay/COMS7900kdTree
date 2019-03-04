@@ -84,6 +84,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:/Users/jj.lay/source/github/COMS7900kdTree/code/kdTree/serial/</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -112,6 +113,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -121,13 +123,16 @@
     <ClCompile Include="..\..\kdtree.cpp" />
     <ClCompile Include="..\..\plotTree.cpp" />
     <ClCompile Include="..\..\searchTree.cpp" />
+    <ClCompile Include="..\..\sortData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\buildTree.h" />
     <ClInclude Include="..\..\circle.h" />
-    <ClInclude Include="..\..\importData .h" />
+    <ClInclude Include="..\..\definitions.h" />
+    <ClInclude Include="..\..\importData.h" />
     <ClInclude Include="..\..\plotTree.h" />
     <ClInclude Include="..\..\searchTree.h" />
+    <ClInclude Include="..\..\sortData.h" />
     <ClInclude Include="..\..\tree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

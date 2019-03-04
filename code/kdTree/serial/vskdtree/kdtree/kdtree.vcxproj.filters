@@ -33,15 +33,15 @@
     <ClCompile Include="..\..\searchTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\sortData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\buildTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\circle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\importData .h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\plotTree.h">
@@ -51,6 +51,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\importData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\definitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sortData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
