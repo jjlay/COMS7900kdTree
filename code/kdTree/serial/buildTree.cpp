@@ -1,4 +1,15 @@
-void buildTree() {
+//
+// Local includes
+//
+
+#include "tree.h"
+
+
+//
+// Function: buildTree
+//
+
+void buildTree(double *data, Tree tree) {
 	// function tree = buildTree( data, tree )
 	//     
 	//     % pause(0.1)

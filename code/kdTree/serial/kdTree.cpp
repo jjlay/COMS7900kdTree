@@ -6,6 +6,7 @@
 #include "importData.h"
 #include "sortData.h"
 #include "definitions.h"
+#include "buildTree.h"
 
 
 //
@@ -13,6 +14,7 @@
 //
 
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -44,12 +46,30 @@ int main(int argc, char *argv) {
 
 
 	// tree = struct( 'p',{}, 'l',{}, 'r',{}, 'i',{}, 'v',{}, 'x1',{}, 'x2',{}, 'y1',{}, 'y2',{}, 'n',{}, 'd', {}, 'c',{} );
+
+	struct Tree tree;
+
 	// tree(1).x1 = 0;
 	// tree(1).x2 = 1;
 	// tree(1).y1 = 0;
 	// tree(1).y2 = 1;
+
+	tree.x1 = 0.0;
+	tree.x2 = 1.0;
+	tree.y1 = 0.0;
+	tree.y2 = 1.0;
+	tree.z1 = 0.0;
+	tree.z2 = 1.0;
+
+
 	// tree = buildTree( data, tree );
+
+	buildTree(data, tree);
+
 	// disp("Tree complete!!!")
+
+	cout << "Tree completed" << endl;
+
 	// 
 	// data
 	// 
