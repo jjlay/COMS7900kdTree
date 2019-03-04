@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -std=c++11
 
-kdTree : kdTree.o circle.o importData.o plotTree.o searchTree.o buildTree.o tree.h
+kdTree : kdTree.o circle.o importData.o plotTree.o searchTree.o buildTree.o tree.h sortData.o definitions.h
 	$(CC) $(CFLAGS) -o kdTree kdTree.o
 
 kdTree.o : kdTree.cpp tree.h
@@ -21,6 +21,9 @@ searchTree.o : searchTree.cpp tree.h
 
 buildTree.o : buildTree.cpp tree.h
 	$(CC) $(CFLAGS) -c buildTree.cpp
+
+sortData.o : sortData.cpp definitions.h
+	$(CC) $(CFLAGS) -c sortData.cpp
 
 
 clean :
