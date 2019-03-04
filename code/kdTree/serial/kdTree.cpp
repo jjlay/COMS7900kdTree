@@ -4,6 +4,8 @@
 
 #include "tree.h"
 #include "importData.h"
+#include "sortData.h"
+#include "definitions.h"
 
 
 //
@@ -37,6 +39,8 @@ int main(int argc, char *argv) {
 	int rows = 0, cols = 0;
 	string filename = "datafile00501.txt";
 	auto data = importData(filename, &cols, &rows);
+
+	sortData(data, cols, rows, _X_);
 
 
 	// tree = struct( 'p',{}, 'l',{}, 'r',{}, 'i',{}, 'v',{}, 'x1',{}, 'x2',{}, 'y1',{}, 'y2',{}, 'n',{}, 'd', {}, 'c',{} );

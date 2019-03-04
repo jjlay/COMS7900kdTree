@@ -123,6 +123,7 @@
     <ClCompile Include="..\..\kdtree.cpp" />
     <ClCompile Include="..\..\plotTree.cpp" />
     <ClCompile Include="..\..\searchTree.cpp" />
+    <ClCompile Include="..\..\sortData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\buildTree.h" />
@@ -131,6 +132,7 @@
     <ClInclude Include="..\..\importData.h" />
     <ClInclude Include="..\..\plotTree.h" />
     <ClInclude Include="..\..\searchTree.h" />
+    <ClInclude Include="..\..\sortData.h" />
     <ClInclude Include="..\..\tree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
