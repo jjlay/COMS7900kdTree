@@ -5,5 +5,5 @@
 using namespace std;
 
 
-double *importData(string filename);
+double *importData(string filename, int *numCols, int *numRows);
 
