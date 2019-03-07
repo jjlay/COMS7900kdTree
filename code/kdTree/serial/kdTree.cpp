@@ -42,18 +42,6 @@ int main(int argc, char *argv) {
 	string filename = "datafile00501.txt";
 	auto data = importData(filename, &cols, &rows);
 
-	sortData(data, cols, rows, _X_);
-	auto rangeX = data[(rows - 1) * cols + _X_] - data[_X_];
-	cout << endl <<  "Min X: " << data[_X_] << ", Max X: " << data[(rows - 1) * cols + _X_] << ", Range X: " << rangeX << endl << endl;
-
-	sortData(data, cols, rows, _Y_);
-	auto rangeY = data[(rows - 1) * cols + _Y_] - data[_Y_];
-	cout << endl << "Min Y: " << data[_Y_] << ", Max Y: " << data[(rows - 1) * cols + _Y_] << ", Range Y: " << rangeY << endl << endl;
-
-	sortData(data, cols, rows, _Z_);
-	auto rangeZ = data[(rows - 1) * cols + _Z_] - data[_Z_];
-	cout << endl << "Min Z: " << data[_Z_] << ", Max Z: " << data[(rows - 1) * cols + _Z_] << ", Range Z: " << rangeZ << endl << endl;
-
 
 	// tree = struct( 'p',{}, 'l',{}, 'r',{}, 'i',{}, 'v',{}, 'x1',{}, 'x2',{}, 'y1',{}, 'y2',{}, 'n',{}, 'd', {}, 'c',{} );
 
@@ -73,11 +61,9 @@ int main(int argc, char *argv) {
 
 
 	// tree = buildTree( data, tree );
-
 	buildTree(data, rows, cols, &tree);
 
 	// disp("Tree complete!!!")
-
 	cout << "Tree completed" << endl;
 
 	// 

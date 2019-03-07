@@ -7,10 +7,20 @@
 
 
 //
+// Standard includes
+//
+
+#include <iostream>
+
+using namespace std;
+
+
+//
 // Function: buildTree
 //
 
 void buildTree(double *data, int rows, int cols, Tree *tree) {
+
 	// function tree = buildTree( data, tree )
 	//     
 	//     % pause(0.1)
@@ -32,6 +42,21 @@ void buildTree(double *data, int rows, int cols, Tree *tree) {
 	//         xlen = xmax - xmin;
 	//         ylen = ymax - ymin;
 	//         
+
+	sortData(data, cols, rows, _X_);
+	auto rangeX = data[(rows - 1) * cols + _X_] - data[_X_];
+	cout << endl << "Min X: " << data[_X_] << ", Max X: " << data[(rows - 1) * cols + _X_] << ", Range X: " << rangeX << endl << endl;
+
+	sortData(data, cols, rows, _Y_);
+	auto rangeY = data[(rows - 1) * cols + _Y_] - data[_Y_];
+	cout << endl << "Min Y: " << data[_Y_] << ", Max Y: " << data[(rows - 1) * cols + _Y_] << ", Range Y: " << rangeY << endl << endl;
+
+	sortData(data, cols, rows, _Z_);
+	auto rangeZ = data[(rows - 1) * cols + _Z_] - data[_Z_];
+	cout << endl << "Min Z: " << data[_Z_] << ", Max Z: " << data[(rows - 1) * cols + _Z_] << ", Range Z: " << rangeZ << endl << endl;
+
+
+
 	//         tree(1).x1 = xmin;
 	//         tree(1).x2 = xmax;
 	//         tree(1).y1 = ymin;
