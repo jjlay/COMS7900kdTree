@@ -4,6 +4,7 @@
 
 #include "tree.h"
 #include "sortData.h"
+#include "definitions.h"
 
 
 //
@@ -44,16 +45,28 @@ void buildTree(double *data, int rows, int cols, Tree *tree) {
 	//         
 
 	sortData(data, cols, rows, _X_);
-	auto rangeX = data[(rows - 1) * cols + _X_] - data[_X_];
-	cout << endl << "Min X: " << data[_X_] << ", Max X: " << data[(rows - 1) * cols + _X_] << ", Range X: " << rangeX << endl << endl;
+	
+	auto xMin = data[_X_];
+	auto xMax = data[(rows - 1) * cols + _X_];
+	auto rangeX = xMax - xMin;
+
+	cout << endl << "Min X: " << xMin << ", Max X: " << xMax << ", Range X: " << rangeX << endl << endl;
 
 	sortData(data, cols, rows, _Y_);
-	auto rangeY = data[(rows - 1) * cols + _Y_] - data[_Y_];
-	cout << endl << "Min Y: " << data[_Y_] << ", Max Y: " << data[(rows - 1) * cols + _Y_] << ", Range Y: " << rangeY << endl << endl;
+
+	auto yMin = data[_Y_];
+	auto yMax = data[(rows - 1) * cols + _Y_];
+	auto rangeY = yMax - yMin;
+
+	cout << endl << "Min Y: " << yMin << ", Max Y: " << yMax << ", Range Y: " << rangeY << endl << endl;
 
 	sortData(data, cols, rows, _Z_);
-	auto rangeZ = data[(rows - 1) * cols + _Z_] - data[_Z_];
-	cout << endl << "Min Z: " << data[_Z_] << ", Max Z: " << data[(rows - 1) * cols + _Z_] << ", Range Z: " << rangeZ << endl << endl;
+
+	auto zMin = data[_Z_];
+	auto zMax = data[(rows - 1) * cols + _Z_];
+	auto rangeZ = zMax - zMin;
+
+	cout << endl << "Min Z: " << zMin << ", Max Z: " << zMax << ", Range Z: " << rangeZ << endl << endl;
 
 
 
@@ -61,15 +74,38 @@ void buildTree(double *data, int rows, int cols, Tree *tree) {
 	//         tree(1).x2 = xmax;
 	//         tree(1).y1 = ymin;
 	//         tree(1).y2 = ymax;
+
+	tree->x1 = xMin;
+	tree->x2 = xMax;
+	tree->y1 = yMin;
+	tree->y2 = yMax;
+	tree->z1 = zMin;
+	tree->z2 = zMax;
+
 	//         
 	//         if xlen > ylen
 	//             sortInd = 1;
 	//         else
 	//             sortInd = 2;
 	//         end
-	//         
+
+	int sortInd = _Undefined_;
+
+	if ((sortInd = _Undefined_) && (rangeX >= rangeY) && (rangeX >= rangeZ))
+		sortInd = _X_;
+
+	if ((sortInd = _Undefined_) && (rangeY >= rangeX) && (rangeY >= rangeZ))
+		sortInd = _Y_;
+
+	if ((sortInd = _Undefined_) && (rangeZ >= rangeX) && (rangeZ >= rangeY))
+		sortInd = _Z_;
+
+
 	//         % sort
 	//         [tmp, ind] = sort( data(:,sortInd) );
+
+	sortData(data, cols, rows, sortInd);
+
 	//         dataSort   = zeros( nPts, 2 );
 	//         if sortInd == 1
 	//             dataSort(:,1) = tmp;
@@ -80,17 +116,37 @@ void buildTree(double *data, int rows, int cols, Tree *tree) {
 	//         end
 	//         
 	//         half = cast( floor(nPts/2), 'uint16' );
+
+	int leftCount = rows / 2;
+	int rightCount = rows - leftCount;
+
 	//         
 	//         tree(1).i = sortInd;
+
+	tree->i = sortInd;
+
 	//         tree(1).v = 0.5*( dataSort(half,sortInd) + dataSort(half+1,sortInd) );
 	//         
 	//         % split
 	//         dataLeft  = dataSort(1:half,:);
 	//         dataRight = dataSort(half+1:end,:);
+
+	auto leftPtr = &data[0];
+	auto rightPtr = &data[(leftCount * cols)];
+
 	//         
 	//         % call buildTree
 	//         treeLeft  = struct( 'p',{}, 'l',{}, 'r',{}, 'i',{}, 'v',{}, 'x1',{}, 'x2',{}, 'y1',{}, 'y2',{} );
 	//         treeRight = struct( 'p',{}, 'l',{}, 'r',{}, 'i',{}, 'v',{}, 'x1',{}, 'x2',{}, 'y1',{}, 'y2',{} );
+
+	// Create the children
+	tree->l = new Tree;
+	tree->r = new Tree;
+
+	// Set the children's parent
+	tree->l->p = tree;
+	tree->r->p = tree;
+
 	//         
 	// %         if sortInd == 1
 	// %             treeLeft(1).x1 = tree(1).x1;

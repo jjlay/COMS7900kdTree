@@ -10,16 +10,16 @@ struct Tree {
 	Tree *p;  // Parent
 	Tree *l;  // Left child
 	Tree *r;  // Right child
-	int i;  // Sort index
+	int i;    // Sort index
 	
-	double x1; // Min x
-	double x2; // Max x
+	double x1;  // Min x
+	double x2;  // Max x
 	double y1;  // Min y
 	double y2;  // Max y
 	double z1;  // Min z
 	double z2;  // Max z
 	
-	double c[3]; // Center of this tree
+	double c[3];  // Center of this tree
 	double d[3];  // Data point
 	long unsigned int index;  // File row index
 }
