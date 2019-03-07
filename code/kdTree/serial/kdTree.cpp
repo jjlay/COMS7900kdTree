@@ -7,6 +7,7 @@
 #include "sortData.h"
 #include "definitions.h"
 #include "buildTree.h"
+#include "searchTree.h"
 
 
 //
@@ -46,27 +47,27 @@ int main(int argc, char *argv) {
 
 	// tree = struct( 'p',{}, 'l',{}, 'r',{}, 'i',{}, 'v',{}, 'x1',{}, 'x2',{}, 'y1',{}, 'y2',{}, 'n',{}, 'd', {}, 'c',{} );
 
-	struct Tree tree;
+	auto tree = new struct Tree;
 
 	// tree(1).x1 = 0;
 	// tree(1).x2 = 1;
 	// tree(1).y1 = 0;
 	// tree(1).y2 = 1;
 
-	tree.x1 = 0.0;
-	tree.x2 = 1.0;
-	tree.y1 = 0.0;
-	tree.y2 = 1.0;
-	tree.z1 = 0.0;
-	tree.z2 = 1.0;
-	tree.p = nullptr;
-	tree.depth = 0;
+	tree->x1 = 0.0;
+	tree->x2 = 1.0;
+	tree->y1 = 0.0;
+	tree->y2 = 1.0;
+	tree->z1 = 0.0;
+	tree->z2 = 1.0;
+	tree->p = nullptr;
+	tree->depth = 0;
 
 
 	// tree = buildTree( data, tree );
 	auto startTreeBuild = std::chrono::system_clock::now();
 
-	buildTree(data, rows, cols, &tree);
+	buildTree(data, rows, cols, tree);
 
 	// disp("Tree complete!!!")
 	auto endTreeBuild = std::chrono::system_clock::now();
@@ -80,6 +81,18 @@ int main(int argc, char *argv) {
 	// center = [ 0.5, 0.5 ];
 	// rad    = 0.25;
 	// found  = searchTree( tree, center, rad )
+
+	auto point = new double[4];
+	point[_X_] = 0.5;
+	point[_Y_] = 0.5;
+	point[_Z_] = 0.5;
+	point[_Index_] = _Undefined_;
+
+	double radius = 0.25;
+
+	searchTree(tree, point, radius);
+
+
 	// 
 	// 
 	// 
