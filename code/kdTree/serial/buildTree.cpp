@@ -91,13 +91,13 @@ void buildTree(double *data, int rows, int cols, Tree *tree) {
 
 	int sortInd = _Undefined_;
 
-	if ((sortInd = _Undefined_) && (rangeX >= rangeY) && (rangeX >= rangeZ))
+	if ((sortInd == _Undefined_) && (rangeX >= rangeY) && (rangeX >= rangeZ))
 		sortInd = _X_;
 
-	if ((sortInd = _Undefined_) && (rangeY >= rangeX) && (rangeY >= rangeZ))
+	if ((sortInd == _Undefined_) && (rangeY >= rangeX) && (rangeY >= rangeZ))
 		sortInd = _Y_;
 
-	if ((sortInd = _Undefined_) && (rangeZ >= rangeX) && (rangeZ >= rangeY))
+	if ((sortInd == _Undefined_) && (rangeZ >= rangeX) && (rangeZ >= rangeY))
 		sortInd = _Z_;
 
 
