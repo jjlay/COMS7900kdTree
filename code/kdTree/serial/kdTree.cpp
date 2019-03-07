@@ -42,8 +42,6 @@ int main(int argc, char *argv) {
 	string filename = "datafile00501.txt";
 	auto data = importData(filename, &cols, &rows);
 
-	sortData(data, cols, rows, _X_);
-
 
 	// tree = struct( 'p',{}, 'l',{}, 'r',{}, 'i',{}, 'v',{}, 'x1',{}, 'x2',{}, 'y1',{}, 'y2',{}, 'n',{}, 'd', {}, 'c',{} );
 
@@ -60,14 +58,13 @@ int main(int argc, char *argv) {
 	tree.y2 = 1.0;
 	tree.z1 = 0.0;
 	tree.z2 = 1.0;
+	tree.p = nullptr;
 
 
 	// tree = buildTree( data, tree );
-
-	buildTree(data, tree);
+	buildTree(data, rows, cols, &tree);
 
 	// disp("Tree complete!!!")
-
 	cout << "Tree completed" << endl;
 
 	// 

@@ -11,6 +11,6 @@
 // Function: buildTree
 //
 
-void buildTree(double *data, Tree tree);
+void buildTree(double *data, int rows, int cols, Tree *tree);
 
 

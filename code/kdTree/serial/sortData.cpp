@@ -47,7 +47,6 @@ int compareZ(const void *a, const void *b);
 void sortData(double *data, int numCols, int numRows, int dimension)
 {
 	auto start = std::chrono::system_clock::now();
-	std::cout << "Before sort " << data[_X_] << " and " << data[numCols + _X_] << std::endl;
 
 	switch (dimension)
 	{
@@ -75,7 +74,6 @@ void sortData(double *data, int numCols, int numRows, int dimension)
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed = end - start;
 
-	std::cout << "After sort " << data[_X_] << " and " << data[numCols + _X_] << std::endl;
 	std::cout << "Sorted " << numRows << " rows in " << elapsed.count() << " seconds" << std::endl;
 
 }
