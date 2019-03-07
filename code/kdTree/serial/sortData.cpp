@@ -74,7 +74,7 @@ void sortData(double *data, int numCols, int numRows, int dimension)
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed = end - start;
 
-	std::cout << "Sorted " << numRows << " rows in " << elapsed.count() << " seconds" << std::endl;
+	// std::cout << "Sorted " << numRows << " rows in " << elapsed.count() << " seconds" << std::endl;
 
 }
 

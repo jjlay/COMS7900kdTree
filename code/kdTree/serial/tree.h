@@ -18,9 +18,12 @@ struct Tree {
 	double y2;  // Max y
 	double z1;  // Min z
 	double z2;  // Max z
-	
-	double c[3];  // Center of this tree
-	double d[3];  // Data point
+
+	int depth;
+	int n;      // Number of points
+
+	double c[4];  // Center of this tree
+	double d[4];  // Data point
 	long unsigned int index;  // File row index
 }
 ;
