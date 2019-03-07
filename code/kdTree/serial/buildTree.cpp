@@ -54,7 +54,7 @@ void buildTree(double *data, int rows, int cols, Tree *tree) {
 		auto xMax = data[(rows - 1) * cols + _X_];
 		auto rangeX = xMax - xMin;
 
-		cout << endl << "Min X: " << xMin << ", Max X: " << xMax << ", Range X: " << rangeX << endl << endl;
+		// cout << endl << "Min X: " << xMin << ", Max X: " << xMax << ", Range X: " << rangeX << endl << endl;
 
 		sortData(data, cols, rows, _Y_);
 
@@ -62,7 +62,7 @@ void buildTree(double *data, int rows, int cols, Tree *tree) {
 		auto yMax = data[(rows - 1) * cols + _Y_];
 		auto rangeY = yMax - yMin;
 
-		cout << endl << "Min Y: " << yMin << ", Max Y: " << yMax << ", Range Y: " << rangeY << endl << endl;
+		// cout << endl << "Min Y: " << yMin << ", Max Y: " << yMax << ", Range Y: " << rangeY << endl << endl;
 
 		sortData(data, cols, rows, _Z_);
 
@@ -70,7 +70,7 @@ void buildTree(double *data, int rows, int cols, Tree *tree) {
 		auto zMax = data[(rows - 1) * cols + _Z_];
 		auto rangeZ = zMax - zMin;
 
-		cout << endl << "Min Z: " << zMin << ", Max Z: " << zMax << ", Range Z: " << rangeZ << endl << endl;
+		// cout << endl << "Min Z: " << zMin << ", Max Z: " << zMax << ", Range Z: " << rangeZ << endl << endl;
 
 		tree->c[_Index_] = _Undefined_;
 		tree->c[_X_] = (xMax + xMin) / 2.0;
@@ -216,6 +216,6 @@ void buildTree(double *data, int rows, int cols, Tree *tree) {
 		tree->d[_Y_] = data[_Y_];
 		tree->d[_Z_] = data[_Z_];
 
-		cout << "Depth of " << tree->depth << endl;
+		// cout << "Depth of " << tree->depth << endl;
 	}
 }

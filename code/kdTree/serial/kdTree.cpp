@@ -15,6 +15,7 @@
 
 #include <string>
 #include <iostream>
+#include <chrono>
 
 using namespace std;
 
@@ -63,10 +64,15 @@ int main(int argc, char *argv) {
 
 
 	// tree = buildTree( data, tree );
+	auto startTreeBuild = std::chrono::system_clock::now();
+
 	buildTree(data, rows, cols, &tree);
 
 	// disp("Tree complete!!!")
-	cout << "Tree completed" << endl;
+	auto endTreeBuild = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsedTreeBuild = endTreeBuild - startTreeBuild;
+
+	cout << "Tree completed in " << elapsedTreeBuild.count() << " seconds" << endl;
 
 	// 
 	// data
