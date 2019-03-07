@@ -3,13 +3,14 @@
 //
 
 #include "tree.h"
+#include "sortData.h"
 
 
 //
 // Function: buildTree
 //
 
-void buildTree(double *data, Tree tree) {
+void buildTree(double *data, int rows, int cols, Tree *tree) {
 	// function tree = buildTree( data, tree )
 	//     
 	//     % pause(0.1)
