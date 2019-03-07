@@ -154,6 +154,9 @@ void buildTree(double *data, int rows, int cols, Tree *tree) {
 		tree->l->p = tree;
 		tree->r->p = tree;
 
+		tree->l->depth = tree->depth + 1;
+		tree->r->depth = tree->depth + 1;
+
 		//         
 		// %         if sortInd == 1
 		// %             treeLeft(1).x1 = tree(1).x1;
@@ -189,6 +192,9 @@ void buildTree(double *data, int rows, int cols, Tree *tree) {
 		//                 
 		//         tree(1).l = treeLeft;
 		//         tree(1).r = treeRight;
+
+		buildTree(leftPtr, leftCount, cols, tree->l);
+		buildTree(rightPtr, rightCount, cols, tree->r);
 	}
 	else
 	{
@@ -209,5 +215,7 @@ void buildTree(double *data, int rows, int cols, Tree *tree) {
 		tree->d[_X_] = data[_X_];
 		tree->d[_Y_] = data[_Y_];
 		tree->d[_Z_] = data[_Z_];
+
+		cout << "Depth of " << tree->depth << endl;
 	}
 }

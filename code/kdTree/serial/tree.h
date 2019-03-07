@@ -19,6 +19,7 @@ struct Tree {
 	double z1;  // Min z
 	double z2;  // Max z
 
+	int depth;
 	int n;      // Number of points
 
 	double c[4];  // Center of this tree

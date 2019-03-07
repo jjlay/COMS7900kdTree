@@ -59,6 +59,7 @@ int main(int argc, char *argv) {
 	tree.z1 = 0.0;
 	tree.z2 = 1.0;
 	tree.p = nullptr;
+	tree.depth = 0;
 
 
 	// tree = buildTree( data, tree );
