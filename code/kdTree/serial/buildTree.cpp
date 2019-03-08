@@ -22,8 +22,6 @@ using namespace std;
 
 void buildTree(double *data, int rows, int cols, Tree *tree) {
 
-	cout << "Hello" << endl;
-
 	// function tree = buildTree( data, tree )
 	//     
 	//     % pause(0.1)
