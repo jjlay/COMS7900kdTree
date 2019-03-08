@@ -44,8 +44,7 @@ int main( int argc, char *argv[] ) {
 	int rows = 0, cols = 0;
 	string filename = "datafile00501.txt";
 	auto data = importData(filename, &cols, &rows);
-
-
+	
 	// tree = struct( 'p',{}, 'l',{}, 'r',{}, 'i',{}, 'v',{}, 'x1',{}, 'x2',{}, 'y1',{}, 'y2',{}, 'n',{}, 'd', {}, 'c',{} );
 
 	auto tree = new struct Tree;
@@ -55,12 +54,15 @@ int main( int argc, char *argv[] ) {
 	// tree(1).y1 = 0;
 	// tree(1).y2 = 1;
 
+	// only used for prototype
+/*
 	tree->x1 = 0.0;
 	tree->x2 = 1.0;
 	tree->y1 = 0.0;
 	tree->y2 = 1.0;
 	tree->z1 = 0.0;
 	tree->z2 = 1.0;
+*/
 	tree->p = nullptr;
 	tree->depth = 0;
 

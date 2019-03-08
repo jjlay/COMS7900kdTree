@@ -128,7 +128,7 @@ double *importData(string filename, int *numCols, int *numRows)
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed = end - start;
 
-	std::cout << "Read " << lines << " in " << elapsed.count() << " seconds" << std::endl;
+//	std::cout << "Read " << lines << " in " << elapsed.count() << " seconds" << std::endl;
 
 	return array;
 }
