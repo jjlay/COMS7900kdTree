@@ -75,6 +75,12 @@ int main(int argc, char *argv) {
 
 	cout << "Tree completed in " << elapsedTreeBuild.count() << " seconds" << endl;
 
+	auto leftCount = count(tree->l);
+	auto rightCount = count(tree->r);
+
+	cout << "Left side had " << leftCount << " points, and the right side had " << rightCount << endl;
+
+
 	// 
 	// data
 	// 
@@ -110,5 +116,7 @@ int main(int argc, char *argv) {
 	// %%%%%%%%%%%%
 	// %%% done %%%
 	// %%%%%%%%%%%%
+
+	return _OKAY_;
 }
 
