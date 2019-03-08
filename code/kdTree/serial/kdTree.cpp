@@ -8,6 +8,7 @@
 #include "definitions.h"
 #include "buildTree.h"
 #include "searchTree.h"
+#include "count.h"
 
 
 //
