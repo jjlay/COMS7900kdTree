@@ -78,7 +78,8 @@ int main(int argc, char *argv) {
 	auto leftCount = count(tree->l);
 	auto rightCount = count(tree->r);
 
-	cout << "Left side had " << leftCount << " points, and the right side had " << rightCount << endl;
+	cout << "Left side had " << leftCount << " points, and the right side had " << rightCount << endl
+		<< "Total points in tree were " << leftCount + rightCount << endl;
 
 
 	// 
