@@ -89,6 +89,7 @@ double *importData(string filename, int *numCols, int *numRows)
 
 	if (err != 0)
 	{
+		cout << "Failed to open file" << endl;
 		exit(_FAIL_);
 	}
 
@@ -128,7 +129,7 @@ double *importData(string filename, int *numCols, int *numRows)
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed = end - start;
 
-//	std::cout << "Read " << lines << " in " << elapsed.count() << " seconds" << std::endl;
+	cout << "Read " << lines << " in " << elapsed.count() << " seconds" << endl;
 
 	return array;
 }
