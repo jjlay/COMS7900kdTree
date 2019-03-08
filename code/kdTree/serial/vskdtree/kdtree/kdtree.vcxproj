@@ -119,6 +119,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\buildTree.cpp" />
     <ClCompile Include="..\..\circle.cpp" />
+    <ClCompile Include="..\..\count.cpp" />
     <ClCompile Include="..\..\importData.cpp" />
     <ClCompile Include="..\..\kdtree.cpp" />
     <ClCompile Include="..\..\plotTree.cpp" />
@@ -128,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\buildTree.h" />
     <ClInclude Include="..\..\circle.h" />
+    <ClInclude Include="..\..\count.h" />
     <ClInclude Include="..\..\definitions.h" />
     <ClInclude Include="..\..\importData.h" />
     <ClInclude Include="..\..\plotTree.h" />
