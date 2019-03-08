@@ -5,7 +5,7 @@ kdTree : kdTree.o circle.o importData.o plotTree.o searchTree.o buildTree.o sort
 	$(CC) $(CFLAGS) -o kdTree kdTree.o
 
 kdTree.o : kdTree.cpp tree.h importData.h definitions.h buildTree.h searchTree.h count.h
-	$(CC) $(CFLAGS) -c kdtree.cpp
+	$(CC) $(CFLAGS) -c kdTree.cpp
 
 circle.o : circle.cpp tree.h
 	$(CC) $(CFLAGS) -c circle.cpp
