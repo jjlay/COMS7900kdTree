@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -std=c++11 -pg
+CFLAGS = -std=c++11
 
 kdTree : kdTree.o circle.o importData.o plotTree.o searchTree.o buildTree.o sortData.o count.o
 	$(CC) $(CFLAGS) -o kdTree kdTree.o circle.o importData.o plotTree.o searchTree.o buildTree.o sortData.o count.o
