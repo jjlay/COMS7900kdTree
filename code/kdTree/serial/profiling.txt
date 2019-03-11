@@ -2,44 +2,20 @@ Flat profile:
 
 Each sample counts as 0.01 seconds.
   %   cumulative   self              self     total           
- time   seconds   seconds    calls   s/call   s/call  name    
- 35.02     69.76    69.76                             compareY(void const*, void const*)
- 29.88    129.29    59.52                             compareZ(void const*, void const*)
- 29.55    188.15    58.86                             compareX(void const*, void const*)
-  0.88    189.90     1.75                             compareIndex(void const*, void const*)
-  0.86    191.61     1.71 79999998     0.00     0.00  std::chrono::duration<double, std::ratio<1l, 1l> > std::chrono::__duration_cast_impl<std::chrono::duration<double, std::ratio<1l, 1l> >, std::ratio<1l, 1000000000l>, double, true, false>::__cast<long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&)
-  0.72    193.04     1.43        2     0.72     0.72  count(Tree*)
-  0.68    194.40     1.36        1     1.36     7.95  buildTree(double*, int, int, Tree*)
-  0.65    195.70     1.30 79999996     0.00     0.00  sortData(double*, int, int, int)
-  0.30    196.30     0.60 239999994     0.00     0.00  std::chrono::duration<long, std::ratio<1l, 1000000000l> >::count() const
-  0.28    196.86     0.56 79999998     0.00     0.00  std::chrono::duration<double, std::ratio<1l, 1l> >::duration<long, std::ratio<1l, 1000000000l>, void>(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&)
-  0.28    197.42     0.56 79999998     0.00     0.00  std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<long, std::ratio<1l, 1000000000l>, long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&, std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&)
-  0.26    197.93     0.51 79999998     0.00     0.00  std::enable_if<std::chrono::__is_duration<std::chrono::duration<double, std::ratio<1l, 1l> > >::value, std::chrono::duration<double, std::ratio<1l, 1l> > >::type std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1l, 1l> >, long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&)
-  0.20    198.33     0.40 159999996     0.00     0.00  std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::time_since_epoch() const
-  0.16    198.65     0.32 79999998     0.00     0.00  std::chrono::duration<long, std::ratio<1l, 1000000000l> >::duration<long, void>(long const&)
-  0.16    198.96     0.31 79999998     0.00     0.00  std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >(std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&, std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&)
-  0.11    199.18     0.22 80000000     0.00     0.00  std::chrono::duration<double, std::ratio<1l, 1l> >::count() const
-  0.05    199.28     0.10        1     0.10     0.10  importData(std::string, int*, int*)
-  0.05    199.38     0.10 79999998     0.00     0.00  std::chrono::duration<double, std::ratio<1l, 1l> >::duration<double, void>(double const&)
-  0.01    199.40     0.02        1     0.02     0.03  _GLOBAL__sub_I__Z9buildTreePdiiP4Tree
-  0.01    199.41     0.01        1     0.01     0.01  __static_initialization_and_destruction_0(int, int)
-  0.00    199.41     0.00        1     0.00     0.00  _GLOBAL__sub_I__Z10importDataSsPiS_
-  0.00    199.41     0.00        1     0.00     0.00  _GLOBAL__sub_I__Z8sortDataPdiii
-  0.00    199.41     0.00        1     0.00     0.00  _GLOBAL__sub_I_main
-  0.00    199.41     0.00        1     0.00     0.00  searchTree(Tree*, double*, double)
-  0.00    199.41     0.00        1     0.00     0.00  CalculateIndex(std::string)
-  0.00    199.41     0.00        1     0.00     0.00  __static_initialization_and_destruction_0(int, int)
-  0.00    199.41     0.00        1     0.00     0.00  __static_initialization_and_destruction_0(int, int)
-  0.00    199.41     0.00        1     0.00     0.00  __static_initialization_and_destruction_0(int, int)
-  0.00    199.41     0.00        1     0.00     0.00  bool __gnu_cxx::__is_null_pointer<char>(char*)
-  0.00    199.41     0.00        1     0.00     0.00  int __gnu_cxx::__stoa<long, int, char, int>(long (*)(char const*, char**, int), char const*, char const*, unsigned long*, int)
-  0.00    199.41     0.00        1     0.00     0.00  std::iterator_traits<char*>::difference_type std::__distance<char*>(char*, char*, std::random_access_iterator_tag)
-  0.00    199.41     0.00        1     0.00     0.00  std::iterator_traits<char*>::iterator_category std::__iterator_category<char*>(char* const&)
-  0.00    199.41     0.00        1     0.00     0.00  std::remove_reference<std::string&>::type&& std::move<std::string&>(std::string&)
-  0.00    199.41     0.00        1     0.00     0.00  std::stoi(std::string const&, unsigned long*, int)
-  0.00    199.41     0.00        1     0.00     0.00  std::iterator_traits<char*>::difference_type std::distance<char*>(char*, char*)
-  0.00    199.41     0.00        1     0.00     0.00  std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> >&&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
-  0.00    199.41     0.00        1     0.00     0.00  std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*)
+ time   seconds   seconds    calls  ns/call  ns/call  name    
+ 36.78     43.41    43.41                             compareY(void const*, void const*)
+ 29.44     78.15    34.74                             compareZ(void const*, void const*)
+ 29.00    112.37    34.22                             compareX(void const*, void const*)
+  2.70    115.56     3.18                             buildTree(double*, int, int, Tree*)
+  1.04    116.79     1.23                             count(Tree*)
+  0.87    117.81     1.02                             compareIndex(void const*, void const*)
+  0.27    118.13     0.32 79999996     3.94     3.94  sortData(double*, int, int, int)
+  0.03    118.17     0.04                             importData(std::string, int*, int*)
+  0.00    118.17     0.00        1     0.00     0.00  _GLOBAL__sub_I__Z10importDataSsPiS_
+  0.00    118.17     0.00        1     0.00     0.00  _GLOBAL__sub_I__Z8sortDataPdiii
+  0.00    118.17     0.00        1     0.00     0.00  _GLOBAL__sub_I__Z9buildTreePdiiP4Tree
+  0.00    118.17     0.00        1     0.00     0.00  _GLOBAL__sub_I_main
+  0.00    118.17     0.00        1     0.00     0.00  CalculateIndex(std::string)
 
  %         the percentage of the total running time of the
 time       program used by this function.
@@ -77,174 +53,51 @@ notice and this notice are preserved.
 		     Call graph (explanation follows)
 
 
-granularity: each sample hit covers 2 byte(s) for 0.01% of 199.41 seconds
+granularity: each sample hit covers 2 byte(s) for 0.01% of 118.17 seconds
 
 index % time    self  children    called     name
                                                  <spontaneous>
-[1]     35.0   69.76    0.00                 compareY(void const*, void const*) [1]
+[1]     36.7   43.41    0.00                 compareY(void const*, void const*) [1]
 -----------------------------------------------
                                                  <spontaneous>
-[2]     29.8   59.52    0.00                 compareZ(void const*, void const*) [2]
+[2]     29.4   34.74    0.00                 compareZ(void const*, void const*) [2]
 -----------------------------------------------
                                                  <spontaneous>
-[3]     29.5   58.86    0.00                 compareX(void const*, void const*) [3]
+[3]     29.0   34.22    0.00                 compareX(void const*, void const*) [3]
+-----------------------------------------------
+                             19999999             buildTree(double*, int, int, Tree*) [4]
+[4]      3.0    3.18    0.32       0+19999999 buildTree(double*, int, int, Tree*) [4]
+                0.32    0.00 79999996/79999996     sortData(double*, int, int, int) [7]
+                             19999999             buildTree(double*, int, int, Tree*) [4]
+-----------------------------------------------
+                             2097150             count(Tree*) [5]
+[5]      1.0    1.23    0.00       0+2097150 count(Tree*) [5]
+                             2097150             count(Tree*) [5]
 -----------------------------------------------
                                                  <spontaneous>
-[4]      4.8    0.00    9.49                 main [4]
-                1.36    6.59       1/1           buildTree(double*, int, int, Tree*) [5]
-                1.43    0.00       2/2           count(Tree*) [12]
-                0.10    0.00       1/1           importData(std::string, int*, int*) [18]
-                0.00    0.00       1/79999998     std::chrono::duration<double, std::ratio<1l, 1l> >::duration<long, std::ratio<1l, 1000000000l>, void>(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [7]
-                0.00    0.00       1/79999998     std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >(std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&, std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&) [10]
-                0.00    0.00       1/80000000     std::chrono::duration<double, std::ratio<1l, 1l> >::count() const [17]
-                0.00    0.00       1/1           searchTree(Tree*, double*, double) [32]
+[6]      0.9    1.02    0.00                 compareIndex(void const*, void const*) [6]
 -----------------------------------------------
-                             39999998             buildTree(double*, int, int, Tree*) [5]
-                1.36    6.59       1/1           main [4]
-[5]      4.0    1.36    6.59       1+39999998 buildTree(double*, int, int, Tree*) [5]
-                1.30    5.30 79999996/79999996     sortData(double*, int, int, int) [6]
-                             39999998             buildTree(double*, int, int, Tree*) [5]
------------------------------------------------
-                1.30    5.30 79999996/79999996     buildTree(double*, int, int, Tree*) [5]
-[6]      3.3    1.30    5.30 79999996         sortData(double*, int, int, int) [6]
-                0.56    2.74 79999996/79999998     std::chrono::duration<double, std::ratio<1l, 1l> >::duration<long, std::ratio<1l, 1000000000l>, void>(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [7]
-                0.31    1.68 79999996/79999998     std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >(std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&, std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&) [10]
------------------------------------------------
-                0.00    0.00       1/79999998     main [4]
-                0.00    0.00       1/79999998     importData(std::string, int*, int*) [18]
-                0.56    2.74 79999996/79999998     sortData(double*, int, int, int) [6]
-[7]      1.7    0.56    2.74 79999998         std::chrono::duration<double, std::ratio<1l, 1l> >::duration<long, std::ratio<1l, 1000000000l>, void>(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [7]
-                0.51    2.01 79999998/79999998     std::enable_if<std::chrono::__is_duration<std::chrono::duration<double, std::ratio<1l, 1l> > >::value, std::chrono::duration<double, std::ratio<1l, 1l> > >::type std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1l, 1l> >, long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [8]
-                0.22    0.00 79999998/80000000     std::chrono::duration<double, std::ratio<1l, 1l> >::count() const [17]
------------------------------------------------
-                0.51    2.01 79999998/79999998     std::chrono::duration<double, std::ratio<1l, 1l> >::duration<long, std::ratio<1l, 1000000000l>, void>(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [7]
-[8]      1.3    0.51    2.01 79999998         std::enable_if<std::chrono::__is_duration<std::chrono::duration<double, std::ratio<1l, 1l> > >::value, std::chrono::duration<double, std::ratio<1l, 1l> > >::type std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1l, 1l> >, long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [8]
-                1.71    0.30 79999998/79999998     std::chrono::duration<double, std::ratio<1l, 1l> > std::chrono::__duration_cast_impl<std::chrono::duration<double, std::ratio<1l, 1l> >, std::ratio<1l, 1000000000l>, double, true, false>::__cast<long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [9]
------------------------------------------------
-                1.71    0.30 79999998/79999998     std::enable_if<std::chrono::__is_duration<std::chrono::duration<double, std::ratio<1l, 1l> > >::value, std::chrono::duration<double, std::ratio<1l, 1l> > >::type std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1l, 1l> >, long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [8]
-[9]      1.0    1.71    0.30 79999998         std::chrono::duration<double, std::ratio<1l, 1l> > std::chrono::__duration_cast_impl<std::chrono::duration<double, std::ratio<1l, 1l> >, std::ratio<1l, 1000000000l>, double, true, false>::__cast<long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [9]
-                0.20    0.00 79999998/239999994     std::chrono::duration<long, std::ratio<1l, 1000000000l> >::count() const [14]
-                0.10    0.00 79999998/79999998     std::chrono::duration<double, std::ratio<1l, 1l> >::duration<double, void>(double const&) [19]
------------------------------------------------
-                0.00    0.00       1/79999998     main [4]
-                0.00    0.00       1/79999998     importData(std::string, int*, int*) [18]
-                0.31    1.68 79999996/79999998     sortData(double*, int, int, int) [6]
-[10]     1.0    0.31    1.68 79999998         std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >(std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&, std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&) [10]
-                0.56    0.72 79999998/79999998     std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<long, std::ratio<1l, 1000000000l>, long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&, std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [13]
-                0.40    0.00 159999996/159999996     std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::time_since_epoch() const [15]
+                0.32    0.00 79999996/79999996     buildTree(double*, int, int, Tree*) [4]
+[7]      0.3    0.32    0.00 79999996         sortData(double*, int, int, int) [7]
 -----------------------------------------------
                                                  <spontaneous>
-[11]     0.9    1.75    0.00                 compareIndex(void const*, void const*) [11]
+[8]      0.0    0.04    0.00                 importData(std::string, int*, int*) [8]
+                0.00    0.00       1/1           CalculateIndex(std::string) [20]
 -----------------------------------------------
-                             39999996             count(Tree*) [12]
-                1.43    0.00       2/2           main [4]
-[12]     0.7    1.43    0.00       2+39999996 count(Tree*) [12]
-                             39999996             count(Tree*) [12]
+                0.00    0.00       1/1           __libc_csu_init [30]
+[16]     0.0    0.00    0.00       1         _GLOBAL__sub_I__Z10importDataSsPiS_ [16]
 -----------------------------------------------
-                0.56    0.72 79999998/79999998     std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >(std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&, std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&) [10]
-[13]     0.6    0.56    0.72 79999998         std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<long, std::ratio<1l, 1000000000l>, long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&, std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [13]
-                0.40    0.00 159999996/239999994     std::chrono::duration<long, std::ratio<1l, 1000000000l> >::count() const [14]
-                0.32    0.00 79999998/79999998     std::chrono::duration<long, std::ratio<1l, 1000000000l> >::duration<long, void>(long const&) [16]
+                0.00    0.00       1/1           __libc_csu_init [30]
+[17]     0.0    0.00    0.00       1         _GLOBAL__sub_I__Z8sortDataPdiii [17]
 -----------------------------------------------
-                0.20    0.00 79999998/239999994     std::chrono::duration<double, std::ratio<1l, 1l> > std::chrono::__duration_cast_impl<std::chrono::duration<double, std::ratio<1l, 1l> >, std::ratio<1l, 1000000000l>, double, true, false>::__cast<long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [9]
-                0.40    0.00 159999996/239999994     std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<long, std::ratio<1l, 1000000000l>, long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&, std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [13]
-[14]     0.3    0.60    0.00 239999994         std::chrono::duration<long, std::ratio<1l, 1000000000l> >::count() const [14]
+                0.00    0.00       1/1           __libc_csu_init [30]
+[18]     0.0    0.00    0.00       1         _GLOBAL__sub_I__Z9buildTreePdiiP4Tree [18]
 -----------------------------------------------
-                0.40    0.00 159999996/159999996     std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >(std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&, std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&) [10]
-[15]     0.2    0.40    0.00 159999996         std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::time_since_epoch() const [15]
+                0.00    0.00       1/1           __libc_csu_init [30]
+[19]     0.0    0.00    0.00       1         _GLOBAL__sub_I_main [19]
 -----------------------------------------------
-                0.32    0.00 79999998/79999998     std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<long, std::ratio<1l, 1000000000l>, long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&, std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [13]
-[16]     0.2    0.32    0.00 79999998         std::chrono::duration<long, std::ratio<1l, 1000000000l> >::duration<long, void>(long const&) [16]
------------------------------------------------
-                0.00    0.00       1/80000000     main [4]
-                0.00    0.00       1/80000000     importData(std::string, int*, int*) [18]
-                0.22    0.00 79999998/80000000     std::chrono::duration<double, std::ratio<1l, 1l> >::duration<long, std::ratio<1l, 1000000000l>, void>(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [7]
-[17]     0.1    0.22    0.00 80000000         std::chrono::duration<double, std::ratio<1l, 1l> >::count() const [17]
------------------------------------------------
-                0.10    0.00       1/1           main [4]
-[18]     0.1    0.10    0.00       1         importData(std::string, int*, int*) [18]
-                0.00    0.00       1/79999998     std::chrono::duration<double, std::ratio<1l, 1l> >::duration<long, std::ratio<1l, 1000000000l>, void>(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [7]
-                0.00    0.00       1/79999998     std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >(std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&, std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&) [10]
-                0.00    0.00       1/80000000     std::chrono::duration<double, std::ratio<1l, 1l> >::count() const [17]
-                0.00    0.00       1/1           std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [45]
-                0.00    0.00       1/1           std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> >&&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [44]
-                0.00    0.00       1/1           CalculateIndex(std::string) [33]
------------------------------------------------
-                0.10    0.00 79999998/79999998     std::chrono::duration<double, std::ratio<1l, 1l> > std::chrono::__duration_cast_impl<std::chrono::duration<double, std::ratio<1l, 1l> >, std::ratio<1l, 1000000000l>, double, true, false>::__cast<long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [9]
-[19]     0.1    0.10    0.00 79999998         std::chrono::duration<double, std::ratio<1l, 1l> >::duration<double, void>(double const&) [19]
------------------------------------------------
-                0.02    0.01       1/1           __libc_csu_init [21]
-[20]     0.0    0.02    0.01       1         _GLOBAL__sub_I__Z9buildTreePdiiP4Tree [20]
-                0.01    0.00       1/1           __static_initialization_and_destruction_0(int, int) [22]
------------------------------------------------
-                                                 <spontaneous>
-[21]     0.0    0.00    0.03                 __libc_csu_init [21]
-                0.02    0.01       1/1           _GLOBAL__sub_I__Z9buildTreePdiiP4Tree [20]
-                0.00    0.00       1/1           _GLOBAL__sub_I__Z8sortDataPdiii [30]
-                0.00    0.00       1/1           _GLOBAL__sub_I__Z10importDataSsPiS_ [29]
-                0.00    0.00       1/1           _GLOBAL__sub_I_main [31]
------------------------------------------------
-                0.01    0.00       1/1           _GLOBAL__sub_I__Z9buildTreePdiiP4Tree [20]
-[22]     0.0    0.01    0.00       1         __static_initialization_and_destruction_0(int, int) [22]
------------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [21]
-[29]     0.0    0.00    0.00       1         _GLOBAL__sub_I__Z10importDataSsPiS_ [29]
-                0.00    0.00       1/1           __static_initialization_and_destruction_0(int, int) [35]
------------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [21]
-[30]     0.0    0.00    0.00       1         _GLOBAL__sub_I__Z8sortDataPdiii [30]
-                0.00    0.00       1/1           __static_initialization_and_destruction_0(int, int) [36]
------------------------------------------------
-                0.00    0.00       1/1           __libc_csu_init [21]
-[31]     0.0    0.00    0.00       1         _GLOBAL__sub_I_main [31]
-                0.00    0.00       1/1           __static_initialization_and_destruction_0(int, int) [34]
------------------------------------------------
-                0.00    0.00       1/1           main [4]
-[32]     0.0    0.00    0.00       1         searchTree(Tree*, double*, double) [32]
------------------------------------------------
-                0.00    0.00       1/1           importData(std::string, int*, int*) [18]
-[33]     0.0    0.00    0.00       1         CalculateIndex(std::string) [33]
-                0.00    0.00       1/1           std::stoi(std::string const&, unsigned long*, int) [42]
------------------------------------------------
-                0.00    0.00       1/1           _GLOBAL__sub_I_main [31]
-[34]     0.0    0.00    0.00       1         __static_initialization_and_destruction_0(int, int) [34]
------------------------------------------------
-                0.00    0.00       1/1           _GLOBAL__sub_I__Z10importDataSsPiS_ [29]
-[35]     0.0    0.00    0.00       1         __static_initialization_and_destruction_0(int, int) [35]
------------------------------------------------
-                0.00    0.00       1/1           _GLOBAL__sub_I__Z8sortDataPdiii [30]
-[36]     0.0    0.00    0.00       1         __static_initialization_and_destruction_0(int, int) [36]
------------------------------------------------
-                0.00    0.00       1/1           char* std::string::_S_construct<char*>(char*, char*, std::allocator<char> const&, std::forward_iterator_tag) [50]
-[37]     0.0    0.00    0.00       1         bool __gnu_cxx::__is_null_pointer<char>(char*) [37]
------------------------------------------------
-                0.00    0.00       1/1           std::stoi(std::string const&, unsigned long*, int) [42]
-[38]     0.0    0.00    0.00       1         int __gnu_cxx::__stoa<long, int, char, int>(long (*)(char const*, char**, int), char const*, char const*, unsigned long*, int) [38]
------------------------------------------------
-                0.00    0.00       1/1           std::iterator_traits<char*>::difference_type std::distance<char*>(char*, char*) [43]
-[39]     0.0    0.00    0.00       1         std::iterator_traits<char*>::difference_type std::__distance<char*>(char*, char*, std::random_access_iterator_tag) [39]
------------------------------------------------
-                0.00    0.00       1/1           std::iterator_traits<char*>::difference_type std::distance<char*>(char*, char*) [43]
-[40]     0.0    0.00    0.00       1         std::iterator_traits<char*>::iterator_category std::__iterator_category<char*>(char* const&) [40]
------------------------------------------------
-                0.00    0.00       1/1           std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> >&&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [44]
-[41]     0.0    0.00    0.00       1         std::remove_reference<std::string&>::type&& std::move<std::string&>(std::string&) [41]
------------------------------------------------
-                0.00    0.00       1/1           CalculateIndex(std::string) [33]
-[42]     0.0    0.00    0.00       1         std::stoi(std::string const&, unsigned long*, int) [42]
-                0.00    0.00       1/1           int __gnu_cxx::__stoa<long, int, char, int>(long (*)(char const*, char**, int), char const*, char const*, unsigned long*, int) [38]
------------------------------------------------
-                0.00    0.00       1/1           char* std::string::_S_construct<char*>(char*, char*, std::allocator<char> const&, std::forward_iterator_tag) [50]
-[43]     0.0    0.00    0.00       1         std::iterator_traits<char*>::difference_type std::distance<char*>(char*, char*) [43]
-                0.00    0.00       1/1           std::iterator_traits<char*>::iterator_category std::__iterator_category<char*>(char* const&) [40]
-                0.00    0.00       1/1           std::iterator_traits<char*>::difference_type std::__distance<char*>(char*, char*, std::random_access_iterator_tag) [39]
------------------------------------------------
-                0.00    0.00       1/1           importData(std::string, int*, int*) [18]
-[44]     0.0    0.00    0.00       1         std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> >&&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [44]
-                0.00    0.00       1/1           std::remove_reference<std::string&>::type&& std::move<std::string&>(std::string&) [41]
------------------------------------------------
-                0.00    0.00       1/1           importData(std::string, int*, int*) [18]
-[45]     0.0    0.00    0.00       1         std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [45]
+                0.00    0.00       1/1           importData(std::string, int*, int*) [8]
+[20]     0.0    0.00    0.00       1         CalculateIndex(std::string) [20]
 -----------------------------------------------
 
  This table describes the call tree of the program, and was sorted by
@@ -337,16 +190,8 @@ notice and this notice are preserved.
 
 Index by function name
 
-  [29] _GLOBAL__sub_I__Z10importDataSsPiS_ [3] compareX(void const*, void const*) [7] std::chrono::duration<double, std::ratio<1l, 1l> >::duration<long, std::ratio<1l, 1000000000l>, void>(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&)
-  [30] _GLOBAL__sub_I__Z8sortDataPdiii [1] compareY(void const*, void const*) [16] std::chrono::duration<long, std::ratio<1l, 1000000000l> >::duration<long, void>(long const&)
-  [20] _GLOBAL__sub_I__Z9buildTreePdiiP4Tree [2] compareZ(void const*, void const*) [10] std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >(std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&, std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&)
-  [31] _GLOBAL__sub_I_main     [6] sortData(double*, int, int, int) [13] std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<long, std::ratio<1l, 1000000000l>, long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&, std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&)
-  [18] importData(std::string, int*, int*) [5] buildTree(double*, int, int, Tree*) [39] std::iterator_traits<char*>::difference_type std::__distance<char*>(char*, char*, std::random_access_iterator_tag)
-  [32] searchTree(Tree*, double*, double) [37] bool __gnu_cxx::__is_null_pointer<char>(char*) [40] std::iterator_traits<char*>::iterator_category std::__iterator_category<char*>(char* const&)
-  [11] compareIndex(void const*, void const*) [38] int __gnu_cxx::__stoa<long, int, char, int>(long (*)(char const*, char**, int), char const*, char const*, unsigned long*, int) [41] std::remove_reference<std::string&>::type&& std::move<std::string&>(std::string&)
-  [33] CalculateIndex(std::string) [15] std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::time_since_epoch() const [42] std::stoi(std::string const&, unsigned long*, int)
-  [34] __static_initialization_and_destruction_0(int, int) [17] std::chrono::duration<double, std::ratio<1l, 1l> >::count() const [43] std::iterator_traits<char*>::difference_type std::distance<char*>(char*, char*)
-  [35] __static_initialization_and_destruction_0(int, int) [14] std::chrono::duration<long, std::ratio<1l, 1000000000l> >::count() const [44] std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> >&&, std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
-  [22] __static_initialization_and_destruction_0(int, int) [8] std::enable_if<std::chrono::__is_duration<std::chrono::duration<double, std::ratio<1l, 1l> > >::value, std::chrono::duration<double, std::ratio<1l, 1l> > >::type std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1l, 1l> >, long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&) [45] std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*)
-  [36] __static_initialization_and_destruction_0(int, int) [9] std::chrono::duration<double, std::ratio<1l, 1l> > std::chrono::__duration_cast_impl<std::chrono::duration<double, std::ratio<1l, 1l> >, std::ratio<1l, 1000000000l>, double, true, false>::__cast<long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&)
-  [12] count(Tree*)           [19] std::chrono::duration<double, std::ratio<1l, 1l> >::duration<double, void>(double const&)
+  [16] _GLOBAL__sub_I__Z10importDataSsPiS_ [6] compareIndex(void const*, void const*) [2] compareZ(void const*, void const*)
+  [17] _GLOBAL__sub_I__Z8sortDataPdiii [20] CalculateIndex(std::string) [7] sortData(double*, int, int, int)
+  [18] _GLOBAL__sub_I__Z9buildTreePdiiP4Tree [5] count(Tree*) [4] buildTree(double*, int, int, Tree*)
+  [19] _GLOBAL__sub_I_main     [3] compareX(void const*, void const*)
+   [8] importData(std::string, int*, int*) [1] compareY(void const*, void const*)
