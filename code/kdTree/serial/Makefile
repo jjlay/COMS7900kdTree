@@ -32,5 +32,5 @@ sortData.o : sortData.cpp definitions.h
 clean :
 	rm -f *.o
 	rm -f kdtree
-
+	rm -f gmon.out
 
