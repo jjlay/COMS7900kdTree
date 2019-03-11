@@ -8,6 +8,7 @@
 #include "definitions.h"
 #include "buildTree.h"
 #include "searchTree.h"
+#include "searchTreeJJ.h"
 #include "count.h"
 
 
@@ -100,8 +101,34 @@ int main( int argc, char *argv[] ) {
 
 	double radius = 0.25;
 
-	searchTree(tree, point, radius);
+	auto startTreeSearch = std::chrono::system_clock::now();
+	
+	auto found = searchTreeJJ(tree, point, radius, 0);
 
+	auto endTreeSearch = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsedTreeSearch = endTreeSearch - startTreeSearch;
+
+	cout << "Found " << found << " points in " << elapsedTreeSearch.count() << " seconds" << endl;
+
+	cout << endl << "=== DEBUG ===" << endl
+		<< "Tree info:" << endl
+		<< "x(min, max) " << tree->x1 << ", " << tree->x2 << endl
+		<< "y(min, max) " << tree->y1 << ", " << tree->y2 << endl
+		<< "z(min, max) " << tree->z1 << ", " << tree->z2 << endl
+		<< "center " << tree->c[_X_] << ", " << tree->c[_Y_] << ", " << tree->c[_Z_] << endl
+		<< "radius " << tree->radius << endl << endl
+		<< "** Left child info:" << endl
+		<< "   x(min, max) " << tree->l->x1 << ", " << tree->l->x2 << endl
+		<< "   y(min, max) " << tree->l->y1 << ", " << tree->l->y2 << endl
+		<< "   z(min, max) " << tree->l->z1 << ", " << tree->l->z2 << endl
+		<< "   center " << tree->l->c[_X_] << ", " << tree->l->c[_Y_] << ", " << tree->l->c[_Z_] << endl
+		<< "   radius " << tree->l->radius << endl << endl
+		<< "** Right child info:" << endl
+		<< "   x(min, max) " << tree->r->x1 << ", " << tree->r->x2 << endl
+		<< "   y(min, max) " << tree->r->y1 << ", " << tree->r->y2 << endl
+		<< "   z(min, max) " << tree->r->z1 << ", " << tree->r->z2 << endl
+		<< "   center " << tree->r->c[_X_] << ", " << tree->r->c[_Y_] << ", " << tree->r->c[_Z_] << endl
+		<< "   radius " << tree->r->radius << endl << endl;
 
 	// 
 	// 
