@@ -54,10 +54,17 @@ int searchTreeJJ(Tree *tree, double searchCenter[4], double radius, int depth) {
 				pow(searchCenter[_Z_] - tree->c[_Z_], 2.0));
 				
 	if (distance <= (radius + tree->radius)) {
-		// Intersection!
-		found += searchTreeJJ(tree->l, searchCenter, radius, depth+1);
-		found += searchTreeJJ(tree->r, searchCenter, radius, depth+1);
-	}
+		if ((tree->l == nullptr) && (tree->r == nullptr)) {
+			// Data point
+			return 1;
+		}
+		else {
+			// Intersection!
+			found += searchTreeJJ(tree->l, searchCenter, radius, depth+1);
+			found += searchTreeJJ(tree->r, searchCenter, radius, depth+1);
+		}
+	}	
+
 
 	return found;
 }
