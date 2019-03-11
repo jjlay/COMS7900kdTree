@@ -220,6 +220,7 @@ void buildTree(double *data, int rows, int cols, Tree *tree) {
 		tree->d[_X_] = data[_X_];
 		tree->d[_Y_] = data[_Y_];
 		tree->d[_Z_] = data[_Z_];
+		tree->radius = 0.0;
 		tree->l = nullptr;
 		tree->r = nullptr;
 
