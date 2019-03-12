@@ -127,12 +127,15 @@ unsigned long int CalculateIndex(string path, string filename, unsigned long int
 
 	string newFilename = filename.substr(path.length(), 1000);
 
+
 	// How many characters is the numeric portion?
 	auto len = newFilename.length() - prefix.length() - suffix.length();
 
 	// Extract the numeric string
 	auto s = newFilename.substr(prefix.length(), len);
 
+	cout << "Path: " << path << ", Filename: " << filename << ", S: " << s << endl;
+		
 	// Convert it to an integer. Filenames start with 1.
 	auto n = stoi(s) - 1;
 

@@ -115,6 +115,69 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\adaptBins.h" />
+    <ClInclude Include="..\..\binData.h" />
+    <ClInclude Include="..\..\binData2.h" />
+    <ClInclude Include="..\..\binData_noBlocks.h" />
+    <ClInclude Include="..\..\cleanUp.h" />
+    <ClInclude Include="..\..\Data.h" />
+    <ClInclude Include="..\..\definitions.h" />
+    <ClInclude Include="..\..\distributeFiles.h" />
+    <ClInclude Include="..\..\exportResults.h" />
+    <ClInclude Include="..\..\getLinearBins.h" />
+    <ClInclude Include="..\..\importFiles.h" />
+    <ClInclude Include="..\..\importFiles_old.h" />
+    <ClInclude Include="..\..\initializeMPI.h" />
+    <ClInclude Include="..\..\listFiles.h" />
+    <ClInclude Include="..\..\LL_sort.h" />
+    <ClInclude Include="..\..\max.h" />
+    <ClInclude Include="..\..\min.h" />
+    <ClInclude Include="..\..\parallelSort.h" />
+    <ClInclude Include="..\..\receiveBinCounts.h" />
+    <ClInclude Include="..\..\receiveBinIndices.h" />
+    <ClInclude Include="..\..\receiveFiles.h" />
+    <ClInclude Include="..\..\receiveMinMax.h" />
+    <ClInclude Include="..\..\sortArray.h" />
+    <ClInclude Include="..\..\swapArrayParts.h" />
+    <ClInclude Include="..\..\testSort.h" />
+    <ClInclude Include="..\..\testUniformity.h" />
+    <ClInclude Include="..\..\transmitBinEdges.h" />
+    <ClInclude Include="..\..\transmitMinMax.h" />
+    <ClInclude Include="..\..\transmitUniformity.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\adaptBins.cpp" />
+    <ClCompile Include="..\..\binData.cpp" />
+    <ClCompile Include="..\..\binData2.cpp" />
+    <ClCompile Include="..\..\binData_noBlocks.cpp" />
+    <ClCompile Include="..\..\cleanUp.cpp" />
+    <ClCompile Include="..\..\distributeFiles.cpp" />
+    <ClCompile Include="..\..\exportResults.cpp" />
+    <ClCompile Include="..\..\getLinearBins.cpp" />
+    <ClCompile Include="..\..\importFiles.cpp" />
+    <ClCompile Include="..\..\importFiles_old.cpp" />
+    <ClCompile Include="..\..\initializeMPI.cpp" />
+    <ClCompile Include="..\..\kdTree.cpp" />
+    <ClCompile Include="..\..\listFiles.cpp" />
+    <ClCompile Include="..\..\LL_sort.cpp" />
+    <ClCompile Include="..\..\main.cpp" />
+    <ClCompile Include="..\..\max.cpp" />
+    <ClCompile Include="..\..\min.cpp" />
+    <ClCompile Include="..\..\parallelSort.cpp" />
+    <ClCompile Include="..\..\parallelSort_main.cpp" />
+    <ClCompile Include="..\..\receiveBinCounts.cpp" />
+    <ClCompile Include="..\..\receiveBinIndices.cpp" />
+    <ClCompile Include="..\..\receiveFiles.cpp" />
+    <ClCompile Include="..\..\receiveMinMax.cpp" />
+    <ClCompile Include="..\..\sortArray.cpp" />
+    <ClCompile Include="..\..\swapArrayParts.cpp" />
+    <ClCompile Include="..\..\TestBinSizing.cpp" />
+    <ClCompile Include="..\..\testImport.cpp" />
+    <ClCompile Include="..\..\testSort.cpp" />
+    <ClCompile Include="..\..\testUniformity.cpp" />
+    <ClCompile Include="..\..\transmitBinEdges.cpp" />
+    <ClCompile Include="..\..\transmitMinMax.cpp" />
+    <ClCompile Include="..\..\transmitUniformity.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
