@@ -35,9 +35,6 @@
 using namespace std;
 
 
-#undef _DEBUG_
-
-
 //
 // Function: distributeFiles
 //
@@ -53,10 +50,11 @@ using namespace std;
 
 void distributeFiles(vector<string> files, int numWorkers) {
 
+	cout << "distributeFiles: Sending " << files.size() << " files" << endl;
+
 	int currentRank = 1;
 	int mpiReturn;
 	MPI_Request request;
-
 
 	// Pointer to the char buffer to be passed to workers
 	const char *b;

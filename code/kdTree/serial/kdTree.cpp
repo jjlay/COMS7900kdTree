@@ -4,7 +4,6 @@
 
 #include "tree.h"
 #include "importData.h"
-#include "sortData.h"
 #include "definitions.h"
 #include "buildTree.h"
 #include "searchTree.h"
