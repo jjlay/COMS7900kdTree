@@ -58,7 +58,9 @@ void importFiles(vector<string> files, int myRank,
 
 	string strHome = getenv("HOME");
 	string prefix = strHome + "/localstorage/public/coms7900-data/datafile";
-	
+	cout << "importFiles: Rank " << myRank << " Home: " << strHome << endl
+		<< "importFiles: Rank " << myRank << " Data location: " << prefix << endl;
+
 	const int maxLen = 10000;
 	char tempString[maxLen];
 
