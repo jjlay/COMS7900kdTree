@@ -12,6 +12,7 @@
 //
 
 #include <iostream>
+#include <math.h>
 
 using namespace std;
 
@@ -76,6 +77,10 @@ void buildTree(double *data, int rows, int cols, Tree *tree) {
 		tree->c[_X_] = (xMax + xMin) / 2.0;
 		tree->c[_Y_] = (yMax + yMin) / 2.0;
 		tree->c[_Z_] = (zMax + zMin) / 2.0;
+
+		tree->radius = sqrt(pow(tree->c[_X_] - xMin, 2.0) +
+					 pow(tree->c[_Y_] - yMin, 2.0) +
+					 pow(tree->c[_Z_] - zMin, 2.0));
 
 		//         tree(1).x1 = xmin;
 		//         tree(1).x2 = xmax;
@@ -215,9 +220,20 @@ void buildTree(double *data, int rows, int cols, Tree *tree) {
 		tree->d[_X_] = data[_X_];
 		tree->d[_Y_] = data[_Y_];
 		tree->d[_Z_] = data[_Z_];
+
+		tree->c[_Index_] = data[_Index_];
+		tree->c[_X_] = data[_X_];
+		tree->c[_Y_] = data[_Y_];
+		tree->c[_Z_] = data[_Z_];
+		tree->radius = 0.0;
+
 		tree->l = nullptr;
 		tree->r = nullptr;
 
 		// cout << "Depth of " << tree->depth << endl;
 	}
 }
+
+
+
+

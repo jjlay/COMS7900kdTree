@@ -23,6 +23,8 @@ struct Tree {
 	int n;      // Number of points
 
 	double c[4];  // Center of this tree
+	double radius;
+
 	double d[4];  // Data point
 	long unsigned int index;  // File row index
 }

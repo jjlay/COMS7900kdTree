@@ -53,42 +53,32 @@ double *importData(string filename, int *numCols, int *numRows)
 	// Start the clock!
 	auto start = std::chrono::system_clock::now();
 
-
 	*numCols = _MAX_COLS_;
 	*numRows = 0;
-
-	const char *cstrFileName = filename.c_str();
-	cout << "Importing " << cstrFileName << endl;
 
 	//
 	// Read in file
 	//
 
-#ifdef _WIN32
-	// Just for fun lets set the working directory. This is probably
-	// unnecessary and can be removed.
-	if (!SetCurrentDirectory("C:/Users/jj.lay/source/github/COMS7900kdTree/code/kdTree/serial"))
-	{
-		cout << "Unable to change directories" << endl;
-		exit(_FAIL_);
-	}
-#endif
+	const char *home;
+
+	home = getenv("HOME");
+	string strHome(home);
+
+	cout << "Home: " << strHome << endl;
+	auto fullPath = strHome + "/localstorage/public/coms7900-data/" + filename;
+
+	const char *cstrFileName = fullPath.c_str();
+	cout << "Importing " << cstrFileName << endl;
 
 	// Open the file
 	FILE *inFile;
 
-#ifdef _WIN32
-	errno_t err = fopen_s(&inFile, cstrFileName, "r");
-#else
 	inFile = fopen(cstrFileName, "r");
-	int err = 0;
 
 	if (inFile == NULL)
-		err = 1;
-#endif
-
-	if (err != 0)
 	{
+		cout << "Failed to open file: " << filename << endl;
 		exit(_FAIL_);
 	}
 
@@ -108,11 +98,7 @@ double *importData(string filename, int *numCols, int *numRows)
 	// calculate the index based on the filename
 	//
 
-#ifdef _WIN32
-	while (fscanf_s(inFile, "%s %lf %lf %lf\n", tempString, maxLen, &array[offset + _X_], &array[offset + _Y_], &array[offset + _Z_]) != EOF)  // Windows
-#else
 	while (fscanf(inFile, "%s %lf %lf %lf\n", tempString, &array[offset + _X_], &array[offset + _Y_], &array[offset + _Z_]) != EOF)  // Linux
-#endif
 	{
 		array[offset + _Index_] = static_cast<double>(index);
 
@@ -128,7 +114,7 @@ double *importData(string filename, int *numCols, int *numRows)
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed = end - start;
 
-	std::cout << "Read " << lines << " in " << elapsed.count() << " seconds" << std::endl;
+	cout << "Read " << lines << " in " << elapsed.count() << " seconds" << endl;
 
 	return array;
 }
