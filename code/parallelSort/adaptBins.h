@@ -35,6 +35,6 @@
 // Function: importFiles
 //
 
-void adaptBins( double *binE, int *binC, int NumWorkers);
+void adaptBins( double *binE, int *binC, int NumWorkers, double numLines, int avgPtsPerWorker );
 	
 
