@@ -76,7 +76,7 @@ void importFiles(string path, vector<string> files, int myRank,
 			exit(_FAIL_);
 		}
 
-		auto index = CalculateIndex(f, maxRows);
+		auto index = CalculateIndex(path, f, maxRows);
 		double dblIndex = static_cast<double>(index);
 
 		cout << "importFiles: Rank " << myRank << " importing " << cstrFileName << " with file index of " << index << endl;
