@@ -37,7 +37,7 @@ using namespace std;
 // Prototypes
 //
 
-unsigned long int CalculateIndex(string filename, unsigned long int maxRows);
+unsigned long int CalculateIndex(string path, string filename, unsigned long int maxRows);
 
 
 
@@ -64,7 +64,6 @@ void importFiles(string path, vector<string> files, int myRank,
 	for (auto f : files) {
 
 		const char *cstrFileName = f.c_str();
-		cout << "importFiles: Rank " << myRank << " importing " << cstrFileName << endl;
 
 		// Open the file
 		FILE *inFile;
@@ -79,6 +78,8 @@ void importFiles(string path, vector<string> files, int myRank,
 
 		auto index = CalculateIndex(f, maxRows);
 		double dblIndex = static_cast<double>(index);
+
+		cout << "importFiles: Rank " << myRank << " importing " << cstrFileName << " with file index of " << index << endl;
 
 		//
 		// Read in each row of the file and parse it.
@@ -119,16 +120,18 @@ void importFiles(string path, vector<string> files, int myRank,
 // calculates the starting index of the first row in the file.
 //
 
-unsigned long int CalculateIndex(string filename, unsigned long int maxRows)
+unsigned long int CalculateIndex(string path, string filename, unsigned long int maxRows)
 {
 	string prefix = "datafile";
 	string suffix = ".txt";
 
+	string newFilename = filename.substr(path.length(), 1000);
+
 	// How many characters is the numeric portion?
-	auto len = filename.length() - prefix.length() - suffix.length();
+	auto len = newFilename.length() - prefix.length() - suffix.length();
 
 	// Extract the numeric string
-	auto s = filename.substr(prefix.length(), len);
+	auto s = newFilename.substr(prefix.length(), len);
 
 	// Convert it to an integer. Filenames start with 1.
 	auto n = stoi(s) - 1;
