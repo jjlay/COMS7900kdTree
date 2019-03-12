@@ -58,12 +58,16 @@ int main(int argc, char *argv[]) {
 	
 	// number of worker nodes
 	int numWorkers = numNodes - 1;
+	
 	// total number of files to read
 	int maxFilesToProc = 501;
+	
 	// number of lines PER FILE
-	int maxRows = 1000;
+	int maxRows = 20000000;
+
 	//number of lines TOTAL
 	unsigned int numLines = maxRows*maxFilesToProc;
+	
 	// average lines per worker node
 	int avgPtsPerWorker = numLines / numWorkers;
 
