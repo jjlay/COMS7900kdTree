@@ -52,14 +52,9 @@ void importFiles(vector<string> files, int myRank,
 	*rows = 0;
 	int recLen = *cols; // Record length
 
-	auto array = new double[*cols * maxRows * files.size()];
+	myData = new double[*cols * maxRows * files.size()];
 	unsigned long int lines = 0;
 	long unsigned int offset = 0;
-
-	string strHome = getenv("HOME");
-	string prefix = strHome + "/localstorage/public/coms7900-data/datafile";
-	cout << "importFiles: Rank " << myRank << " Home: " << strHome << endl
-		<< "importFiles: Rank " << myRank << " Data location: " << prefix << endl;
 
 	const int maxLen = 10000;
 	char tempString[maxLen];
@@ -90,9 +85,9 @@ void importFiles(vector<string> files, int myRank,
 		// calculate the index based on the filename
 		//
 
-		while (fscanf(inFile, "%s %lf %lf %lf\n", tempString, &array[offset + _X_], &array[offset + _Y_], &array[offset + _Z_]) != EOF)  // Linux
+		while (fscanf(inFile, "%s %lf %lf %lf\n", tempString, &myData[offset + _X_], &myData[offset + _Y_], &myData[offset + _Z_]) != EOF)
 		{
-			array[offset] = dblIndex;
+			myData[offset] = dblIndex;
 
 			offset += recLen;
 			lines++;
