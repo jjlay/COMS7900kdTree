@@ -67,8 +67,7 @@ void importFiles(vector<string> files, int myRank,
 	// loop through files to read
 	for (auto f : files) {
 
-		auto fullPath = prefix + f;
-		const char *cstrFileName = fullPath.c_str();
+		const char *cstrFileName = f.c_str();
 		cout << "importFiles: Rank " << myRank << " importing " << cstrFileName << endl;
 
 		// Open the file
