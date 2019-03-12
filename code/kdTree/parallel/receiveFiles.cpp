@@ -86,6 +86,8 @@ vector<string> receiveFiles(int myRank) {
 		}
 	}
 
+	cout << "receiveFiles: Rank " << myRank << " received " << files.size() << " files" << endl;
+
 	return files;
 }
 
