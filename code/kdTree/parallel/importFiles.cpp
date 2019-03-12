@@ -45,14 +45,15 @@ unsigned long int CalculateIndex(string filename, unsigned long int maxRows);
 // Function: importFiles
 //
 
-void importFiles(vector<string> files, int myRank,
+void importFiles(string path, vector<string> files, int myRank,
 	double *myData, int *rows, int *cols, int maxRows) {
+
+	cout << "importFiles: Rank " << myRank << " looking in " << path << endl;
 
 	*cols = _ROW_WIDTH_;
 	*rows = 0;
 	int recLen = *cols; // Record length
 
-	myData = new double[*cols * maxRows * files.size()];
 	unsigned long int lines = 0;
 	long unsigned int offset = 0;
 
@@ -85,7 +86,7 @@ void importFiles(vector<string> files, int myRank,
 		// calculate the index based on the filename
 		//
 
-		while (fscanf(inFile, "%s %lf %lf %lf\n", tempString, &myData[offset + _X_], &myData[offset + _Y_], &myData[offset + _Z_]) != EOF)
+		while (fscanf(inFile, "%s %lf %lf %lf\n", tempString, &myData[offset + _X_], &myData[offset + _Y_], &myData[offset + _Z_]) != EOF)  // Linux
 		{
 			myData[offset] = dblIndex;
 

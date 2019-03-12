@@ -128,9 +128,8 @@ int main(int argc, char *argv[]) {
 		auto timeBeginImport = std::chrono::system_clock::now();
 
 	        // Read data files in
-	        array = new double[FilenameArray.size() * maxRows * _ROW_WIDTH_]; //JJL
-	
-	        importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows);
+	        array = new double[FilenameArray.size() * maxRows * _ROW_WIDTH_]; 
+	        importFiles(path, FilenameArray, myRank, array, &rows, &cols, maxRows);
 	
 	        MPI_Request tempRequest;
 	        MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, &tempRequest);
@@ -143,10 +142,13 @@ int main(int argc, char *argv[]) {
 	}
 
 
+
+	///////////////////////////////////////
 	//
 	// Wrap up
 	//
-	
+	///////////////////////////////////////
+
 	MPI_Barrier(MPI_COMM_WORLD);
 
 	auto timeEnd = std::chrono::system_clock::now();
