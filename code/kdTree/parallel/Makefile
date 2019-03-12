@@ -23,7 +23,7 @@ clean :
 	rm -f core.*
 	rm -f MetropolisSort.e*
 	rm -f MetropolisSort.o*
-
+	rm -f kdTree
 
 nolog :
 	rm -f core.*
