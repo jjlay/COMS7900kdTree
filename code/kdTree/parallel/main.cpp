@@ -121,8 +121,43 @@ int main(int argc, char *argv[]) {
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 
+	double *array;
+	int rows = 0, cols = 0;
+
+	if (myRank != 0) {
+		auto timeBeginImport = std::chrono::system_clock::now();
+
+	        // Read data files in
+	        array = new double[FilenameArray.size() * maxRows * _ROW_WIDTH_]; //JJL
+	
+	        importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows);
+	
+	        MPI_Request tempRequest;
+	        MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, &tempRequest);
+	
+		auto timeEndImport = std::chrono::system_clock::now();
+		timeElapsedSeconds = timeEndImport - timeBeginImport;
+		cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
+			<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
+			<< " to import data" << endl;
+	}
+
+
+	//
+	// Wrap up
+	//
+	
+	MPI_Barrier(MPI_COMM_WORLD);
+
+	auto timeEnd = std::chrono::system_clock::now();
+	timeElapsedSeconds = timeEnd - timeStart;
+	std::cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
+		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
+		<< "to run" << std::endl;
 
 	MPI_Finalize();
 
 	return _OKAY_;
 }
+
+
