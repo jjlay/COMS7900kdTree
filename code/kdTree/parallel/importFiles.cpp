@@ -50,6 +50,7 @@ void importFiles(string path, vector<string> files, int myRank,
 
 	*cols = _ROW_WIDTH_;
 	*rows = 0;
+
 	int recLen = *cols; // Record length
 
 	unsigned long int lines = 0;
@@ -99,8 +100,10 @@ void importFiles(string path, vector<string> files, int myRank,
 
 	*rows = lines;
 
+
 	cout << "importFiles: Rank " << myRank << " read " << lines << endl;
 }
+
 
 
 //
@@ -139,3 +142,4 @@ unsigned long int CalculateIndex(string path, string filename, unsigned long int
 
 	return r;
 }
+

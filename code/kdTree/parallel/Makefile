@@ -1,3 +1,4 @@
+
 CC = mpicxx
 CFLAGS = -std=c++11 -ggdb -fbounds-check -Warray-bounds
 
@@ -29,3 +30,4 @@ nolog :
 	rm -f core.*
 	rm -f MetropolisSort.e*
 	rm -f MetropolisSort.o*
+
