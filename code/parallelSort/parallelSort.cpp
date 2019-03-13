@@ -79,9 +79,9 @@ int main(int argc, char *argv[])
 	// number of worker nodes
 	int numWorkers = numNodes - 1;
 	// total number of files to read
-	int maxFilesToProc = 501;
+	int maxFilesToProc = 3*numWorkers;
 	// number of lines PER FILE
-	int maxRows = 1000;
+	int maxRows = 10000;
 	//number of lines TOTAL
 	unsigned int numLines = maxRows*maxFilesToProc;
 	// average lines per worker node
@@ -309,7 +309,7 @@ int main(int argc, char *argv[])
 		// Receive initial bin counts
 		receiveBinCounts( binC, numWorkers );
 
-		std::cout << myRank << " Initial binC: ";
+		std::cout << myRank << " binC: ";
 		for( int i = 0; i < numWorkers; i++ ) {
 			std::cout <<binC[i] << " ";
 		}
@@ -373,7 +373,7 @@ int main(int argc, char *argv[])
 	int deathCount = 100;  // Number of iterations we will allow adaptBins to be stuck
 	
 	while( ( *isUniform == 0 ) && (iterations < abortCount) ) {
-//	while( iterations < 1 ) {
+//	while( iterations < 2 ) {
 		if( myRank == 0 ) {
 			cout << "ITERATION: " << iterations << endl;
 			
@@ -385,7 +385,7 @@ int main(int argc, char *argv[])
 				binPrevious[b] = binC[b];
 			
 			// Adapt bin edges
-			adaptBins( binE, binC, numWorkers);
+			adaptBins( binE, binC, numWorkers, numLines, avgPtsPerWorker );
 	//			
 	//		std::cout << "binE: " << binE[0] << " " 
 	//			<< binE[1] << " " 
@@ -478,7 +478,11 @@ int main(int argc, char *argv[])
 		
 		iterations++;
 	}
-
+	
+	
+	/*
+	
+	
 	if ((iterations >= abortCount) && (myRank == Rank0)) {
 		cout << "===========================================" << endl;
 		cout << "Aborted adaptBins at iteration " << iterations << endl;
@@ -509,15 +513,15 @@ int main(int argc, char *argv[])
 			<< "to identify bins" << std::endl;
 	}
 #endif
-/*	
+// multiline start	
 	// Broadcast binI_2D to workers
 	for( int i = 0; i < numWorkers; i++ ) {
 		result = MPI_Bcast( binI_2D[i], numWorkers+1, MPI_DOUBLE, 0,
 			MPI_COMM_WORLD );
 	}
-*/
+// multiline end
 
-/*
+// multiline start
 	if( myRank == 1 ) {
 		for( int i = 0; i < numWorkers; i++ ) {
 			std::cout << i+1 << " binI_2D: " << binI_2D[i][0] 
@@ -526,7 +530,7 @@ int main(int argc, char *argv[])
 				<< binI_2D[i][3] << std::endl;
 		}
 	}
-*/	
+// multiline end
 
 
 	//////////////////////////////
@@ -617,7 +621,8 @@ if (myRank!=0){
 
 //	sleep(5);
 //	sleep(myRank);
-/*
+
+// multiline start
 if(myRank !=0){
 	cout << "Rank " << myRank << " array " << endl;
 	for(int iii =0 ; iii< maxRows ; iii++){
@@ -628,7 +633,8 @@ if(myRank !=0){
 		cout << endl;
 	}
 }
-*/
+// multiline end
+
 //	sleep(5);
 	cout << "rank: " << myRank << " has made it to cleanup !!!!!!!!!!!!!!!!!!!!!!!!! " << endl;
         MPI_Barrier(MPI_COMM_WORLD);
@@ -648,7 +654,8 @@ if(myRank !=0){
 		<< "to swap data" << std::endl;
 #endif
 //	sleep(myRank);
-/*
+
+// multiline end
 if(myRank !=0){
 	cout << "Rank " << myRank << " array after clean up " << endl;
 
@@ -661,7 +668,8 @@ if(myRank !=0){
 	}
 
 }
-*/
+// multiline end
+
 //	sleep(5);
 	cout << "Rank: " << myRank << " has made it through clean up *******************" << endl;
 //	sleep(999999);
@@ -694,7 +702,8 @@ if(myRank !=0){
 		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 		<< "to run" << std::endl;
 #endif
-
+	
+	*/
 
 	MPI_Finalize();
 
