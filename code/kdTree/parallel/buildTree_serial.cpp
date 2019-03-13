@@ -21,7 +21,7 @@ using namespace std;
 // Function: buildTree
 //
 
-void buildTree(double *data, int rows, int cols, Tree *tree) {
+void buildTree_serial(double *data, int rows, int cols, Tree *tree) {
 
 	// function tree = buildTree( data, tree )
 	//     

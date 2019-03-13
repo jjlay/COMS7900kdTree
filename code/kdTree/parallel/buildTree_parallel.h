@@ -11,6 +11,6 @@
 // Function: buildTree
 //
 
-void buildTree(double *data, int rows, int cols, Tree *tree);
+void buildTree_parallel(double *data, int rows, int cols, Tree *tree);
 
 
