@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
 
 	auto timeStart = std::chrono::system_clock::now();
 		
-	std::cout << "Rank " << myRank
+	std::cout << "main : Rank " << myRank
 		<< " running on " << processorName 
 		<< " with " << numNodes << " total processes" 
 		<< std::endl;
@@ -106,12 +106,12 @@ int main(int argc, char *argv[]) {
 
 	auto timeBeginImport = std::chrono::system_clock::now();
 
-    // Read data files in
-    array = new double[filenameArray.size() * maxRows * _ROW_WIDTH_]; 
-    importFiles(path, filenameArray, myRank, array, &rows, &cols, maxRows);
+    	// Read data files in
+    	array = new double[filenameArray.size() * maxRows * _ROW_WIDTH_]; 
+	importFiles(path, filenameArray, myRank, array, &rows, &cols, maxRows);
 
-    MPI_Request tempRequest;
-    MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, &tempRequest);
+    	MPI_Request tempRequest;
+    	MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, &tempRequest);
 
 	auto timeEndImport = std::chrono::system_clock::now();
 	chrono::duration<double> timeElapsedSeconds = timeEndImport - timeBeginImport;
