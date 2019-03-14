@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
 	MPI_Barrier(MPI_COMM_WORLD);
 
 	double *array;
-	int rows = 0, cols = 0;
+	int rows = 0, cols = 0, maxRows = _MAX_ROWS_;
 
 	auto timeBeginImport = std::chrono::system_clock::now();
 
