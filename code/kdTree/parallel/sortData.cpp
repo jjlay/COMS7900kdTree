@@ -62,7 +62,7 @@ void sortData(double *data, int numCols, int numRows, int dimension)
 		qsort(data, numRows, numCols * sizeof(double), compareZ);
 		break;
 
-	case _Index_:
+	case _INDEX_:
 		qsort(data, numRows, numCols * sizeof(double), compareIndex);
 		break;
 
@@ -123,13 +123,13 @@ int compareX(const void *a, const void *b)
 
 int compareIndex(const void *a, const void *b)
 {
-	if (static_cast<const double *>(a)[_Index_] < static_cast<const double *>(b)[_Index_])
+	if (static_cast<const double *>(a)[_INDEX_] < static_cast<const double *>(b)[_INDEX_])
 		return -1;
 
-	if (static_cast<const double *>(a)[_Index_] == static_cast<const double *>(b)[_Index_])
+	if (static_cast<const double *>(a)[_INDEX_] == static_cast<const double *>(b)[_INDEX_])
 		return 0;
 
-	if (static_cast<const double *>(a)[_Index_] > static_cast<const double *>(b)[_Index_])
+	if (static_cast<const double *>(a)[_INDEX_] > static_cast<const double *>(b)[_INDEX_])
 		return 1;
 }
 
