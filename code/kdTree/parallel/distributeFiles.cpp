@@ -52,7 +52,7 @@ void distributeFiles(vector<string> files, int numWorkers) {
 
 	cout << "distributeFiles: Sending " << files.size() << " files" << endl;
 
-	int currentRank = 1;
+	int currentRank = 0;
 	int mpiReturn;
 	MPI_Request request;
 
@@ -75,7 +75,7 @@ void distributeFiles(vector<string> files, int numWorkers) {
 		// the last node, start over with rank 1.
 		currentRank++;
 		if (currentRank > numWorkers)
-			currentRank = 1;
+			currentRank = 0;
 	}
 
 	// Now let the nodes no that no more files are coming.
