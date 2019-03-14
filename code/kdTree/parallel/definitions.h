@@ -60,8 +60,7 @@
 #define Rank0    0
 #define abortCount  7000  // Number of loops to halt in adaptBins
 
-// now a variable in parallelSort
-// #define maxRows  20000000 // Max number of rows in file
+
 
 
 //
@@ -81,5 +80,6 @@
 #define _Y_       2
 #define _Z_       3
 #define _ROW_WIDTH_   4
+#define _MAX_ROWS_ 20000000  // Max number of rows in file
 
 
