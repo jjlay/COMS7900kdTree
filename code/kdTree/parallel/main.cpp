@@ -62,10 +62,7 @@ int main(int argc, char *argv[]) {
 		<< std::endl;
 
 	auto timeBeginFilenameDistribute = std::chrono::system_clock::now();
-	chrono::duration<double> timeElapsedSeconds = timeBeginFilenameDistribute - timeStart;
-	cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
-		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
-		<< " to initialize MPI" << endl;
+
 
 	//////////////////
 	//              //
@@ -77,7 +74,7 @@ int main(int argc, char *argv[]) {
 	std::string homeDir = getenv("HOME");
 	std::string path = homeDir + "/localstorage/public/coms7900-data/";
 
-	std::vector<std::string> allFilesArray, filenameArray;
+	std::vector<std::string> allFilesArray;
 
 	// Retrieve the list of files to process
 	if (myRank == 0)
@@ -88,7 +85,7 @@ int main(int argc, char *argv[]) {
 		distributeFiles(allFilesArray, numNodes);
 
 	// Receive file list
-	filenameArray = receiveFiles(myRank);
+	auto filenameArray = receiveFiles(myRank);
 
 	//
 	// Check to make sure there is actual work
@@ -117,7 +114,7 @@ int main(int argc, char *argv[]) {
     MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, &tempRequest);
 
 	auto timeEndImport = std::chrono::system_clock::now();
-	timeElapsedSeconds = timeEndImport - timeBeginImport;
+	chrono::duration<double> timeElapsedSeconds = timeEndImport - timeBeginImport;
 	cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
 		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 		<< " to import data" << endl;
