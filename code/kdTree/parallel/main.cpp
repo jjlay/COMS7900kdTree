@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
 
 	auto timeStart = std::chrono::system_clock::now();
 		
-	std::cout << "Rank " << myRank
+	std::cout << "main: Rank " << myRank
 		<< " running on " << processorName 
 		<< " with " << numNodes << " total processes" 
 		<< std::endl;
