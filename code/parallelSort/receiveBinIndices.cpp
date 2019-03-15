@@ -38,7 +38,7 @@ void receiveBinIndices(int **binI, int numWorkers) {
 	
 //	std::cout << "Receiving bin indices" << std::endl;
 	
-	for( int i = 1; i < numWorkers+1; i++ ) {
+	for( int i = 1; i < numWorkers; i++ ) {
 		
 		// add the binC's
 		result = MPI_Recv( part, numWorkers+1, MPI_INT, i,

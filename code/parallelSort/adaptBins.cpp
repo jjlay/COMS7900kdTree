@@ -22,9 +22,6 @@
 #include <fstream>
 
 
-using namespace std;
-
-
 //
 // Local includes
 //
@@ -37,36 +34,33 @@ using namespace std;
 // Function: importFiles
 //
 
-void adaptBins( double *binE, int *binC, int numWorkers, double numLines, int avgPtsPerWorker ) {
+void adaptBins( double *binE, int *binC, int numWorkers) {
 	// binE = bin edges, binC = bin counts
 	
-	double *binE2   = new double[numWorkers+1];    // the new bin edges, copy to binE
-	double *binCum  = new double[numWorkers+1];    // cumulative binC
-//	double *totals  = new double[numWorkers-1];    //
-//	int    *indices = new int[numWorkers-1];    // bin index in which the new edges lie	
-	int     ind;
+	double *diff = new double[numWorkers+1];
+	double dC, dB;
 	
-	// get binCum
-	binCum[0] = 0;
-	for( int j = 1; j < numWorkers+1; j++ ) {
-		binCum[j] = binCum[j-1] + binC[j-1];
-	}
-	
-	// get ind, binE2
-	for( int j = 0; j < numWorkers-1; j++ ) {
-		// get ind
-		ind = 0;
-		while( binCum[ind+1] < (j+1)*avgPtsPerWorker ) {
-			ind++;
-		}
+	for( int i = 1; i < numWorkers; i++ ) {
 		
-		// get binE2
-		binE2[j+1] = binE[ind] + ( (j+1)*avgPtsPerWorker - binCum[ind] )/binC[ind]*( binE[ind+1] - binE[ind] );
+		dC = ( 2.0*(binC[i] - binC[i-1]) )/( binC[i] + binC[i-1] );
+		
+	//	if( dC > 0 ) {
+	//		dB = binE[i+1] - binE[i];
+	//	} else if( dC < 0 ) {
+	//		dB = -(binE[i] - binE[i-1]);
+	//	} else {
+	//		dB = 0;
+	//	}
+		dB = binE[i+1] - binE[i];
+		
+	//	diff[i] = 0.15*dC*dB;
+	//	diff[i] = 0.45*dC*dB;
+		diff[i] = 0.475*dC*dB;
 	}
 	
 	for( int i = 1; i < numWorkers; i++ ) {
-	//	cout << "adapt: " << i << " " << diff[i] << endl;
-		binE[i] = binE2[i];
+	//	std::cout << "adapt: " << i << " " << diff[i] << std::endl;
+		binE[i] = binE[i] + diff[i];
 	}
 	
 }

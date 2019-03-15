@@ -43,7 +43,7 @@ void receiveBinCounts(int *binC, int numWorkers) {
 		binC[i] = 0;
 	}
 	
-	for( int i = 1; i < numWorkers+1; i++ ) {
+	for( int i = 1; i < numWorkers; i++ ) {
 		
 	//	std::cout << "test " << 0 << std::endl;
 		// add the binC's
