@@ -581,24 +581,12 @@ int main(int argc, char *argv[])
 
 	MPI_Barrier(MPI_COMM_WORLD);
         cout << "\n **********At Swap Arrays ******* with rank : " << myRank  << endl;
-if (myRank!=0){
-//	sleep(myRank);
-//	cout << "Rank " << myRank << " array " << endl;
-//	for(int iii =0 ; iii< maxRows ; iii++){
-//		cout << "Row: " << iii << " : " ;
-//		for(int kkk =0; kkk <4; kkk++){
-//			cout << array[4*iii+kkk] << " : " ;
-//		}
-//		cout << endl;
-//	}
-}
-  //      sleep(2);
         int F_rows = int(numLines);
         int F_cols = 4;
         int toWho;
         int fromWho;
-        for( fromWho = 1; fromWho < numNodes; fromWho++ ){
-               for( int toWho = 1; toWho< numNodes; toWho++){
+        for( fromWho = 0; fromWho < numNodes; fromWho++ ){
+               for( int toWho = 0; toWho< numNodes; toWho++){
                         if(toWho!=fromWho){
                                 if(myRank ==toWho || myRank ==fromWho){
                                         cout << "Rank " << myRank << " towho: " << toWho << " is entering swap parts with  " << fromWho << endl;
@@ -609,37 +597,12 @@ if (myRank!=0){
 
                         }
                 }
- //               if(myRank == fromWho){
- //                       cout << "Rank: " << fromWho << " has sent all its data " << endl;
- //               }
-//		cout << "#######################################################\n##########################\nRank: " << myRank << " Has a new row length of : " << maxRows << endl;
-                //sleep(1);
         	MPI_Barrier(MPI_COMM_WORLD);
         }
         MPI_Barrier(MPI_COMM_WORLD);
- //       cout << "**************Rank: "<< myRank<< " has exited the swap loops"  << endl;
-
-//	sleep(5);
-//	sleep(myRank);
-
-// multiline start
-if(myRank !=0){
-	cout << "Rank " << myRank << " array " << endl;
-	for(int iii =0 ; iii< maxRows ; iii++){
-		cout << "Row: " << iii << " : " ;
-		for(int kkk =0; kkk < 4; kkk++){
-			cout << array[4*iii+kkk] << " : " ;
-		}
-		cout << endl;
-	}
-}
-// multiline end
-
-//	sleep(5);
 	cout << "rank: " << myRank << " has made it to cleanup !!!!!!!!!!!!!!!!!!!!!!!!! " << endl;
-        MPI_Barrier(MPI_COMM_WORLD);
-                // Cleanup elements from same node
-        for(int clean = 1; clean< numNodes; clean++){
+        // Cleanup elements from same node
+        for(int clean = 0; clean< numNodes; clean++){
 		if(myRank == clean){
              		cleanUp(&array, &maxRows, &F_cols, clean, numNodes, binI_2D[myRank-1]);   
 		}
@@ -669,10 +632,7 @@ if(myRank !=0){
 
 }
 // multiline end
-
-//	sleep(5);
 	cout << "Rank: " << myRank << " has made it through clean up *******************" << endl;
-//	sleep(999999);
                 // Final sort
 
                 // Export results
