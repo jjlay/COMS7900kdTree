@@ -480,9 +480,6 @@ int main(int argc, char *argv[])
 	}
 	
 	
-	/*
-	
-	
 	if ((iterations >= abortCount) && (myRank == Rank0)) {
 		cout << "===========================================" << endl;
 		cout << "Aborted adaptBins at iteration " << iterations << endl;
@@ -663,7 +660,6 @@ if(myRank !=0){
 		<< "to run" << std::endl;
 #endif
 	
-	*/
 
 	MPI_Finalize();
 
