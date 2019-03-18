@@ -45,7 +45,7 @@ void receiveBinIndices(int **binI, int numWorkers) {
 			mpi_Tag_BinCounts, MPI_COMM_WORLD, &status );
 		
 		for( int j = 0; j < numWorkers+1; j++ ) {
-			binI[i-1][j] = part[j];
+			binI[i][j] = part[j];
 		}
 	}
 	

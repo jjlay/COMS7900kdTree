@@ -89,7 +89,8 @@ void importFiles(vector<string> files, int myRank,
 			totalLineCount++;
 			arrayIndex++;
 		}
-
+//		cout << "importFiles: " << myRank << " " << lineCount << endl;
+//		cout << maxRows << endl;
 
 	
 		// close the file

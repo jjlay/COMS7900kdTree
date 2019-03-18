@@ -79,9 +79,9 @@ int main(int argc, char *argv[])
 	// number of worker nodes
 	int numWorkers = numNodes;
 	// total number of files to read
-	int maxFilesToProc = 501;
+	int maxFilesToProc = 3;
 	// number of lines PER FILE
-	int maxRows = 100;
+	int maxRows = 10;
 	//number of lines TOTAL
 	unsigned int numLines = maxRows*maxFilesToProc;
 	// average lines per worker node
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 
 	// Retrieve the list of files to process
 	if (myRank == 0)
-		FilenameArray = listFiles(path);
+		FilenameArray = listFiles(path, maxFilesToProc);
 
 	// Distribute files to workers
 	if (myRank == 0)
@@ -350,7 +350,7 @@ int main(int argc, char *argv[])
 		
 	/*
 		for( int i = 0; i < numWorkers; i++ ) {
-			std::cout << i+1 << " binI_2D: " << binI_2D[i][0] 
+			std::cout << i << " binI_2D: " << binI_2D[i][0] 
 				<< " " << binI_2D[i][1] << " " 
 				<< binI_2D[i][2] << " " << binI_2D[i][3] << std::endl;
 		}
@@ -521,7 +521,7 @@ int main(int argc, char *argv[])
 // multiline start
 	if( myRank == 1 ) {
 		for( int i = 0; i < numWorkers; i++ ) {
-			std::cout << i+1 << " binI_2D: " << binI_2D[i][0] 
+			std::cout << i << " binI_2D: " << binI_2D[i][0] 
 				<< " " << binI_2D[i][1] << " " 
 				<< binI_2D[i][2] << " " 
 				<< binI_2D[i][3] << std::endl;
@@ -587,7 +587,7 @@ int main(int argc, char *argv[])
                         if(toWho!=fromWho){
                                 if(myRank ==toWho || myRank ==fromWho){
                                         cout << "Rank " << myRank << " towho: " << toWho << " is entering swap parts with  " << fromWho << endl;
-                                        swapArrayParts( &array, &maxRows, &F_cols, myRank, numNodes, binI_2D[fromWho-1], fromWho, toWho );
+                                        swapArrayParts( &array, &maxRows, &F_cols, myRank, numNodes, binI_2D[fromWho], fromWho, toWho );
                                         cout << "^^^^^^^^^Rank " << myRank << " towho: " << toWho << " exited swap parts with  " << fromWho << endl;
                                 }
                 //      sleep(5);
@@ -601,7 +601,7 @@ int main(int argc, char *argv[])
         // Cleanup elements from same node
         for(int clean = 0; clean< numNodes; clean++){
 		if(myRank == clean){
-             		cleanUp(&array, &maxRows, &F_cols, clean, numNodes, binI_2D[myRank-1]);   
+             		cleanUp(&array, &maxRows, &F_cols, clean, numNodes, binI_2D[myRank]);   
 		}
         }
 	MPI_Barrier(MPI_COMM_WORLD);
@@ -613,24 +613,24 @@ int main(int argc, char *argv[])
 		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 		<< "to swap data" << std::endl;
 #endif
-//	sleep(myRank);
+	
+	sleep(myRank+1);
 
+	// Final sort
+	LL_sort(array, maxRows, cols, sortInd);
+	
 // multiline end
-if(myRank !=0){
-	cout << "Rank " << myRank << " array after clean up " << endl;
-
+	cout << "Rank " << myRank << " array after clean up " << maxRows << endl;
 	for(int iii =0 ; iii< maxRows ; iii++){
-		cout << "Row: " << iii << " : " ;
+		cout << "rank: " << myRank << " Row: " << iii << " : " ;
 		for(int kkk =0; kkk < 4; kkk++){
 			cout << array[4*iii+kkk] << " : " ;
 		}
 		cout << endl;
 	}
 
-}
 // multiline end
 	cout << "Rank: " << myRank << " has made it through clean up *******************" << endl;
-                // Final sort
 
                 // Export results
 

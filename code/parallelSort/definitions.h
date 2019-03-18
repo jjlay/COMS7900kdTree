@@ -58,7 +58,7 @@
 
 
 #define Rank0    0
-#define abortCount  7000  // Number of loops to halt in adaptBins
+#define abortCount  10  // Number of loops to halt in adaptBins
 
 
 
