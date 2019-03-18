@@ -35,9 +35,6 @@
 using namespace std;
 
 
-#undef _DEBUG_
-
-
 //
 // Function: distributeFiles
 //
@@ -53,10 +50,11 @@ using namespace std;
 
 void distributeFiles(vector<string> files, int numWorkers) {
 
-	int currentRank = 1;
+	cout << "distributeFiles: Sending " << files.size() << " files to " << numWorkers << " nodes" << endl;
+
+	int currentRank = 0;
 	int mpiReturn;
 	MPI_Request request;
-
 
 	// Pointer to the char buffer to be passed to workers
 	const char *b;
@@ -76,14 +74,14 @@ void distributeFiles(vector<string> files, int numWorkers) {
 		// Loop through the worker nodes. When we reach
 		// the last node, start over with rank 1.
 		currentRank++;
-		if (currentRank > numWorkers)
-			currentRank = 1;
+		if (currentRank >= numWorkers)
+			currentRank = 0;
 	}
-
+	
 	// Now let the nodes no that no more files are coming.
 	b = "DONE!";
 
-	for (int r = 1; r <= numWorkers; r++) {
+	for (int r = 0; r < numWorkers; r++) {
 		mpiReturn = MPI_Isend(b, mpi_Max_Filename, MPI_BYTE, r,
 			mpi_Tag_File, MPI_COMM_WORLD, &request);
 	}

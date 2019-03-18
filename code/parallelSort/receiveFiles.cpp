@@ -63,6 +63,7 @@ vector<string> receiveFiles(int myRank) {
 	string strDone = "DONE!";
 
 	int Run = 1;
+	
 
 	while(Run) {
 		// Look for a filename
@@ -85,6 +86,7 @@ vector<string> receiveFiles(int myRank) {
 			files.push_back(s);
 		}
 	}
+	cout << myRank << endl;
 
 	return files;
 }
