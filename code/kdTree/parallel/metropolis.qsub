@@ -1,11 +1,11 @@
 #!/bin/bash
 
 ## 
-#$ -N MetropolisSort
-#$ -pe mpi 192
+#$ -N MetropolisKdTree
+#$ -pe mpi 128
 #$ -q amd8.q
 #$ -cwd
 #$ -l h_rt=1:00:00
 
-mpirun -np $NSLOTS $HOME/COMS7900kdTree/code/kdTree/parallel/kdtree
+mpirun -np $NSLOTS $HOME/COMS7900kdTree/code/kdTree/parallel/kdTree
 

@@ -17,15 +17,15 @@ testbinsizing.o : testbinsizing.cpp
 	$(CC) $(CFLAGS) -c testbinsizing.cpp
 
 clean :
-	rm -f testbinsizing parallelSort
+	rm -f testbinsizing kdTree
 	rm -f *.o
 	rm -f core.*
-	rm -f MetropolisSort.e*
-	rm -f MetropolisSort.o*
+	rm -f MetropolisKdTree.e*
+	rm -f MetropolisKdTree.o*
 	rm -f kdTree
 
 nolog :
 	rm -f core.*
-	rm -f MetropolisSort.e*
-	rm -f MetropolisSort.o*
+	rm -f MetropolisKdTree.e*
+	rm -f MetropolisKdTree.o*
 
