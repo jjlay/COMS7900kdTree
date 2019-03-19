@@ -67,7 +67,9 @@ void distributeFiles(vector<string> files, int numWorkers) {
 
 		// Send the filename asynchronously so we can keep
 		// working while the worker node deals with it.
-		mpiReturn = MPI_Isend(b, mpi_Max_Filename, MPI_BYTE, currentRank,
+		// mpiReturn = MPI_Isend(b, mpi_Max_Filename, MPI_BYTE, currentRank,
+		//		mpi_Tag_File, MPI_COMM_WORLD, &request);
+		mpiReturn = MPI_Isend(b, f.size(), MPI_BYTE, currentRank,
 				mpi_Tag_File, MPI_COMM_WORLD, &request);
 
 

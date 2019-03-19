@@ -53,7 +53,7 @@ void importFiles(vector<string> files, int myRank,
 		ifstream infile( f );
 		string line;
 		string token;
-		size_t pos = 0;
+		// size_t pos = 0;
 		int lineCount = 0; //, tokenCount;
 		
 		

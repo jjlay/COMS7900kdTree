@@ -34,7 +34,7 @@
 #include "getLinearBins.h"
 #include "adaptBins.h"
 #include "testUniformity.h"
-#include "binData.h"
+// #include "binData.h"
 #include "binData2.h"
 #include "receiveMinMax.h"
 #include "transmitMinMax.h"
@@ -42,11 +42,12 @@
 #include "receiveBinCounts.h"
 #include "transmitUniformity.h"
 #include "receiveBinIndices.h"
-#include "sortArray.h"
+// #include "sortArray.h"
 #include "exportResults.h"
 #include "min.h"
 #include "max.h"
-#include "LL_sort.h"
+// #include "LL_sort.h"
+#include "sortData.h"
 #include "swapArrayParts.h"
 #include "cleanUp.h"
 #include "testSort.h"
@@ -63,7 +64,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 {
 	int rows = *rowsPTR;
 	int cols = *colsPTR;
-	double *array = *tmpArray;
+	double *array = tmpArray[0];
 	double myMin = 0.0;
 	double myMax = 0.0;
 	//number of lines TOTAL
@@ -73,8 +74,11 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	
         // Perform initial sort
         //sortArray(array, rows, cols, sortInd);
-	LL_sort(array, rows, cols, sortInd);
+	//LL_sort(array, rows, cols, sortInd);
 	
+	// Use qsort
+	sortData(array, cols, rows, sortInd);
+		
 //	auto deleteme = testSort(array, rows, cols, sortInd);
 	
 //	MPI_Barrier(MPI_COMM_WORLD);
@@ -479,7 +483,8 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	sleep(myRank+1);
 
 	// Final sort
-	LL_sort(array, rows, cols, sortInd);
+	//LL_sort(array, rows, cols, sortInd);
+	sortData(array, cols, rows, sortInd);
 	
 	cout << "Rank " << myRank << " array after clean up " << rows << endl;
 /*
