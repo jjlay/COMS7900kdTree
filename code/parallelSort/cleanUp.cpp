@@ -58,7 +58,7 @@ void cleanUp(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, int numr
 	for (int ii =0; ii< maxRank +1; ii++){
 //		cout <<"rank: " << myRank <<  " : " << myBinI[ii]<< endl;
 	
-		myBinI[ii+1] = binIPTR[ii];
+		myBinI[ii] = binIPTR[ii];
 //		cout << " : " << myBinI[ii];
 	}
 //	cout << endl;

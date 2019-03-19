@@ -86,7 +86,7 @@ vector<string> receiveFiles(int myRank) {
 			files.push_back(s);
 		}
 	}
-	cout << myRank << endl;
+//	cout << myRank << endl;
 
 	return files;
 }

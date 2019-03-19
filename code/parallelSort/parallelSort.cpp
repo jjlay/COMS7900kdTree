@@ -59,131 +59,23 @@ using namespace std;
 // Function: main
 //
 
-int main(int argc, char *argv[])
+void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, int *colsPTR, int sortInd )
 {
-	////////////////
-	//            //
-	// MPI setup  //
-	//            //
-	////////////////
-
-	std::string processorName;
-	int myRank, numNodes;
-
-	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
-
-#ifdef _TIMING_
-	auto timeStart = std::chrono::system_clock::now();
-#endif
-	
-	// number of worker nodes
-	int numWorkers = numNodes;
-	// total number of files to read
-	int maxFilesToProc = 501;
-	// number of lines PER FILE
-	int maxRows = 100;
-	//number of lines TOTAL
-	unsigned int numLines = maxRows*maxFilesToProc;
-	// average lines per worker node
-	int avgPtsPerWorker = numLines / numWorkers;
-
-	// set cout to print doubles' full length
-//	std::cout.precision(17);
-	
-/*	
-	std::cout << "Rank " << myRank
-		<< " running on " << processorName 
-		<< " with " << numNodes << " total processes" 
-		<< std::endl;
-*/
-
-#ifdef _TIMING_
-	auto timeBeginFilenameDistribute = std::chrono::system_clock::now();
-	chrono::duration<double> timeElapsedSeconds = timeBeginFilenameDistribute - timeStart;
-	cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
-		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
-		<< " to initialize MPI" << endl;
-#endif
-
-	//////////////////
-	//              //
-	// Data Import  //
-	//              //
-	//////////////////
-
-	// location of the data files
-	std::string homeDir = getenv("HOME");
-	std::string path = homeDir + "/localstorage/public/coms7900-data/";
-
-	std::vector<std::string> FilenameArray;
-
-	// Retrieve the list of files to process
-	if (myRank == 0)
-		FilenameArray = listFiles(path);
-
-	// Distribute files to workers
-	if (myRank == 0)
-		distributeFiles( FilenameArray, numNodes );
-	
-	// Receive file list
-	FilenameArray = receiveFiles(myRank);
-
-	//
-	// Check to make sure there is actual work
-	//
-	
-	if (FilenameArray.size() == 0) {
-		// OMG! Nothing to do!
-		MPI_Finalize();
-		cout << "Failed!" << endl;
-		return _FAIL_;
-	}
-
-	
-	MPI_Barrier(MPI_COMM_WORLD);
-	
-#ifdef _TIMING_
-	auto timeBeginFileImport = std::chrono::system_clock::now();
-	timeElapsedSeconds = timeBeginFileImport - timeBeginFilenameDistribute;
-	std::cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
-		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
-		<< " to distribute the filenames" << std::endl;
-#endif
-	
-	int sortInd = _X_;
+	int rows = *rowsPTR;
+	int cols = *colsPTR;
+	double *array = *tmpArray;
 	double myMin = 0.0;
 	double myMax = 0.0;
-	double *array;
-	int rows = 0, cols = 0;
-
-        // Read data files in
-        array = new double[FilenameArray.size() * maxRows * _ROW_WIDTH_]; //JJL
-        importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows);
-
-        MPI_Request tempRequest;
-        MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, &tempRequest);
-
-#ifdef _TIMING_	
-	auto timeBeginSort = std::chrono::system_clock::now();
-	timeElapsedSeconds = timeBeginSort - timeBeginFileImport;
-	cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
-		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
-		<< " to import data" << endl;
-#endif
+	//number of lines TOTAL
+	unsigned int numLines;
+	// average lines per worker node
+	int avgPtsPerWorker = numLines / numNodes;
 	
         // Perform initial sort
         //sortArray(array, rows, cols, sortInd);
 	LL_sort(array, rows, cols, sortInd);
 	
-#ifdef _TIMING_	
-	auto timeAfterSort = std::chrono::system_clock::now();
-	timeElapsedSeconds = timeAfterSort - timeBeginSort;
-	cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
-		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
-		<< " to sort data" << endl;
-#endif
-	
-	auto deleteme = testSort(array, rows, cols, sortInd);
+//	auto deleteme = testSort(array, rows, cols, sortInd);
 	
 //	MPI_Barrier(MPI_COMM_WORLD);
 	
@@ -212,14 +104,9 @@ int main(int argc, char *argv[])
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 
-#ifdef _TIMING_	
-	auto timeBeginMinMax = std::chrono::system_clock::now();
-#endif
-
 	auto allMins = new double[numNodes];
 	auto allMaxs = new double[numNodes];
 	double minGlobal, maxGlobal;
-	
 	
 	// Send minimums and maximums
 	myMin = min(array, rows, cols, _X_);
@@ -232,7 +119,7 @@ int main(int argc, char *argv[])
 	//	allMins[Rank0] = 0.0;
 	//	allMaxs[Rank0] = 0.0;
 
-		for (auto r = 0; r < numWorkers; r++) {
+		for (auto r = 0; r < numNodes; r++) {
 			receiveMinMax(r, &allMins[r], &allMaxs[r]);
 		//	cout << r << " " << allMins[r] << " " << allMaxs[r] << endl;
 		}
@@ -240,7 +127,7 @@ int main(int argc, char *argv[])
 		minGlobal = allMins[0];
 		maxGlobal = allMaxs[0];
 
-		for (auto r = 1; r < numWorkers; r++) {
+		for (auto r = 1; r < numNodes; r++) {
 			if( minGlobal > allMins[r] )
 				minGlobal = allMins[r];
 			if( maxGlobal < allMaxs[r] )
@@ -249,14 +136,6 @@ int main(int argc, char *argv[])
 	//	std::cout << minGlobal << " " << maxGlobal << std::endl;
 	} 
 
-
-#ifdef _TIMING_	
-	auto timeBeginBinning = std::chrono::system_clock::now();
-	timeElapsedSeconds = timeBeginBinning - timeBeginMinMax;
-	std::cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
-		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
-		<< " to exchange min and max" << std::endl;
-#endif
 
 	MPI_Barrier(MPI_COMM_WORLD);
 
@@ -267,19 +146,19 @@ int main(int argc, char *argv[])
 	//////////////////////
 
 	// same across all nodes
-	double *binE = new double[numWorkers+1];
+	double *binE = new double[numNodes+1];
 	// different across all nodes, master is sum of others
-	int *binC  = new int[numWorkers];
-	int *binCt = new int[numWorkers];
+	int *binC  = new int[numNodes];
+	int *binCt = new int[numNodes];
 	
 	// 2D binI for master node
-	int **binI_2D = new int*[numWorkers]; // [worker][bin]
-	for( int i = 0; i < numWorkers; i++ ) {
-		binI_2D[i] = new int[numWorkers+1];
+	int **binI_2D = new int*[numNodes]; // [worker][bin]
+	for( int i = 0; i < numNodes; i++ ) {
+		binI_2D[i] = new int[numNodes+1];
 	}
 	
 	// 1D binI for workers
-	int *binI_1D = new int[numWorkers+1];
+	int *binI_1D = new int[numNodes+1];
 	
 	int result;
 	MPI_Status status;
@@ -296,68 +175,68 @@ int main(int argc, char *argv[])
 		std::cout << "ITERATION: 0" << std::endl;
 		
 		// Calculate initial bin edges
-		getLinearBins( binE, numWorkers, myRank, minGlobal, maxGlobal );  // for real
+		getLinearBins( binE, numNodes, myRank, minGlobal, maxGlobal );  // for real
 		std::cout.precision(17);
 //		std::cout << "binE: " << binE[0] << " " << binE[1] << " " << binE[2] << " " << binE[3] << std::endl;
 		
 		// Transmit initial bin edges
-		transmitBinEdges( binE, numWorkers );
+		transmitBinEdges( binE, numNodes );
 	} else {
 		// Receive initial bin edges
-		result = MPI_Recv( binE, numWorkers+1, MPI_DOUBLE, 0,
+		result = MPI_Recv( binE, numNodes+1, MPI_DOUBLE, 0,
 			mpi_Tag_BinEdges, MPI_COMM_WORLD, &status );
 	}
 	
 	binI_1D[0] = 0;
-	binI_1D[numWorkers] = maxRows;
-	for( int i = 1; i < numWorkers; i++ ) {
+	binI_1D[numNodes] = rows;
+	for( int i = 1; i < numNodes; i++ ) {
 		binI_1D[i] = i*avgPtsPerWorker;
 	}
 	
 	// get intitial bin counts, indices
 	binData2( array, binE, myRank, sortInd,
-		numWorkers, rows, binI_1D, binC); // for real
+		numNodes, rows, binI_1D, binC); // for real
 //	cout << myRank << " binC: " << binC[0] << " " << binC[1] << " " << binC[2] << endl;
 	
 	if( myRank == 0 ){
 		// Receive initial bin counts
-		receiveBinCounts( binCt, numWorkers );
-		for( int j = 0; j < numWorkers; j++ ) {
+		receiveBinCounts( binCt, numNodes );
+		for( int j = 0; j < numNodes; j++ ) {
 			binCt[j] = binCt[j] + binC[j];
 		}
 
 		cout << myRank << " binCt: ";
-		for( int i = 0; i < numWorkers; i++ ) {
+		for( int i = 0; i < numNodes; i++ ) {
 			cout << binCt[i] << " ";
 		}
 		cout << std::endl;
 	} else {
 		// Transmit initial bin counts
-		result = MPI_Send( binC, numWorkers, MPI_INT, 0,
+		result = MPI_Send( binC, numNodes, MPI_INT, 0,
 			mpi_Tag_BinCounts, MPI_COMM_WORLD );
 	
 		// Transmit initial bin indices
-		result = MPI_Send( binI_1D, numWorkers+1, MPI_INT, 0,
+		result = MPI_Send( binI_1D, numNodes+1, MPI_INT, 0,
 			mpi_Tag_BinCounts, MPI_COMM_WORLD );
 	}
 	
 	if( myRank == 0 ) {
 		// Receive initial bin indices
-		receiveBinIndices( binI_2D, numWorkers );
-		for( int j = 0; j < numWorkers+1; j++ ) {
+		receiveBinIndices( binI_2D, numNodes );
+		for( int j = 0; j < numNodes+1; j++ ) {
 			binI_2D[0][j] = binI_1D[j];
 		}
 		
 	/*
-		for( int i = 0; i < numWorkers; i++ ) {
-			std::cout << i+1 << " binI_2D: " << binI_2D[i][0] 
+		for( int i = 0; i < numNodes; i++ ) {
+			std::cout << i << " binI_2D: " << binI_2D[i][0] 
 				<< " " << binI_2D[i][1] << " " 
 				<< binI_2D[i][2] << " " << binI_2D[i][3] << std::endl;
 		}
 	*/
 		
 		// Determine if uniform
-		*isUniform = testUniformity( binC, numWorkers, thresh, &uniformity );
+		*isUniform = testUniformity( binC, numNodes, thresh, &uniformity );
 		
 //	/*		
 		if( *isUniform == 1 ) {
@@ -371,7 +250,7 @@ int main(int argc, char *argv[])
 		}
 //	*/	
 		// Transmit isUniform update
-		transmitUniformity( isUniform, numWorkers);
+		transmitUniformity( isUniform, numNodes);
 	} else { 
 		// Receive isUniform update
 		result = MPI_Recv( isUniform, 1, MPI_INT, 0,
@@ -390,64 +269,64 @@ int main(int argc, char *argv[])
 			
 			// Adapt bin edges
 			// new
-		//	adaptBins( binE, binCt, numWorkers, numLines, avgPtsPerWorker );
+		//	adaptBins( binE, binCt, numNodes, numLines, avgPtsPerWorker );
 			// old
-			adaptBins( binE, binCt, numWorkers );
+			adaptBins( binE, binCt, numNodes );
 			
 			cout.precision(17);
 	//		cout << "binE: " << binE[0] << " " << binE[1] << " " << binE[2] << " " << binE[3] << endl;
 			
 			// Transmit initial bin edges
-			transmitBinEdges( binE, numWorkers );
+			transmitBinEdges( binE, numNodes );
 		} else {
 			// Receive initial bin edges
-			result = MPI_Recv( binE, numWorkers+1, MPI_DOUBLE, 0,
+			result = MPI_Recv( binE, numNodes+1, MPI_DOUBLE, 0,
 				mpi_Tag_BinEdges, MPI_COMM_WORLD, &status );
 		}
 		
 		
 		binI_1D[0] = 0;
-		binI_1D[numWorkers] = maxRows;
-		for( int i = 1; i < numWorkers; i++ ) {
+		binI_1D[numNodes] = rows;
+		for( int i = 1; i < numNodes; i++ ) {
 			binI_1D[i] = i*avgPtsPerWorker;
 		}
 		
 		// get intitial bin counts, indices
 		binData2( array, binE, myRank, sortInd,
-			numWorkers, rows, binI_1D, binC); // for real
+			numNodes, rows, binI_1D, binC); // for real
 	//	cout << myRank << " binC: " << binC[0] << " " << binC[1] << " " << binC[2] << endl;
 		
 		if( myRank == 0 ){
 			// Receive initial bin counts
-			receiveBinCounts( binCt, numWorkers );
-			for( int j = 0; j < numWorkers; j++ ) {
+			receiveBinCounts( binCt, numNodes );
+			for( int j = 0; j < numNodes; j++ ) {
 				binCt[j] = binCt[j] + binC[j];
 			}
 	
 			cout << myRank << " binCt: ";
-			for( int i = 0; i < numWorkers; i++ ) {
+			for( int i = 0; i < numNodes; i++ ) {
 				cout << binCt[i] << " ";
 			}
 			cout << std::endl;
 		} else {
 			// Transmit initial bin counts
-			result = MPI_Send( binC, numWorkers, MPI_INT, 0,
+			result = MPI_Send( binC, numNodes, MPI_INT, 0,
 				mpi_Tag_BinCounts, MPI_COMM_WORLD );
 		
 			// Transmit initial bin indices
-			result = MPI_Send( binI_1D, numWorkers+1, MPI_INT, 0,
+			result = MPI_Send( binI_1D, numNodes+1, MPI_INT, 0,
 				mpi_Tag_BinCounts, MPI_COMM_WORLD );
 		}
 		
 		if( myRank == 0 ) {
 			// Receive initial bin indices
-			receiveBinIndices( binI_2D, numWorkers );
-			for( int j = 0; j < numWorkers+1; j++ ) {
+			receiveBinIndices( binI_2D, numNodes );
+			for( int j = 0; j < numNodes+1; j++ ) {
 				binI_2D[0][j] = binI_1D[j];
 			}
 			
 		/*
-			for( int i = 0; i < numWorkers; i++ ) {
+			for( int i = 0; i < numNodes; i++ ) {
 				std::cout << i+1 << " binI_2D: " << binI_2D[i][0] 
 					<< " " << binI_2D[i][1] << " " 
 					<< binI_2D[i][2] << " " << binI_2D[i][3] << std::endl;
@@ -455,7 +334,7 @@ int main(int argc, char *argv[])
 		*/
 			
 			// Determine if uniform
-			*isUniform = testUniformity( binC, numWorkers, thresh, &uniformity );
+			*isUniform = testUniformity( binC, numNodes, thresh, &uniformity );
 			
 	//	/*		
 			if( *isUniform == 1 ) {
@@ -469,7 +348,7 @@ int main(int argc, char *argv[])
 			}
 	//	*/	
 			// Transmit isUniform update
-			transmitUniformity( isUniform, numWorkers);
+			transmitUniformity( isUniform, numNodes);
 		} else { 
 			// Receive isUniform update
 			result = MPI_Recv( isUniform, 1, MPI_INT, 0,
@@ -486,7 +365,7 @@ int main(int argc, char *argv[])
 
 		cout << "Rank " << myRank << " Bin counts are:" << endl;
 
-		for (auto i = 0; i < numWorkers; i++) {
+		for (auto i = 0; i < numNodes; i++) {
 			cout << "binC[" << i << "] = " << binC[i] << ", "
 				<< "binE[" << i << "] = " << binE[i] << ", ";
 
@@ -501,27 +380,18 @@ int main(int argc, char *argv[])
 
 	MPI_Barrier(MPI_COMM_WORLD);
 
-#ifdef _TIMING_	
-	auto timeBeginSwapping = std::chrono::system_clock::now();
-	if (myRank == Rank0) {
-		timeElapsedSeconds = timeBeginSwapping - timeBeginBinning;
-		std::cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
-			<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
-			<< "to identify bins" << std::endl;
-	}
-#endif
 // multiline start	
 	// Broadcast binI_2D to workers
-	for( int i = 0; i < numWorkers; i++ ) {
-		result = MPI_Bcast( binI_2D[i], numWorkers+1, MPI_DOUBLE, 0,
+	for( int i = 0; i < numNodes; i++ ) {
+		result = MPI_Bcast( binI_2D[i], numNodes+1, MPI_DOUBLE, 0,
 			MPI_COMM_WORLD );
 	}
 // multiline end
 
 // multiline start
 	if( myRank == 1 ) {
-		for( int i = 0; i < numWorkers; i++ ) {
-			std::cout << i+1 << " binI_2D: " << binI_2D[i][0] 
+		for( int i = 0; i < numNodes; i++ ) {
+			std::cout << i << " binI_2D: " << binI_2D[i][0] 
 				<< " " << binI_2D[i][1] << " " 
 				<< binI_2D[i][2] << " " 
 				<< binI_2D[i][3] << std::endl;
@@ -544,7 +414,7 @@ int main(int argc, char *argv[])
 
 	}
 	else {
-		for (auto i = 1; i < numWorkers; i++) {
+		for (auto i = 1; i < numNodes; i++) {
 			if (binI_1D[i] < binI_1D[i-1]) {
 				cout << "Rank " << myRank << " : binI[" << i << "] (" << binI_1D[i] << ") is less than "
 					<< "binI[" << i-1 << "] (" << binI_1D[i-1] << ") ***" << endl;
@@ -587,7 +457,7 @@ int main(int argc, char *argv[])
                         if(toWho!=fromWho){
                                 if(myRank ==toWho || myRank ==fromWho){
                                         cout << "Rank " << myRank << " towho: " << toWho << " is entering swap parts with  " << fromWho << endl;
-                                        swapArrayParts( &array, &maxRows, &F_cols, myRank, numNodes, binI_2D[fromWho-1], fromWho, toWho );
+                                        swapArrayParts( &array, &rows, &F_cols, myRank, numNodes, binI_2D[fromWho], fromWho, toWho );
                                         cout << "^^^^^^^^^Rank " << myRank << " towho: " << toWho << " exited swap parts with  " << fromWho << endl;
                                 }
                 //      sleep(5);
@@ -601,67 +471,31 @@ int main(int argc, char *argv[])
         // Cleanup elements from same node
         for(int clean = 0; clean< numNodes; clean++){
 		if(myRank == clean){
-             		cleanUp(&array, &maxRows, &F_cols, clean, numNodes, binI_2D[myRank-1]);   
+             		cleanUp(&array, &rows, &F_cols, clean, numNodes, binI_2D[myRank]);   
 		}
         }
 	MPI_Barrier(MPI_COMM_WORLD);
 
-#ifdef _TIMING_	
-	auto timeEndSwapping = std::chrono::system_clock::now();
-	timeElapsedSeconds = timeEndSwapping - timeBeginSwapping;
-	std::cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
-		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
-		<< "to swap data" << std::endl;
-#endif
-//	sleep(myRank);
+	sleep(myRank+1);
 
-// multiline end
-if(myRank !=0){
-	cout << "Rank " << myRank << " array after clean up " << endl;
-
-	for(int iii =0 ; iii< maxRows ; iii++){
-		cout << "Row: " << iii << " : " ;
+	// Final sort
+	LL_sort(array, rows, cols, sortInd);
+	
+	cout << "Rank " << myRank << " array after clean up " << rows << endl;
+/*
+	for(int iii =0 ; iii< rows ; iii++){
+		cout << "rank: " << myRank << " Row: " << iii << " : " ;
 		for(int kkk =0; kkk < 4; kkk++){
 			cout << array[4*iii+kkk] << " : " ;
 		}
 		cout << endl;
 	}
-
-}
-// multiline end
-	cout << "Rank: " << myRank << " has made it through clean up *******************" << endl;
-                // Final sort
-
-                // Export results
+*/
 
 
-#ifdef _TIMING_	
-	auto timeEndSort2 = std::chrono::system_clock::now();
-	timeElapsedSeconds = timeEndSwapping - timeEndSort2;
-	std::cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
-		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
-		<< " second sort" << std::endl;
-#endif
+        // Export results
 
-
-	//
-	// Wrap up
-	//
-	
-	MPI_Barrier(MPI_COMM_WORLD);
-
-//	exportResults(array, rows, cols, numWorkers, myRank, myMin, myMax);
-
-#ifdef _TIMING_	
-	auto timeEnd = std::chrono::system_clock::now();
-	timeElapsedSeconds = timeEnd - timeStart;
-	std::cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
-		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
-		<< "to run" << std::endl;
-#endif
-	
-
-	MPI_Finalize();
-
-	return _OKAY_;
+	*rowsPTR  = rows;
+	*colsPTR  = cols;
+	*tmpArray = array;
 }

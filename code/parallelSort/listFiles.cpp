@@ -29,7 +29,7 @@ using namespace std;
 // Source:
 // https://www.linuxquestions.org/questions/programming-9/c-list-files-in-directory-379323/
 
-vector<string> listFiles(string path) {
+vector<string> listFiles(string path, int numFiles ) {
 
 	// The list of files will be stored in an STL vector to
 	// avoid the hassle of memory management. The vector
@@ -63,7 +63,7 @@ vector<string> listFiles(string path) {
 	
 	int filesProcessed = 0;
 
-	while (dirp != NULL) {
+	while (dirp != NULL && filesProcessed < numFiles) {
 		// The field in the struct dirent that contains the
 		// filename is d_name. It is a char*. Since our
 		// vector is expecting strings, it is converted.

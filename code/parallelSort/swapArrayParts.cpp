@@ -48,6 +48,7 @@ struct Node{
 
 void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, int numranks, int *binIPTR, int fromWho, int toWho){
 
+        //cout << "Rank: " << fromWho << " is in swap array"<< endl;
 	if (toWho == fromWho)
 		return;
 
@@ -71,12 +72,16 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
         int mySendStartingPoint;
         double *myArray = *pmyArray;
 	
+
+//        cout << "myRank: " << myRank << " rank to who " << toWho << " is in swap array"<< endl;
 	if(fromWho == myRank) {
+        	cout << "myRank: " << myRank << endl;
                 for(int mi =0; mi<maxRank+1; mi++){
-                        myBinI[mi+1] = binIPTR[mi];
+                        myBinI[mi] = binIPTR[mi];
+			cout << myBinI[mi] << endl;
                 }
                 MPI_Isend(myBinI, (maxRank+1), MPI_INT, toWho,999, MPI_COMM_WORLD, &request);
-      //          cout << "Rank: " << myRank << " has sent ibin to: " << toWho << endl;
+                cout << "Rank: " << myRank << " has sent ibin to: " << toWho << endl;
         }
         if(myRank ==toWho){
                 MPI_Recv(yourBinI, (maxRank+1), MPI_INT, fromWho , 999, MPI_COMM_WORLD, &status);
@@ -85,7 +90,7 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
                 storedBinIstart[fromWho+1] = myStartRow;
                 storedBinIend[fromWho+1] = myEndRow;
  //               sleep(myRank);
-        //        cout << "Rank: " << myRank<< " has received binI from: " << fromWho << endl;
+                cout << "Rank: " << myRank<< " has received binI from: " << fromWho << endl;
          //       for (int itest = 0; itest< maxRank+1; itest++){
           //              cout << yourBinI[itest] << " " ;
            //     }
