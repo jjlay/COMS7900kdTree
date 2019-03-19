@@ -34,7 +34,7 @@
 #include "getLinearBins.h"
 #include "adaptBins.h"
 #include "testUniformity.h"
-#include "binData.h"
+// #include "binData.h"
 #include "binData2.h"
 #include "receiveMinMax.h"
 #include "transmitMinMax.h"
@@ -64,7 +64,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 {
 	int rows = *rowsPTR;
 	int cols = *colsPTR;
-	double *array = *tmpArray;
+	double *array = tmpArray[0];
 	double myMin = 0.0;
 	double myMax = 0.0;
 	//number of lines TOTAL

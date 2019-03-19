@@ -68,8 +68,8 @@ int main(int argc, char *argv[])
 	//            //
 	////////////////
 
-	std::string processorName;
-	int myRank, numNodes;
+	string processorName = "";
+	int myRank = 0, numNodes = 0;
 
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 
@@ -127,11 +127,10 @@ int main(int argc, char *argv[])
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 	
-	double *array;
 	int rows = 0, cols = 0;
 
         // Read data files in
-        array = new double[FilenameArray.size() * maxRows * _ROW_WIDTH_]; //JJL
+        double *array = new double[FilenameArray.size() * maxRows * _ROW_WIDTH_]; //JJL
         importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows);
 
         MPI_Request tempRequest;
@@ -144,25 +143,26 @@ int main(int argc, char *argv[])
 	// parallelSort //
 	//              //
 	//////////////////
-	
+
+	cout << "main : Before parallelSort : rows = " << rows << ", cols = " << cols << ", rank = " << myRank << endl;	
 	parallelSort( myRank, numNodes, &array, &rows, &cols, sortInd );
+	cout << "main : After parallelSort : rows = " << rows << ", cols = " << cols << ", rank = " << myRank << endl;	
 	
 	// DONE
 	
-	MPI_Barrier(MPI_COMM_WORLD);
-	
-	// TEST
-	sleep(myRank+1);
-	
-	cout << "rank " << myRank << ": " << array[0 + sortInd] << endl;
+	cout << __FUNCTION__ << " : Line " << __LINE__ << " : rank " << myRank << ": " << array[0 + sortInd] << endl;
 	cout << "rank " << myRank << ": " << array[cols*(rows-1) + sortInd] << endl;
 	
-	
-	
+	delete array;
+
 	MPI_Barrier(MPI_COMM_WORLD);
+
+	cout << "main : Past final barrier rank " << myRank << endl;
 	
 	MPI_Finalize();
 
 //	return _OKAY_;
 	return 0;
 }
+
+
