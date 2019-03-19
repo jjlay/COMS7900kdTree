@@ -46,7 +46,7 @@ int compareZ(const void *a, const void *b);
 
 void sortData(double *data, int numCols, int numRows, int dimension)
 {
-	auto start = std::chrono::system_clock::now();
+	// auto start = std::chrono::system_clock::now();
 
 	switch (dimension)
 	{
@@ -71,8 +71,8 @@ void sortData(double *data, int numCols, int numRows, int dimension)
 		exit(_FAIL_);
 	}
 
-	auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> elapsed = end - start;
+	// auto end = std::chrono::system_clock::now();
+	// std::chrono::duration<double> elapsed = end - start;
 
 	// std::cout << "Sorted " << numRows << " rows in " << elapsed.count() << " seconds" << std::endl;
 
@@ -103,6 +103,8 @@ int compareX(const void *a, const void *b)
 
 	if (static_cast<const double *>(a)[_X_] > static_cast<const double *>(b)[_X_])
 		return 1;
+
+	return 0;
 }
 
 
@@ -131,6 +133,8 @@ int compareIndex(const void *a, const void *b)
 
 	if (static_cast<const double *>(a)[_INDEX_] > static_cast<const double *>(b)[_INDEX_])
 		return 1;
+
+	return 0;
 }
 
 
@@ -158,6 +162,8 @@ int compareZ(const void *a, const void *b)
 
 	if (static_cast<const double *>(a)[_Z_] > static_cast<const double *>(b)[_Z_])
 		return 1;
+
+	return 0;
 }
 
 
@@ -184,5 +190,7 @@ int compareY(const void *a, const void *b)
 
 	if (static_cast<const double *>(a)[_Y_] > static_cast<const double *>(b)[_Y_])
 		return 1;
+
+	return 0;
 }
 

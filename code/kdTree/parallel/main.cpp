@@ -31,7 +31,8 @@
 #include "distributeFiles.h"
 #include "receiveFiles.h"
 #include "importFiles.h"
-
+#include "tree.h"
+#include "buildTree.h"
 
 using namespace std;
 
@@ -106,19 +107,32 @@ int main(int argc, char *argv[]) {
 
 	auto timeBeginImport = std::chrono::system_clock::now();
 
-    // Read data files in
-    array = new double[filenameArray.size() * maxRows * _ROW_WIDTH_]; 
-    importFiles(path, filenameArray, myRank, array, &rows, &cols, maxRows);
+	// Read data files in
+	array = new double[filenameArray.size() * maxRows * _ROW_WIDTH_]; 
+	importFiles(path, filenameArray, myRank, array, &rows, &cols, maxRows);
 
-    MPI_Request tempRequest;
-    MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, &tempRequest);
+	MPI_Request tempRequest;
+	MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount,
+		MPI_COMM_WORLD, &tempRequest);
 
 	auto timeEndImport = std::chrono::system_clock::now();
 	chrono::duration<double> timeElapsedSeconds = timeEndImport - timeBeginImport;
-	cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
+	cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank
+		 << " took "
 		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 		<< " to import data" << endl;
 
+
+
+	/////////////////////////////////////////
+	//
+	// Build kdtree
+	//
+	/////////////////////////////////////////
+	
+	Tree tree;
+
+	buildTree(array, rows, cols, &tree);
 
 
 	///////////////////////////////////////
@@ -131,7 +145,8 @@ int main(int argc, char *argv[]) {
 
 	auto timeEnd = std::chrono::system_clock::now();
 	timeElapsedSeconds = timeEnd - timeStart;
-	std::cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
+	std::cout << "TIMING : Rank " << std::fixed 
+		<< std::setprecision(0) << myRank << " took "
 		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 		<< "to run" << std::endl;
 
