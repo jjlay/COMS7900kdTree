@@ -112,6 +112,7 @@ int main(int argc, char *argv[])
 	}
 
 	
+	
 	MPI_Barrier(MPI_COMM_WORLD);
 	
 	int rows = 0, cols = _ROW_WIDTH_;
