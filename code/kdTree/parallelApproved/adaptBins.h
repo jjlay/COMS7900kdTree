@@ -1,38 +1,13 @@
 #pragma once
 
 //
-// importFiles
+// adaptBins
 //
 
 
-#undef _DEBUG_
-
 
 //
-// STL includes
-//
-
-#include <vector>
-
-//
-// Standard includes
-//
-
-#include <string>
-#include <iostream>
-#include <fstream>
-
-//
-// Local includes
-//
-//
-
-#include "definitions.h"
-#include "Data.h"
-
-
-//
-// Function: importFiles
+// Function: adaptBins
 //
 
 void adaptBins( double *binE, int *binC, int NumWorkers);

@@ -1,16 +1,7 @@
 //
-// importFiles
+// adaptBins
 //
 
-
-#undef _DEBUG_
-
-
-//
-// STL includes
-//
-
-#include <vector>
 
 //
 // Standard includes
@@ -19,16 +10,8 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
-#include <fstream>
 
 
-//
-// Local includes
-//
-//
-
-#include "definitions.h"
-#include "Data.h"
 
 //
 // Function: importFiles

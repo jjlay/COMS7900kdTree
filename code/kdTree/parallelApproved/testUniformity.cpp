@@ -1,37 +1,17 @@
 //
-// importFiles
+// testUniformity
 //
 
-
-#undef _DEBUG_
-
-
-//
-// STL includes
-//
-
-#include <vector>
-
-#include <math.h>
 
 //
 // Standard includes
 //
 
+#include <math.h>
 #include <string>
 #include <iostream>
 #include <iomanip>
-#include <fstream>
 
-
-
-//
-// Local includes
-//
-//
-
-#include "definitions.h"
-#include "Data.h"
 
 //
 // Function: testUniformity

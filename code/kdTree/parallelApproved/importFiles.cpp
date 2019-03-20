@@ -21,8 +21,6 @@
 //
 //
 
-#include "definitions.h"
-#include "Data.h"
 #include "importData.h"
 
 using namespace std;

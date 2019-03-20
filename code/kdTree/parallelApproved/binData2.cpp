@@ -3,16 +3,6 @@
 //
 
 
-#undef _DEBUG_
-
-
-//
-// STL includes
-//
-
-#include <vector>
-
-
 //
 // Standard includes
 //
@@ -20,18 +10,8 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
-#include <fstream>
-
 #include <math.h>
 
-
-//
-// Local includes
-//
-//
-
-#include "definitions.h"
-#include "Data.h"
 
 
 //
