@@ -41,20 +41,18 @@ void importFiles(vector<string> files, int myRank,
 	const int arrayLimit) {
 
 	*cols = _ROW_WIDTH_;
+	*rows = 0;
 
-	std::string homeDir = getenv("HOME");
-	std::string prefix = homeDir + "/localstorage/public/coms7900-data/datafile";
 	//const string prefix = "./data/datafile";
-	const string suffix = ".txt";
 	const double rowsPerFile = maxRowsPerFile;
 	unsigned int arrayIndex = 0;
 	
 	// loop through files to read
 	for (auto f : files) {
-		
+		importData(&myData[arrayIndex], f, cols, rows, 
+			maxRowsPerFile, arrayLimit);
+		arrayIndex = *rows * *cols;
 	}
-
-	*rows = arrayIndex;
 }
 
 
