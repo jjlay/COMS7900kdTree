@@ -48,7 +48,6 @@
 #include "exportResults.h"
 #include "min.h"
 #include "max.h"
-#include "LL_sort.h"
 #include "swapArrayParts.h"
 #include "cleanUp.h"
 #include "testSort.h"
@@ -79,9 +78,10 @@ int main(int argc, char *argv[])
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 	
 	// total number of files to read
-	int maxFilesToProc = 30;
+	const int maxFilesToProc = 30;
+
 	// number of lines PER FILE
-	int maxRows = 1000;
+	const int maxRows = 1000;
 	
 	int sortInd = 1; // x = 1
 	
@@ -116,14 +116,17 @@ int main(int argc, char *argv[])
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 	
-	int rows = 0, cols = 0;
+	int rows = 0, cols = _ROW_WIDTH_;
 
         // Read data files in
-        double *array = new double[FilenameArray.size() * maxRows * _ROW_WIDTH_]; //JJL
-        importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows);
+        int arrayLimit = FilenameArray.size() * maxRows * cols;
+        double *array = new double[arrayLimit];
+
+        importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows, arrayLimit);
 
         MPI_Request tempRequest;
-        MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, &tempRequest);
+        MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, 
+		&tempRequest);
 
 	MPI_Barrier(MPI_COMM_WORLD);
 	
@@ -153,8 +156,7 @@ int main(int argc, char *argv[])
 	
 	MPI_Finalize();
 
-//	return _OKAY_;
-	return 0;
+	return _OKAY_;
 }
 
 

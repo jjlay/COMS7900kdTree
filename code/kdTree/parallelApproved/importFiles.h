@@ -1,12 +1,6 @@
-#pragma once
-
 //
 // importFiles
 //
-
-
-#undef _DEBUG_
-
 
 //
 // STL includes
@@ -14,12 +8,14 @@
 
 #include <vector>
 
+
 //
 // Standard includes
 //
 
 #include <string>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 
 
@@ -30,14 +26,20 @@
 
 #include "definitions.h"
 #include "Data.h"
+#include "importData.h"
+
+using namespace std;
+
 
 
 //
 // Function: importFiles
 //
 
-//Data_COMS* importFiles(std::vector<std::string> files, int myRank);
-void importFiles(std::vector<std::string> files, int myRank,
-	double *array, int *rows, int *cols, int maxRows);
-	
+void importFiles(vector<string> files, int myRank,
+	double *myData, int *rows, int *cols, const int maxRowsPerFile,
+	const int arrayLimit);
+
+
+
 
