@@ -25,7 +25,7 @@ using namespace std;
 // Prototypes
 //
 
-unsigned long int CalculateIndex(string filename);
+double CalculateIndex(string filename);
 
 
 
@@ -49,17 +49,14 @@ unsigned long int CalculateIndex(string filename);
 //
 
 void importData(double *data, string filename, int *numCols, int *numRows, 
-	const int maxRowsPerFile, const int arrayLimit)
+	const int maxRowsPerFile, const int arrayLimit, int myRank)
 {
-	// Start the clock!
-	auto start = std::chrono::system_clock::now();
-
 	//
 	// Read in file
 	//
 
 	const char *cstrFileName = filename.c_str();
-	cout << "Importing " << cstrFileName << endl;
+	cout << "importData : Importing " << cstrFileName << endl;
 
 	// Open the file
 	FILE *inFile;
@@ -68,7 +65,7 @@ void importData(double *data, string filename, int *numCols, int *numRows,
 
 	if (inFile == NULL)
 	{
-		cout << "Failed to open file: " << filename << endl;
+		cout << "importData : Failed to open file: " << filename << endl;
 		exit(_FAIL_);
 	}
 
@@ -79,6 +76,7 @@ void importData(double *data, string filename, int *numCols, int *numRows,
 	long unsigned int lines = 0, offset = 0;
 
 	auto index = CalculateIndex(filename);
+	cout << "importData : Rank " << myRank << " Index is " << index << endl;
 
 	//
 	// Read in each row of the file and parse it.
@@ -90,7 +88,7 @@ void importData(double *data, string filename, int *numCols, int *numRows,
 		&data[offset + _Y_], &data[offset + _Z_]) != EOF) &&
 		(lines < maxRowsPerFile))
 	{
-		data[offset + _INDEX_] = static_cast<double>(index);
+		data[offset + _INDEX_] = index;
 
 		offset += 4;
 		lines++;
@@ -99,10 +97,11 @@ void importData(double *data, string filename, int *numCols, int *numRows,
 
 	fclose(inFile);
 
+	cout << "importData : Rank " << myRank << " Done with while loop" << endl;
+
 	*numRows += lines;
 
-	auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> elapsed = end - start;
+	cout << "importData : Rank " << myRank << " Finished " << cstrFileName << endl;
 }
 
 
@@ -121,7 +120,7 @@ void importData(double *data, string filename, int *numCols, int *numRows,
 // calculates the starting index of the first row in the file.
 //
 
-unsigned long int CalculateIndex(string filename)
+double CalculateIndex(string filename)
 {
 	const string prefix = "datafile";
 	const string suffix = ".txt";
@@ -139,10 +138,12 @@ unsigned long int CalculateIndex(string filename)
 	auto s = justName.substr(prefix.length(), len);
 
 	// Convert it to an integer. Filenames start with 1.
-	auto n = stoi(s) - 1;
+	auto n = stod(s) - 1;
 
 	// Figure out the starting index
-	unsigned long int r = _MAX_ROWS_ * n;
+	double r = static_cast<double>(_MAX_ROWS_) * n;
+
+	// cout << "File " << filename << " : " << s << " : " << justName << " : " << n << " : " << r << endl;
 
 	return r;
 }

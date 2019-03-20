@@ -76,12 +76,14 @@ int main(int argc, char *argv[])
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 	
 	// total number of files to read
-	const int maxFilesToProc = 30;
+	const int maxFilesToProc = 6;
 
 	// number of lines PER FILE
-	const int maxRows = 1000;
+	const int maxRows = 10;
 	
 	int sortInd = 1; // x = 1
+
+	cout << "Rank " << myRank << " finished initializing MPI" << endl;
 	
 	//////////////////
 	// Data Import  //
@@ -112,7 +114,7 @@ int main(int argc, char *argv[])
 	}
 
 	
-	
+	cout << "Rank " << myRank << " finished received files" << endl;
 	MPI_Barrier(MPI_COMM_WORLD);
 	
 	int rows = 0, cols = _ROW_WIDTH_;
@@ -127,6 +129,7 @@ int main(int argc, char *argv[])
         MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, 
 		&tempRequest);
 
+	cout << "Rank " << myRank << " finished data import" << endl;	
 	MPI_Barrier(MPI_COMM_WORLD);
 	
 	///////////////
@@ -141,6 +144,7 @@ int main(int argc, char *argv[])
 	buildTree( array, rows, cols, tree, MPI_COMM_WORLD );
 	
 	
+	cout << "Rank " << myRank << " finished  buildTree" << endl;
 	MPI_Barrier(MPI_COMM_WORLD);
 	
 	////////////////

@@ -14,6 +14,7 @@
 //
 
 #include <string>
+#include <iostream>
 
 
 //
@@ -37,13 +38,19 @@ void importFiles(vector<string> files, int myRank,
 
 	//const string prefix = "./data/datafile";
 	unsigned int arrayIndex = 0;
-	
+	*rows = 0;
+		
 	// loop through files to read
 	for (auto f : files) {
+		cout << "importFiles : Rank " << myRank << " Reading " << f << " : Rows " << *rows << " : arrayIndex " << arrayIndex 
+			<< " : cols  " << *cols
+			<< " : arrayLimit " << arrayLimit << endl;
 		importData(&myData[arrayIndex], f, cols, rows, 
-			maxRowsPerFile, arrayLimit);
+			maxRowsPerFile, arrayLimit, myRank);
 		arrayIndex = *rows * *cols;
 	}
+
+	cout << "importFiles : Rank " << myRank << " finished with importFiles" << endl;
 }
 
 
