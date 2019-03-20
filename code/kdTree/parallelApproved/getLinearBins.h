@@ -1,35 +1,8 @@
 #pragma once
 
 //
-// importFiles
+// getLinearBins
 //
-
-
-#undef _DEBUG_
-
-
-//
-// STL includes
-//
-
-#include <vector>
-
-//
-// Standard includes
-//
-
-#include <string>
-#include <iostream>
-#include <fstream>
-
-
-//
-// Local includes
-//
-//
-
-#include "definitions.h"
-#include "Data.h"
 
 
 //
