@@ -40,11 +40,7 @@ void importFiles(vector<string> files, int myRank,
 	double *myData, int *rows, int *cols, const int maxRowsPerFile,
 	const int arrayLimit) {
 
-	*cols = _ROW_WIDTH_;
-	*rows = 0;
-
 	//const string prefix = "./data/datafile";
-	const double rowsPerFile = maxRowsPerFile;
 	unsigned int arrayIndex = 0;
 	
 	// loop through files to read

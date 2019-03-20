@@ -77,18 +77,9 @@ int main(int argc, char *argv[])
 	const int maxFilesToProc = 30;
 	// number of lines PER FILE
 	const int maxRows = 1000;
-	
+
 	int sortInd = 1; // x = 1
 	
-	// set cout to print doubles' full length
-//	std::cout.precision(17);
-	
-/*	
-	std::cout << "Rank " << myRank
-		<< " running on " << processorName 
-		<< " with " << numNodes << " total processes" 
-		<< std::endl;
-*/
 
 	//////////////////
 	//              //
@@ -127,11 +118,12 @@ int main(int argc, char *argv[])
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 	
-	int rows = 0, cols = 0;
+	int rows = 0, cols = _ROW_WIDTH_;
 
         // Read data files in
-        int maxArraySize = FilenameArray.size() * maxRows * _ROW_WIDTH_;
+        int maxArraySize = FilenameArray.size() * maxRows * cols;
         double *array = new double[maxArraySize];
+
         importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows, maxArraySize);
 
         MPI_Request tempRequest;
@@ -139,6 +131,7 @@ int main(int argc, char *argv[])
 		MPI_COMM_WORLD, &tempRequest);
 
 	MPI_Barrier(MPI_COMM_WORLD);
+
 	
 	//////////////////
 	//              //
