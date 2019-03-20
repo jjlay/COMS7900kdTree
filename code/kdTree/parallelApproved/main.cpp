@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
         int arrayLimit = FilenameArray.size() * maxRows * cols;
         double *array = new double[arrayLimit];
 
-        importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows, arrayLimit);
+        importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows);
 
         MPI_Request tempRequest;
         MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, 
