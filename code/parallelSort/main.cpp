@@ -74,9 +74,9 @@ int main(int argc, char *argv[])
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 
 	// total number of files to read
-	int maxFilesToProc = 30;
+	const int maxFilesToProc = 30;
 	// number of lines PER FILE
-	int maxRows = 1000;
+	const int maxRows = 1000;
 	
 	int sortInd = 1; // x = 1
 	
@@ -144,9 +144,7 @@ int main(int argc, char *argv[])
 	//              //
 	//////////////////
 
-	cout << "main : Before parallelSort : rows = " << rows << ", cols = " << cols << ", rank = " << myRank << endl;	
 	parallelSort( myRank, numNodes, &array, &rows, &cols, sortInd );
-	cout << "main : After parallelSort : rows = " << rows << ", cols = " << cols << ", rank = " << myRank << endl;	
 	
 	// DONE
 	

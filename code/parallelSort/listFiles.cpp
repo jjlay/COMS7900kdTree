@@ -29,7 +29,7 @@ using namespace std;
 // Source:
 // https://www.linuxquestions.org/questions/programming-9/c-list-files-in-directory-379323/
 
-vector<string> listFiles(string path, int numFiles ) {
+vector<string> listFiles(string path, const int numFiles ) {
 
 	// The list of files will be stored in an STL vector to
 	// avoid the hassle of memory management. The vector

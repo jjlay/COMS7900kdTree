@@ -37,7 +37,7 @@ using namespace std;
 //
 
 void importFiles(vector<string> files, int myRank,
-	double *myData, int *rows, int *cols, int maxRows) {
+	double *myData, int *rows, int *cols, const int maxRows) {
 
 	*cols = _ROW_WIDTH_;
 
@@ -89,8 +89,6 @@ void importFiles(vector<string> files, int myRank,
 			totalLineCount++;
 			arrayIndex++;
 		}
-//		cout << "importFiles: " << myRank << " " << lineCount << endl;
-//		cout << maxRows << endl;
 
 	
 		// close the file
@@ -99,4 +97,5 @@ void importFiles(vector<string> files, int myRank,
 
 	*rows = arrayIndex;
 }
+
 
