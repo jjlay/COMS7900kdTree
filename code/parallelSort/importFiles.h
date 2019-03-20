@@ -1,9 +1,6 @@
-#pragma once
-
 //
 // importFiles
 //
-
 
 //
 // STL includes
@@ -11,15 +8,15 @@
 
 #include <vector>
 
+
 //
 // Standard includes
 //
 
 #include <string>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
-
-using namespace std;
 
 
 //
@@ -29,6 +26,10 @@ using namespace std;
 
 #include "definitions.h"
 #include "Data.h"
+#include "importData.h"
+
+using namespace std;
+
 
 
 //
@@ -38,4 +39,7 @@ using namespace std;
 void importFiles(vector<string> files, int myRank,
 	double *myData, int *rows, int *cols, const int maxRowsPerFile,
 	const int arrayLimit);
+
+
+
 
