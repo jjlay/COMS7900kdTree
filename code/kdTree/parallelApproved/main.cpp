@@ -81,8 +81,6 @@ int main(int argc, char *argv[])
 	// number of lines PER FILE
 	const int maxRows = 1000;
 	
-	int sortInd = 1; // x = 1
-	
 	//////////////////
 	// Data Import  //
 	//////////////////
@@ -137,9 +135,39 @@ int main(int argc, char *argv[])
 	auto tree = new struct Tree;
 	tree->p = nullptr;
 	tree->depth = 0;
+	tree->n     = maxRows*maxFilesToProc;
 	
-	buildTree( array, rows, cols, tree, MPI_COMM_WORLD );
+	buildTree( array, rows, cols, tree, MPI_COMM_WORLD, myRank, numNodes );
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	cout << "root " << tree->i << endl;
+	cout << tree->x1 << " " << tree->x2 << endl;
+	cout << tree->y1 << " " << tree->y2 << endl;
+	cout << tree->z1 << " " << tree->z2 << endl;
+	
+	cout << "left" << endl;
+	cout << tree->l->x1 << " " << tree->l->x2 << endl;
+	cout << tree->l->y1 << " " << tree->l->y2 << endl;
+	cout << tree->l->z1 << " " << tree->l->z2 << endl;
+
+	cout << "right" << endl;
+	cout << tree->r->x1 << " " << tree->r->x2 << endl;
+	cout << tree->r->y1 << " " << tree->r->y2 << endl;
+	cout << tree->r->z1 << " " << tree->r->z2 << endl;
+	*/
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 	

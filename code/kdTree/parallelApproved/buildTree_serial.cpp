@@ -6,6 +6,8 @@
 #include "sortData.h"
 #include "definitions.h"
 
+#include "min.h"
+#include "max.h"
 
 //
 // Standard includes
@@ -49,26 +51,26 @@ void buildTree_serial(double *data, int rows, int cols, Tree *tree) {
 		//         ylen = ymax - ymin;
 		//         
 
-		sortData(data, cols, rows, _X_);
-
-		auto xMin = data[_X_];
-		auto xMax = data[(rows - 1) * cols + _X_];
+	//	sortData(data, cols, rows, _X_);
+		
+		auto xMin = min( data, rows, cols, _X_ );
+		auto xMax = max( data, rows, cols, _X_ );
 		auto rangeX = xMax - xMin;
 
 		// cout << endl << "Min X: " << xMin << ", Max X: " << xMax << ", Range X: " << rangeX << endl << endl;
 
-		sortData(data, cols, rows, _Y_);
+	//	sortData(data, cols, rows, _Y_);
 
-		auto yMin = data[_Y_];
-		auto yMax = data[(rows - 1) * cols + _Y_];
+		auto yMin = min( data, rows, cols, _Y_ );
+		auto yMax = max( data, rows, cols, _Y_ );
 		auto rangeY = yMax - yMin;
 
 		// cout << endl << "Min Y: " << yMin << ", Max Y: " << yMax << ", Range Y: " << rangeY << endl << endl;
 
-		sortData(data, cols, rows, _Z_);
+	//	sortData(data, cols, rows, _Z_);
 
-		auto zMin = data[_Z_];
-		auto zMax = data[(rows - 1) * cols + _Z_];
+		auto zMin = min( data, rows, cols, _Z_ );
+		auto zMax = max( data, rows, cols, _Z_ );
 		auto rangeZ = zMax - zMin;
 
 		// cout << endl << "Min Z: " << zMin << ", Max Z: " << zMax << ", Range Z: " << rangeZ << endl << endl;
