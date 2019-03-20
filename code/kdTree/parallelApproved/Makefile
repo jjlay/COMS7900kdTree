@@ -17,7 +17,7 @@ testbinsizing.o : testbinsizing.cpp
 	$(CC) $(CFLAGS) -c testbinsizing.cpp
 
 clean :
-	rm -f testbinsizing parallelSort
+	rm -f testbinsizing parallelSort main kdTree
 	rm -f *.o
 	rm -f core.*
 	rm -f MetropolisSort.e*

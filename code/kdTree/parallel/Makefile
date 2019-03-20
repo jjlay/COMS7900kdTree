@@ -1,6 +1,6 @@
 
 CC = mpicxx
-CFLAGS = -std=c++11 -ggdb -fbounds-check -Wall
+CFLAGS = -std=c++11 # -ggdb -fbounds-check -Wall
 
 
 kdTree : main.o initializeMPI.o listFiles.o distributeFiles.o receiveFiles.o importFiles.o transmitMinMax.o getLinearBins.o adaptBins.o testUniformity.o transmitMinMax.o receiveMinMax.o binData.o transmitBinEdges.o receiveBinCounts.o transmitUniformity.o receiveBinIndices.o exportResults.o min.o max.o swapArrayParts.o cleanUp.o testSort.o binData2.o parallelSort.o sortData.o buildTree.o
