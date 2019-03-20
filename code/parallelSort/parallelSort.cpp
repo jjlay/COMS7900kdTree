@@ -73,23 +73,16 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	int avgPtsPerWorker = numLines / numNodes;
 	
         // Perform initial sort
-        //sortArray(array, rows, cols, sortInd);
-	//LL_sort(array, rows, cols, sortInd);
-	
 	// Use qsort
 	sortData(array, cols, rows, sortInd);
 		
-//	auto deleteme = testSort(array, rows, cols, sortInd);
-	
-//	MPI_Barrier(MPI_COMM_WORLD);
-	
 	if( myRank == 0 ) {
 	        // Rank 0 is going to receive the number of lines on each
 	        // worker node
 	
 	        auto allRows = new int[numNodes];
-	        allRows[0] = 0;
-	        numLines = 0;
+	        allRows[0] = rows;
+	        numLines = rows;
 	
 	        MPI_Status tempStatus;
 	
@@ -98,9 +91,6 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	                        MPI_COMM_WORLD, &tempStatus);
 	                numLines += allRows[r];
 	        }
-	
-	        for (auto r = 1; r < numNodes; r++)
-	                cout << "Rank " << r << " sent " << allRows[r] << " rows" << endl;
 	
 	        cout << "There were a total of " << numLines << " rows across all workers" << endl;
 	}
