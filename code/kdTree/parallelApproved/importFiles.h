@@ -1,5 +1,3 @@
-#pragma once
-
 //
 // importFiles
 //
@@ -16,8 +14,22 @@
 //
 
 #include <string>
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+
+
+//
+// Local includes
+//
+//
+
+#include "definitions.h"
+#include "Data.h"
+
 
 using namespace std;
+
 
 
 //
@@ -25,9 +37,5 @@ using namespace std;
 //
 
 void importFiles(vector<string> files, int myRank,
-	double *myData, int *rows, int *cols, const int maxRowsPerFile,
-	const int arrayLimit);
-
-
-
+	double *myData, int *rows, int *cols, int maxRows);
 
