@@ -88,8 +88,8 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	        // worker node
 	
 	        auto allRows = new int[numNodes];
-	        allRows[0] = 0;
-	        numLines = 0;
+	        allRows[0] = *rowsPTR;
+	        numLines = *rowsPTR;
 	
 	        MPI_Status tempStatus;
 	
