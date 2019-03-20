@@ -46,7 +46,7 @@
 #include "exportResults.h"
 #include "min.h"
 #include "max.h"
-#include "LL_sort.h"
+// #include "LL_sort.h"
 #include "swapArrayParts.h"
 #include "cleanUp.h"
 #include "testSort.h"
@@ -130,11 +130,13 @@ int main(int argc, char *argv[])
 	int rows = 0, cols = 0;
 
         // Read data files in
-        double *array = new double[FilenameArray.size() * maxRows * _ROW_WIDTH_]; //JJL
-        importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows);
+        int maxArraySize = FilenameArray.size() * maxRows * _ROW_WIDTH_;
+        double *array = new double[maxArraySize];
+        importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows, maxArraySize);
 
         MPI_Request tempRequest;
-        MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, &tempRequest);
+        MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, 
+		MPI_COMM_WORLD, &tempRequest);
 
 	MPI_Barrier(MPI_COMM_WORLD);
 	
@@ -148,19 +150,13 @@ int main(int argc, char *argv[])
 	
 	// DONE
 	
-	cout << __FUNCTION__ << " : Line " << __LINE__ << " : rank " << myRank << ": " << array[0 + sortInd] << endl;
-	cout << "rank " << myRank << ": " << array[cols*(rows-1) + sortInd] << endl;
-	
 	delete array;
 
 	MPI_Barrier(MPI_COMM_WORLD);
 
-	cout << "main : Past final barrier rank " << myRank << endl;
-	
 	MPI_Finalize();
 
-//	return _OKAY_;
-	return 0;
+	return _OKAY_;
 }
 
 
