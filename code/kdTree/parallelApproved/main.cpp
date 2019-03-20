@@ -44,7 +44,6 @@
 #include "receiveBinCounts.h"
 #include "transmitUniformity.h"
 #include "receiveBinIndices.h"
-#include "sortArray.h"
 #include "exportResults.h"
 #include "min.h"
 #include "max.h"
