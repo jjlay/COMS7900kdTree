@@ -12,11 +12,11 @@ clean :
 	rm -f testbinsizing parallelSort main kdTree
 	rm -f *.o
 	rm -f core.*
-	rm -f MetropolisSort.e*
-	rm -f MetropolisSort.o*
+	rm -f MetropolisKdTree.e2*
+	rm -f MetropolisKdTree.o2*
 
 
 nolog :
 	rm -f core.*
-	rm -f MetropolisSort.e*
-	rm -f MetropolisSort.o*
+	rm -f MetropolisKdTree.e2*
+	rm -f MetropolisKdTree.o2*
