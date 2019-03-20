@@ -50,7 +50,6 @@
 #include "max.h"
 #include "swapArrayParts.h"
 #include "cleanUp.h"
-#include "testSort.h"
 #include "parallelSort.h"
 
 // buildTree
