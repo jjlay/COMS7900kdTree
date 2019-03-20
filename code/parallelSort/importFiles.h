@@ -5,9 +5,6 @@
 //
 
 
-#undef _DEBUG_
-
-
 //
 // STL includes
 //
@@ -21,6 +18,8 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+
+using namespace std;
 
 
 //
@@ -36,8 +35,7 @@
 // Function: importFiles
 //
 
-//Data_COMS* importFiles(std::vector<std::string> files, int myRank);
-void importFiles(std::vector<std::string> files, int myRank,
-	double *array, int *rows, int *cols, int maxRows);
-	
+void importFiles(vector<string> files, int myRank,
+	double *myData, int *rows, int *cols, const int maxRowsPerFile,
+	const int arrayLimit);
 
