@@ -26,6 +26,6 @@ struct Tree {
 	double radius;
 
 	double d[4];  // Data point
-	long unsigned int index;  // File row index
+	double index;  // File row index
 }
 ;

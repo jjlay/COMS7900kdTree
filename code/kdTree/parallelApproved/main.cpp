@@ -76,11 +76,13 @@ int main(int argc, char *argv[])
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 	
 	// total number of files to read
-	const int maxFilesToProc = 30;
+	const int maxFilesToProc = 3;
 
 	// number of lines PER FILE
-	const int maxRows = 1000;
+	const int maxRows = 10;
 	
+	int sortInd = 1; // x = 1
+
 	//////////////////
 	// Data Import  //
 	//////////////////
@@ -109,24 +111,56 @@ int main(int argc, char *argv[])
 		return _FAIL_;
 	}
 
-	
-	
 	MPI_Barrier(MPI_COMM_WORLD);
 	
 	int rows = 0, cols = _ROW_WIDTH_;
 
-        // Read data files in
-        int arrayLimit = FilenameArray.size() * maxRows * cols;
-        double *array = new double[arrayLimit];
+	// Read data files in
+	int arrayLimit = (FilenameArray.size() * maxRows * cols + 8);
+	double *array = new double[arrayLimit];
 
-        importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows);
+	importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows, arrayLimit);
 
-        MPI_Request tempRequest;
-        MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, 
+	MPI_Request tempRequest;
+	MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, 
 		&tempRequest);
 
 	MPI_Barrier(MPI_COMM_WORLD);
 	
+	////////////////////////
+	// Check min and max  //
+	////////////////////////
+
+	// Debug
+	double minX = 9999, maxX = -9999, minY = 9999, maxY = -9999, minZ = 9999, maxZ = -9999;
+	unsigned long int arrayIndex = 0;
+
+	for (auto i = 0; i < rows; i++) {
+		if (array[arrayIndex + _X_] < minX)
+			minX = array[arrayIndex + _X_];
+
+		if (array[arrayIndex + _X_] > maxX)
+			maxX = array[arrayIndex + _X_];
+
+		if (array[arrayIndex + _Y_] < minY)
+			minY = array[arrayIndex + _Y_];
+
+		if (array[arrayIndex + _Y_] > maxY)
+			maxY = array[arrayIndex + _Y_];
+
+		if (array[arrayIndex + _Z_] < minZ)
+			minZ = array[arrayIndex + _Z_];
+
+		if (array[arrayIndex + _Z_] > maxZ)
+			maxZ = array[arrayIndex + _Z_];
+
+		arrayIndex += 4;
+	}
+
+	cout << "main : Rank " << myRank << ", rows = " << rows << ", minX = " << minX << ", maxX = " << maxX
+		<< ", minY = " << minY << ", maxY = " << maxY 
+		<< ", minZ = " << minZ << ", maxZ = " << maxZ << endl;
+
 	///////////////
 	// buildTree //
 	///////////////
@@ -138,19 +172,6 @@ int main(int argc, char *argv[])
 	tree->n     = maxRows*maxFilesToProc;
 	
 	buildTree( array, rows, cols, tree, MPI_COMM_WORLD, myRank, numNodes );
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	/*
 	cout << "root " << tree->i << endl;
@@ -169,7 +190,9 @@ int main(int argc, char *argv[])
 	cout << tree->r->z1 << " " << tree->r->z2 << endl;
 	*/
 	
-	MPI_Barrier(MPI_COMM_WORLD);
+	cout << "Rank " << myRank << " finished  buildTree" << endl;
+
+  MPI_Barrier(MPI_COMM_WORLD);
 	
 	////////////////
 	// searchTree //
