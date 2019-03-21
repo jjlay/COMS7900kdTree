@@ -96,6 +96,8 @@ void importFiles(vector<string> files, int myRank,
 			lines++;
 			index++;
 			(*rows)++;
+
+			cout << "Rank " << myRank << " reading and has arrayIndex " << arrayIndex << " lines " << lines << " rows " << *rows << endl;
 		}
 
 		fclose(inFile);
