@@ -85,7 +85,8 @@ void importFiles(vector<string> files, int myRank,
 		while ((fscanf(inFile, "%s %lf %lf %lf\n", tempString, &myData[arrayIndex + _X_], 
 			&myData[arrayIndex + _Y_], &myData[arrayIndex + _Z_]) != EOF) &&
 			(lines < maxRowsPerFile) &&
-			(arrayIndex < arrayLimit-4))
+			(arrayIndex < arrayLimit-4) &&
+			(lines <_MAX_ROWS_))
 		{
 			if (myData[arrayIndex + _X_] < minX)
 				minX = myData[arrayIndex + _X_];
