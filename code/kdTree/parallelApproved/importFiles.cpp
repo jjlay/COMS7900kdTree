@@ -46,6 +46,9 @@ void importFiles(vector<string> files, int myRank,
 	unsigned int arrayIndex = 0;
 	*rows = 0;
 		
+	// Debug
+	double minX = 9999, maxX = -9999, minY = 9999, maxY = -9999, minZ = 9999, maxZ = -9999;
+
 	// loop through files to read
 	for (auto f : files) {
 		//
@@ -68,7 +71,6 @@ void importFiles(vector<string> files, int myRank,
 
 		const int maxFilenameLen = 10000;
 		char tempString[maxFilenameLen];
-		//double tempX = 0.0, tempY = 0.0, tempZ = 0.0;
 
 		long unsigned int lines = 0;
 
@@ -83,8 +85,26 @@ void importFiles(vector<string> files, int myRank,
 		while ((fscanf(inFile, "%s %lf %lf %lf\n", tempString, &myData[arrayIndex + _X_], 
 			&myData[arrayIndex + _Y_], &myData[arrayIndex + _Z_]) != EOF) &&
 			(lines < maxRowsPerFile) &&
-			(arrayIndex < arrayLimit))
+			(arrayIndex < arrayLimit-4))
 		{
+			if (myData[arrayIndex + _X_] < minX)
+				minX = myData[arrayIndex + _X_];
+
+			if (myData[arrayIndex + _X_] > maxX)
+				maxX = myData[arrayIndex + _X_];
+
+			if (myData[arrayIndex + _Y_] < minY)
+				minY = myData[arrayIndex + _Y_];
+
+			if (myData[arrayIndex + _Y_] > maxY)
+				maxY = myData[arrayIndex + _Y_];
+
+			if (myData[arrayIndex + _Z_] < minZ)
+				minZ = myData[arrayIndex + _Z_];
+
+			if (myData[arrayIndex + _Z_] > maxZ)
+				maxZ = myData[arrayIndex + _Z_];
+
 			myData[arrayIndex + _INDEX_] = index;
 
 			arrayIndex += 4;
@@ -95,6 +115,10 @@ void importFiles(vector<string> files, int myRank,
 
 		fclose(inFile);
 	}
+
+	cout << "importFiles : Rank " << myRank << "minX = " << minX << ", maxX = " << maxX
+		<< ", minY = " << minY << ", maxY = " << maxY 
+		<< ", minZ = " << minZ << ", maxZ = " << maxZ << endl;
 }
 
 
