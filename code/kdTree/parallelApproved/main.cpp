@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
 		arrayIndex += 4;
 	}
 
-	cout << "main : Rank " << myRank << ", rows = " << *rows << ", minX = " << minX << ", maxX = " << maxX
+	cout << "main : Rank " << myRank << ", rows = " << rows << ", minX = " << minX << ", maxX = " << maxX
 		<< ", minY = " << minY << ", maxY = " << maxY 
 		<< ", minZ = " << minZ << ", maxZ = " << maxZ << endl;
 
