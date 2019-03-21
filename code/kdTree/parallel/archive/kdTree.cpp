@@ -71,9 +71,7 @@ int main(int argc, char *argv[])
 
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 
-#ifdef _TIMING_
 	auto timeStart = std::chrono::system_clock::now();
-#endif
 	
 	// number of worker nodes
 	int numWorkers = numNodes - 1;
@@ -97,13 +95,12 @@ int main(int argc, char *argv[])
 		<< std::endl;
 */
 
-#ifdef _TIMING_
 	auto timeBeginFilenameDistribute = std::chrono::system_clock::now();
 	chrono::duration<double> timeElapsedSeconds = timeBeginFilenameDistribute - timeStart;
 	cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
 		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 		<< " to initialize MPI" << endl;
-#endif
+
 
 	//////////////////
 	//              //
@@ -145,13 +142,11 @@ int main(int argc, char *argv[])
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 	
-#ifdef _TIMING_
 	auto timeBeginFileImport = std::chrono::system_clock::now();
 	timeElapsedSeconds = timeBeginFileImport - timeBeginFilenameDistribute;
 	std::cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
 		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 		<< " to distribute the filenames" << std::endl;
-#endif
 	
 	int sortInd = _X_;
 	double myMin = 0.0;
@@ -169,25 +164,20 @@ int main(int argc, char *argv[])
 	        MPI_Request tempRequest;
 	        MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, &tempRequest);
 	
-#ifdef _TIMING_	
 	auto timeBeginSort = std::chrono::system_clock::now();
 	timeElapsedSeconds = timeBeginSort - timeBeginFileImport;
 	cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
 		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 		<< " to import data" << endl;
-#endif
-
-	        // Perform initial sort
-	        //sortArray(array, rows, cols, sortInd);
+	        
+		//sortArray(array, rows, cols, sortInd);
 	        LL_sort(array, rows, cols, sortInd);
 	        
-#ifdef _TIMING_	
 	auto timeAfterSort = std::chrono::system_clock::now();
 	timeElapsedSeconds = timeAfterSort - timeBeginSort;
 	cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
 		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 		<< " to sort data" << endl;
-#endif
 
 	        auto deleteme = testSort(array, rows, cols, sortInd);
 	}
@@ -216,9 +206,7 @@ int main(int argc, char *argv[])
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 
-#ifdef _TIMING_	
 	auto timeBeginMinMax = std::chrono::system_clock::now();
-#endif
 
 	auto allMins = new double[numNodes];
 	auto allMaxs = new double[numNodes];
@@ -253,13 +241,11 @@ int main(int argc, char *argv[])
 	
 	
 
-#ifdef _TIMING_	
 	auto timeBeginBinning = std::chrono::system_clock::now();
 	timeElapsedSeconds = timeBeginBinning - timeBeginMinMax;
 	std::cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
 		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 		<< " to exchange min and max" << std::endl;
-#endif
 
 	MPI_Barrier(MPI_COMM_WORLD);
 
@@ -499,7 +485,6 @@ int main(int argc, char *argv[])
 
 	MPI_Barrier(MPI_COMM_WORLD);
 
-#ifdef _TIMING_	
 	auto timeBeginSwapping = std::chrono::system_clock::now();
 	if (myRank == Rank0) {
 		timeElapsedSeconds = timeBeginSwapping - timeBeginBinning;
@@ -507,7 +492,6 @@ int main(int argc, char *argv[])
 			<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 			<< "to identify bins" << std::endl;
 	}
-#endif
 /*	
 	// Broadcast binI_2D to workers
 	for( int i = 0; i < numWorkers; i++ ) {
@@ -637,15 +621,12 @@ if(myRank !=0){
              		cleanUp(&array, &maxRows, &F_cols, clean, numNodes, binI_2D[myRank-1]);   
 		}
         }
-	MPI_Barrier(MPI_COMM_WORLD);
 
-#ifdef _TIMING_	
 	auto timeEndSwapping = std::chrono::system_clock::now();
 	timeElapsedSeconds = timeEndSwapping - timeBeginSwapping;
 	std::cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
 		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 		<< "to swap data" << std::endl;
-#endif
 //	sleep(myRank);
 /*
 if(myRank !=0){
@@ -669,13 +650,11 @@ if(myRank !=0){
                 // Export results
 
 
-#ifdef _TIMING_	
 	auto timeEndSort2 = std::chrono::system_clock::now();
 	timeElapsedSeconds = timeEndSwapping - timeEndSort2;
 	std::cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
 		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 		<< " second sort" << std::endl;
-#endif
 
 
 	//
@@ -686,13 +665,11 @@ if(myRank !=0){
 
 //	exportResults(array, rows, cols, numWorkers, myRank, myMin, myMax);
 
-#ifdef _TIMING_	
 	auto timeEnd = std::chrono::system_clock::now();
 	timeElapsedSeconds = timeEnd - timeStart;
 	std::cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
 		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 		<< "to run" << std::endl;
-#endif
 
 
 	MPI_Finalize();
