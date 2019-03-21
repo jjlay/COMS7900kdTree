@@ -1,6 +1,13 @@
 #pragma once
 
 //
+// Parallel includes
+//
+
+#include "mpi.h"
+
+
+//
 // Struct
 //
 
