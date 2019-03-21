@@ -60,6 +60,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 		int color = 0;
 
 		if (myRank < numLeftNodes) {
+			cout << __FUNCTION__ << " : Rank " << myRank << " is going left" << endl;
 			tree->l = new Tree;
 			tree->r = nullptr;
 			tree->rightComm = MPI_COMM_SELF;
@@ -78,6 +79,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			tree->r->rightComm = MPI_COMM_SELF;
 		}
 		else {
+			cout << __FUNCTION__ << " : Rank " << myRank << " is going right" << endl;
 			tree->r = new Tree;
 			tree->l = nullptr;
 			tree->leftComm = MPI_COMM_SELF;
