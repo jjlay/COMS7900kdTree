@@ -169,12 +169,34 @@ int main(int argc, char *argv[])
 	// buildTree //
 	///////////////
 	
+	// Get global mins and maxs
+	double globalMinX = 0;
+	double globalMaxX = 0;
+	double globalMinY = 0;
+	double globalMaxY = 0;
+	double globalMinZ = 0;
+	double globalMaxZ = 0;
+
+
 	// initialize tree
 	auto tree = new struct Tree;
 	tree->p = nullptr;
 	tree->depth = 0;
-	tree->n     = maxRows*maxFilesToProc;
-	
+	tree->n     = rows;
+	tree->parentComm = MPI_COMM_SELF;
+	tree->leftComm = MPI_COMM_SELF;
+	tree->rightComm = MPI_COMM_SELF;
+	tree->thisComm = MPI_COMM_WORLD;
+	tree->x1 = globalMinX;
+	tree->x2 = globalMaxX;
+	tree->y1 = globalMinY;
+	tree->y2 = globalMaxY;
+	tree->z1 = globalMinZ;
+	tree->z2 = globalMaxZ;
+	tree->c[_X_] = (globalMinX + globalMaxX) / 2.0;
+	tree->c[_Y_] = (globalMinY + globalMaxY) / 2.0;
+	tree->c[_Z_] = (globalMinZ + globalMaxZ) / 2.0;
+
 	buildTree( array, rows, cols, tree, MPI_COMM_WORLD, myRank, numNodes );
 	
 	/*

@@ -31,7 +31,7 @@ void buildTree(double *data, int rows, int cols, Tree *tree, MPI_Comm comm, int 
 	
 	if( q > 1 ) {
 		cout << "parallel" << endl;
-		buildTree_parallel( data, rows, cols, tree, comm, myRank, numNodes );
+		buildTree_parallel( data, rows, cols, tree, comm, myRank, q );
 	} else {
 		cout << "serial" << endl;
 		buildTree_serial( data, rows, cols, tree);

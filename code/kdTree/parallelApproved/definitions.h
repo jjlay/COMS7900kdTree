@@ -47,6 +47,14 @@
 
 
 //
+// MPI Colors
+//
+
+#define mpi_Color_Left   1
+#define mpi_Color_Right  2
+
+
+//
 // MPI lengths
 //
 
