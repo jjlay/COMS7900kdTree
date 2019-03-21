@@ -119,6 +119,10 @@ int main(int argc, char *argv[])
 	unsigned long int arrayLimit = (FilenameArray.size() * maxRows * cols + 8);
 	double *array = new double[arrayLimit];
 
+	// void importFiles(vector<string> files, int myRank,
+	// 	double *myData, int *rows, int *cols, int maxRows,
+	// 	int maxRowsPerFile, unsigned long int arrayLimit)
+
 	importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows, arrayLimit);
 
 	MPI_Request tempRequest;
