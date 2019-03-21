@@ -48,10 +48,6 @@ void importFiles(vector<string> files, int myRank,
 		
 	// loop through files to read
 	for (auto f : files) {
-		cout << "importFiles : Rank " << myRank << " Reading " << f << " : Rows " << *rows << " : arrayIndex " << arrayIndex 
-			<< " : cols  " << *cols
-			<< " : arrayLimit " << arrayLimit << endl;
-
 		//
 		// Read in file
 		//
@@ -77,7 +73,6 @@ void importFiles(vector<string> files, int myRank,
 		long unsigned int lines = 0;
 
 		auto index = CalculateIndex(f);
-		cout << "importFiles : Rank " << myRank << " Index is " << index << endl;
 
 		//
 		// Read in each row of the file and parse it.
@@ -96,13 +91,9 @@ void importFiles(vector<string> files, int myRank,
 			lines++;
 			index++;
 			(*rows)++;
-
-			cout << "Rank " << myRank << " reading and has arrayIndex " << arrayIndex << " lines " << lines << " rows " << *rows << endl;
 		}
 
 		fclose(inFile);
-
-		cout << "importData : Rank " << myRank << " Finished " << cstrFileName << endl;
 	}
 }
 
@@ -144,8 +135,6 @@ double CalculateIndex(string filename)
 
 	// Figure out the starting index
 	double r = static_cast<double>(_MAX_ROWS_) * n;
-
-	// cout << "File " << filename << " : " << s << " : " << justName << " : " << n << " : " << r << endl;
 
 	return r;
 }
