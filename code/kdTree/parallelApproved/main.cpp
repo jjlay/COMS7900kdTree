@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
 	int rows = 0, cols = _ROW_WIDTH_;
 
 	// Read data files in
-	int arrayLimit = (FilenameArray.size() * maxRows * cols + 8);
+	unsigned long int arrayLimit = (FilenameArray.size() * maxRows * cols + 8);
 	double *array = new double[arrayLimit];
 
 	importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows, arrayLimit);
