@@ -69,6 +69,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			MPI_Comm_split(tree->thisComm, color, myRank, &tempComm);
 			tree->leftComm = tempComm;
 
+			cout << __FUNCTION__ " : Rank " << myRank << " initializing new tree node" << endl;
 			tree->l->p = tree;
 			tree->l->depth = tree->depth+1;
 			tree->l->parentComm = tree->thisComm;
@@ -76,7 +77,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			tree->l->l = nullptr;
 			tree->l->r = nullptr;
 			tree->l->leftComm = MPI_COMM_SELF;
-			tree->r->rightComm = MPI_COMM_SELF;
+			tree->l->rightComm = MPI_COMM_SELF;
 		}
 		else {
 			cout << __FUNCTION__ << " : Rank " << myRank << " is going right" << endl;
@@ -88,6 +89,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			MPI_Comm_split(tree->thisComm, color, myRank, &tempComm);
 			tree->rightComm = tempComm;
 
+			cout << __FUNCTION__ " : Rank " << myRank << " initializing new tree node" << endl;
 			tree->r->p = tree;
 			tree->r->depth = tree->depth+1;
 			tree->r->parentComm = tree->thisComm;
@@ -95,7 +97,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			tree->r->l = nullptr;
 			tree->r->r = nullptr;
 			tree->r->leftComm = MPI_COMM_SELF;
-			tree->l->rightComm = MPI_COMM_SELF;
+			tree->r->rightComm = MPI_COMM_SELF;
 		}
 
 		cout << "buildTree_parallel : Rank " << myRank 
