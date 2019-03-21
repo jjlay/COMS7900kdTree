@@ -116,7 +116,7 @@ void importFiles(vector<string> files, int myRank,
 		fclose(inFile);
 	}
 
-	cout << "importFiles : Rank " << myRank << "minX = " << minX << ", maxX = " << maxX
+	cout << "importFiles : Rank " << myRank << ", minX = " << minX << ", maxX = " << maxX
 		<< ", minY = " << minY << ", maxY = " << maxY 
 		<< ", minZ = " << minZ << ", maxZ = " << maxZ << endl;
 }
