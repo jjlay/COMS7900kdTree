@@ -67,7 +67,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 		int color = 0;
 
 		if (myRank < numLeftNodes) {
-			cout << __FUNCTION__ << " : Rank " << myRank << " is going left" << endl;
+			cout << __FUNCTION__ << " : Rank " << myRank << " is going left on communicator " << tree->thisComm << endl;
 			tree->l = new Tree;
 			tree->r = nullptr;
 			tree->rightComm = MPI_COMM_SELF;
@@ -76,7 +76,6 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			MPI_Comm_split(tree->thisComm, color, myRank, &tempComm);
 			tree->leftComm = tempComm;
 
-			cout << __FUNCTION__ << " : Rank " << myRank << " initializing new tree node at depth " << tree->depth << endl;
 			tree->l->p = tree;
 			tree->l->depth = tree->depth+1;
 			tree->l->parentComm = tree->thisComm;
@@ -89,7 +88,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			buildTree(data, rows, cols, tree->l, tree->leftComm, myRank, numLeftNodes);
 		}
 		else {
-			cout << __FUNCTION__ << " : Rank " << myRank << " is going right at depth " << tree->depth << endl;
+			cout << __FUNCTION__ << " : Rank " << myRank << " is going right at communicator " << tree->thisComm << endl;
 			tree->r = new Tree;
 			tree->l = nullptr;
 			tree->leftComm = MPI_COMM_SELF;
@@ -98,7 +97,6 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			MPI_Comm_split(tree->thisComm, color, myRank, &tempComm);
 			tree->rightComm = tempComm;
 
-			cout << __FUNCTION__ << " : Rank " << myRank << " initializing new tree node" << endl;
 			tree->r->p = tree;
 			tree->r->depth = tree->depth+1;
 			tree->r->parentComm = tree->thisComm;
@@ -111,11 +109,11 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			buildTree(data, rows, cols, tree->r, tree->rightComm, myRank, numRightNodes);
 		}
 
-		cout << "buildTree_parallel : Rank " << myRank 
-			<< ", Depth " << tree->depth
-			<< ", SortDim " << sortDim 
-			<< ", Joining COMM " << color
-			<< endl;
+		// cout << "buildTree_parallel : Rank " << myRank 
+		// 	<< ", Depth " << tree->depth
+		// 	<< ", SortDim " << sortDim 
+		// 	<< ", Joining COMM " << color
+		// 	<< endl;
 
 		
 	} else {
