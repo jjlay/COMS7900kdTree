@@ -83,8 +83,6 @@ int main(int argc, char *argv[])
 	
 	int sortInd = 1; // x = 1
 
-	cout << "Rank " << myRank << " finished initializing MPI" << endl;
-	
 	//////////////////
 	// Data Import  //
 	//////////////////
@@ -113,8 +111,6 @@ int main(int argc, char *argv[])
 		return _FAIL_;
 	}
 
-	
-	cout << "Rank " << myRank << " finished received files" << endl;
 	MPI_Barrier(MPI_COMM_WORLD);
 	
 	int rows = 0, cols = _ROW_WIDTH_;
@@ -129,7 +125,6 @@ int main(int argc, char *argv[])
         MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, 
 		&tempRequest);
 
-	cout << "Rank " << myRank << " finished data import" << endl;	
 	MPI_Barrier(MPI_COMM_WORLD);
 	
 	///////////////
