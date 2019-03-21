@@ -15,6 +15,8 @@
 
 #include <string>
 #include <iostream>
+#include <iomanip>
+#include <fstream>
 
 
 //
@@ -40,8 +42,9 @@ double CalculateIndex(string filename);
 //
 
 void importFiles(vector<string> files, int myRank,
-	double *myData, int *rows, int *cols, const int maxRowsPerFile,
-	const int arrayLimit) {
+	double *myData, int *rows, int *cols, int maxRows) {
+
+	*cols = _ROW_WIDTH_;
 
 	unsigned int arrayIndex = 0;
 	*rows = 0;
@@ -121,7 +124,6 @@ void importFiles(vector<string> files, int myRank,
 		<< ", minY = " << minY << ", maxY = " << maxY 
 		<< ", minZ = " << minZ << ", maxZ = " << maxZ << endl;
 }
-
 
 //
 // Method: CalculateIndex()
