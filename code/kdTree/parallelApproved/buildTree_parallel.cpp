@@ -25,11 +25,11 @@ using namespace std;
 
 void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes ) {
 	
-	cout << "buildTree_parallel : Rank " << myRank << ", Left nodes = " << numLeftNodes << ", Right nodes = " << numRightNodes << endl;
-
 	if( rows > 1 ) {
 		int numLeftNodes = numNodes / 2;
 		int numRightNodes = numNodes - numLeftNodes;
+
+		cout << "buildTree_parallel : Rank " << myRank << ", Left nodes = " << numLeftNodes << ", Right nodes = " << numRightNodes << endl;
 
 		// Get global mins and maxs
 		double globalMinX = 0;
