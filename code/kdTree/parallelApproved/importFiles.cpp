@@ -121,9 +121,9 @@ void importFiles(vector<string> files, int myRank,
 		fclose(inFile);
 	}
 
-	cout << "importFiles : Rank " << myRank << ", rows = " << *rows << ", minX = " << minX << ", maxX = " << maxX
-		<< ", minY = " << minY << ", maxY = " << maxY 
-		<< ", minZ = " << minZ << ", maxZ = " << maxZ << endl;
+//	cout << "importFiles : Rank " << myRank << ", rows = " << *rows << ", minX = " << minX << ", maxX = " << maxX
+//		<< ", minY = " << minY << ", maxY = " << maxY 
+//		<< ", minZ = " << minZ << ", maxZ = " << maxZ << endl;
 }
 
 //
