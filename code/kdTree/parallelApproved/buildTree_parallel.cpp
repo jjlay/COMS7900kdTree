@@ -6,13 +6,20 @@
 #include "sortData.h"
 #include "definitions.h"
 #include "getSortDim.h"
+#include "buildTree.h"
+
+
+//
+// Parallel includes
+//
+
+#include "mpi.h"
 
 
 //
 // Standard includes
 //
 
-#include "mpi.h"
 #include <iostream>
 #include <math.h>
 
