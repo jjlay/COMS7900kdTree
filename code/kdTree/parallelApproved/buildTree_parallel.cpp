@@ -31,7 +31,7 @@ using namespace std;
 //
 
 void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes ) {
-	int key = 50000 + (tree->depth * 100);
+	int key = 60000 + (tree->depth * 100) + 5;
 	
 	if( rows > 1 ) {
 		int numLeftNodes = numNodes / 2;
