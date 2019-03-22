@@ -89,7 +89,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			tree->l->leftComm = MPI_COMM_SELF;
 			tree->l->rightComm = MPI_COMM_SELF;
 
-			buildTree(data, rows, cols, tree->l, tree->leftComm, myRank, numLeftNodes);
+			buildTree(data, rows, cols, tree->l, tree->leftComm, newRank, numLeftNodes);
 		}
 		else {
 			cout << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << myRank << " is going right on communicator " << tree->thisComm << endl;
@@ -114,8 +114,6 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			tree->r->leftComm = MPI_COMM_SELF;
 			tree->r->rightComm = MPI_COMM_SELF;
 
-			int newRank = _Undefined_;
-			MPI_Comm_rank(tempComm, &newRank);
 			buildTree(data, rows, cols, tree->r, tree->rightComm, newRank, numRightNodes);
 		}
 
