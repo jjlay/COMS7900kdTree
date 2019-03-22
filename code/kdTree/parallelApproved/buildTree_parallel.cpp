@@ -95,7 +95,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 
 			cout << key+4 << " : " << __FUNCTION__ << " : Rank " << myRank << " is calling buildTree" << endl;
 			buildTree(data, rows, cols, tree->l, tree->leftComm, newRank, numLeftNodes, tree->l->name);
-			cout << key+4 << " : " << __FUNCTION__ << " : Rank " << myRank << " has returned from buildTree" << endl;
+			cout << key+5 << " : " << __FUNCTION__ << " : Rank " << myRank << " has returned from buildTree" << endl;
 		}
 		else 
 		{
