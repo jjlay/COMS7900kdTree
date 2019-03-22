@@ -31,9 +31,18 @@ using namespace std;
 //
 
 void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes ) {
-	
+
+	MPI_Status mpiStatusResult;
+	int mpiReturnValue;
+
 	int currentRank = 0;
-	MPI_Comm_rank( tree->thisComm, &currentRank );
+	mpiReturnValue = MPI_Comm_rank( tree->thisComm, &currentRank );
+
+	if (mpiReturnValue != MPI_SUCCESS) {
+		cout << "CRASH: " << __FUNCTION__ << " Line " << __LINE__ << endl;
+		MPI_Abort(MPI_COMM_WORLD, _FAIL_);
+		exit(_FAIL_);
+	}
 
 	int key = 50000 + (tree->depth * 100) + 5;
 	
@@ -66,7 +75,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 		pow(tree->c[_Y_] - globalMinY, 2.0) +
 		pow(tree->c[_Z_] - globalMinZ, 2.0));
 
-	int sortDim = getSortDim( data, rows, cols, tree, myRank, numNodes, comm );
+	// int sortDim = getSortDim( data, rows, cols, tree, myRank, numNodes, comm );
 	
 	int color = 0;
 
@@ -77,7 +86,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 		tree->r = nullptr;
 		tree->rightComm = MPI_COMM_SELF;
 		color = mpi_Color_Left;
-		MPI_Comm tempComm;
+		MPI_Comm tempComm = MPI_COMM_SELF;
 		MPI_Comm_split(tree->thisComm, color, myRank, &tempComm);
 		tree->leftComm = tempComm;
 		
@@ -109,7 +118,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 		tree->leftComm = MPI_COMM_SELF;
 
 		color = mpi_Color_Right;
-		MPI_Comm tempComm;
+		MPI_Comm tempComm = MPI_COMM_SELF;
 		MPI_Comm_split(tree->thisComm, color, myRank, &tempComm);
 		tree->rightComm = tempComm;
 
