@@ -75,6 +75,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 		pow(tree->c[_Y_] - globalMinY, 2.0) +
 		pow(tree->c[_Z_] - globalMinZ, 2.0));
 
+	// getSortDim crashes the code!
 	// int sortDim = getSortDim( data, rows, cols, tree, myRank, numNodes, comm );
 	
 	int color = 0;
