@@ -93,7 +93,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			tree->l->leftComm = MPI_COMM_SELF;
 			tree->l->rightComm = MPI_COMM_SELF;
 
-			buildTree(data, rows, cols, tree->l, tree->leftComm, newRank, numLeftNodes, tree->name);
+			buildTree(data, rows, cols, tree->l, tree->leftComm, newRank, numLeftNodes, tree->l->name);
 		}
 		else 
 		{
@@ -122,7 +122,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			tree->r->leftComm = MPI_COMM_SELF;
 			tree->r->rightComm = MPI_COMM_SELF;
 
-			buildTree(data, rows, cols, tree->r, tree->rightComm, newRank, numRightNodes, tree->name);
+			buildTree(data, rows, cols, tree->r, tree->rightComm, newRank, numRightNodes, tree->r->name);
 		}
 
 		// cout << "buildTree_parallel : Rank " << myRank 

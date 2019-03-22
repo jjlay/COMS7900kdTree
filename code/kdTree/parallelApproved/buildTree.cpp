@@ -37,7 +37,9 @@ void buildTree(double *data, int rows, int cols, Tree *tree, MPI_Comm comm, int 
 			<< " parallel named " << tree->name  << " q = " << q << " called by " << name
 			<< endl;
 		buildTree_parallel( data, rows, cols, tree, comm, myRank, q );
-	} else {
+	} 
+	else 
+	{
 		tree->name += "*";
 		cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << myRank 
 			<< " serial named " << tree->name  << " q = " << q << " called by " << name
