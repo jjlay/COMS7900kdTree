@@ -102,9 +102,16 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			tree->r->name = tree->name + "r";
 			tree->l = nullptr;
 			tree->leftComm = MPI_COMM_SELF;
+
 			color = mpi_Color_Right;
 			MPI_Comm tempComm;
+			
+			cout << key << " : " << __FUNCTION__ << " : Rank " << myRank << " is splitting right" << endl;			
+
 			MPI_Comm_split(tree->thisComm, color, myRank, &tempComm);
+
+			cout << key << " : " << __FUNCTION__ << " : Rank " << myRank << " has split!" << endl;			
+
 			tree->rightComm = tempComm;
 
 			int newRank = _Undefined_;
