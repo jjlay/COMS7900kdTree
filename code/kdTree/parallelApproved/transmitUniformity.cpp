@@ -30,7 +30,7 @@
 //
 //    numWorkers - number of workers
 
-void transmitUniformity( int *isUniform, int numWorkers) {
+void transmitUniformity( int *isUniform, int numWorkers, MPI_Comm comm) {
 
 	int result;
 	MPI_Request request;
@@ -40,7 +40,7 @@ void transmitUniformity( int *isUniform, int numWorkers) {
 	for( int i = 1; i < numWorkers; i++ ) {
 		
 		result = MPI_Isend( isUniform, 1, MPI_INT, i,
-			mpi_Tag_isUnif, MPI_COMM_WORLD, &request);
+			mpi_Tag_isUnif, comm, &request);
 		
 	}
 }

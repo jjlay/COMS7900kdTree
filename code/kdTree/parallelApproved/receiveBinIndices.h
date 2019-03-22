@@ -1,5 +1,7 @@
 #pragma once
 
+#include "mpi.h"
+
 
 //
 // Function: receiveBinIndices
@@ -13,6 +15,6 @@
 //    Nothing
 //
 
-void receiveBinIndices(int **binI, int numWorkers);
+void receiveBinIndices(int **binI, int numWorkers, MPI_Comm comm);
 
 

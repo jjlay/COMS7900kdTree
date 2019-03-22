@@ -30,7 +30,7 @@
 //
 //    numWorkers - number of workers
 
-void receiveBinCounts(int *binC, int numWorkers) {
+void receiveBinCounts(int *binC, int numWorkers, MPI_Comm comm) {
 	
 	int *part = new int[numWorkers];
 	int result;
@@ -48,7 +48,7 @@ void receiveBinCounts(int *binC, int numWorkers) {
 	//	std::cout << "test " << 0 << std::endl;
 		// add the binC's
 		result = MPI_Recv( part, numWorkers, MPI_INT, i,
-			mpi_Tag_BinCounts, MPI_COMM_WORLD, &status );
+			mpi_Tag_BinCounts, comm, &status );
 		
 		for( int j = 0; j < numWorkers; j++ ) {
 			binC[j] = binC[j] + part[j];

@@ -30,7 +30,7 @@
 //
 //    numWorkers - number of workers
 
-void receiveBinIndices(int **binI, int numWorkers) {
+void receiveBinIndices( int **binI, int numWorkers, MPI_Comm comm ) {
 	
 	int  *part = new int[numWorkers+1]; 		// [bin]
 	int result;
@@ -42,7 +42,7 @@ void receiveBinIndices(int **binI, int numWorkers) {
 		
 		// add the binC's
 		result = MPI_Recv( part, numWorkers+1, MPI_INT, i,
-			mpi_Tag_BinCounts, MPI_COMM_WORLD, &status );
+			mpi_Tag_BinCounts, comm, &status );
 		
 		for( int j = 0; j < numWorkers+1; j++ ) {
 			binI[i][j] = part[j];

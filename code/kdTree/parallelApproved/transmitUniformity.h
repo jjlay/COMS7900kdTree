@@ -1,5 +1,7 @@
 #pragma once
 
+#include "mpi.h"
+
 
 //
 // Function: transmitUniformity
@@ -13,6 +15,6 @@
 //    Nothing
 //
 
-void transmitUniformity( int *isUniform, int numWorkers);
+void transmitUniformity( int *isUniform, int numWorkers, MPI_Comm comm);
 
 

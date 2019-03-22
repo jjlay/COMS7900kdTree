@@ -13,6 +13,6 @@
 //    Nothing
 //
 
-void transmitBinEdges(double *bins, int numWorkers);
+void transmitBinEdges(double *bins, int numWorkers, MPI_Comm comm);
 
 
