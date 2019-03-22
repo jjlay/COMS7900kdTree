@@ -70,7 +70,7 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 		allMins[0][_X_] = xMin;
 		allMaxs[0][_X_] = xMax;
 		for (auto r = 1; r < numNodes; r++) {
-			receiveMinMax(r, &allMins[r][_X_], &allMaxs[r][_X_]);
+			receiveMinMax(r, &allMins[r][_X_], &allMaxs[r][_X_], comm);
 		}
 		
 		minGlobal[_X_] = allMins[0][_X_];
@@ -87,7 +87,7 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 			<<  " X: " << minGlobal[_X_] << " " << maxGlobal[_X_] << endl;
 	} else {
 		
-		transmitMinMax(xMin, xMax);
+		transmitMinMax(xMin, xMax, comm);
 	}
 	
 	cout << "Rank " << myRank
@@ -98,7 +98,7 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 		allMins[0][_Y_] = yMin;
 		allMaxs[0][_Y_] = yMax;
 		for (auto r = 1; r < numNodes; r++) {
-			receiveMinMax(r, &allMins[r][_Y_], &allMaxs[r][_Y_]);
+			receiveMinMax(r, &allMins[r][_Y_], &allMaxs[r][_Y_], comm);
 		}
 		
 		minGlobal[_Y_] = allMins[0][_Y_];
@@ -114,7 +114,7 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 			<< " Name " << tree->name
 			<< " Y: " << minGlobal[_Y_] << " " << maxGlobal[_Y_] << endl;
 	} else {
-		transmitMinMax(yMin, yMax);
+		transmitMinMax(yMin, yMax, comm);
 	}
 	
 	cout << "Rank " << myRank
@@ -125,7 +125,7 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 		allMins[0][_Z_] = zMin;
 		allMaxs[0][_Z_] = zMax;
 		for (auto r = 1; r < numNodes; r++) {
-			receiveMinMax(r, &allMins[r][_Z_], &allMaxs[r][_Z_]);
+			receiveMinMax(r, &allMins[r][_Z_], &allMaxs[r][_Z_], comm);
 		}
 		
 		minGlobal[_Z_] = allMins[0][_Z_];
@@ -141,7 +141,7 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 			<< " Name " << tree->name
 			<< " Z: " << minGlobal[_Z_] << " " << maxGlobal[_Z_] << endl;
 	} else {
-		transmitMinMax(zMin, zMax);
+		transmitMinMax(zMin, zMax, comm);
 	}
 	
 	cout << "Rank " << myRank
