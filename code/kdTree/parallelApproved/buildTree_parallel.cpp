@@ -106,18 +106,18 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			color = mpi_Color_Right;
 			MPI_Comm tempComm;
 			
-			cout << key << " : " << __FUNCTION__ << " : Rank " << myRank << " is splitting right" << endl;			
+			cout << key+1 << " : " << __FUNCTION__ << " : Rank " << myRank << " is splitting right" << endl;			
 
 			MPI_Comm_split(tree->thisComm, color, myRank, &tempComm);
 
-			cout << key << " : " << __FUNCTION__ << " : Rank " << myRank << " has split!" << endl;			
+			cout << key+2 << " : " << __FUNCTION__ << " : Rank " << myRank << " has split!" << endl;			
 
 			tree->rightComm = tempComm;
 
 			int newRank = _Undefined_;
 			MPI_Comm_rank(tempComm, &newRank);
 			
-			cout << key << " : " << __FUNCTION__ << " : Rank " << myRank << " has a new communicator and is now rank " << newRank 
+			cout << key+3 << " : " << __FUNCTION__ << " : Rank " << myRank << " has a new communicator and is now rank " << newRank 
 				<< " called " << tree->r->name << endl;
 
 			tree->r->p = tree;
@@ -129,9 +129,9 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			tree->r->leftComm = MPI_COMM_SELF;
 			tree->r->rightComm = MPI_COMM_SELF;
 
-			cout << key << " : " << __FUNCTION__ << " : Rank " << myRank << " is calling buildTree" << endl;
+			cout << key+4 << " : " << __FUNCTION__ << " : Rank " << myRank << " is calling buildTree" << endl;
 			buildTree(data, rows, cols, tree->r, tree->rightComm, newRank, numRightNodes, tree->r->name);
-			cout << key << " : " << __FUNCTION__ << " : Rank " << myRank << " has returned from buildTree" << endl;
+			cout << key+5 << " : " << __FUNCTION__ << " : Rank " << myRank << " has returned from buildTree" << endl;
 		}
 
 		// cout << "buildTree_parallel : Rank " << myRank 
