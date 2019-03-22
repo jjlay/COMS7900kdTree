@@ -131,9 +131,9 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			tree->r->leftComm = MPI_COMM_SELF;
 			tree->r->rightComm = MPI_COMM_SELF;
 
-			cout << key+4 << " : " << __FUNCTION__ << " : Depth " << " Rank " << myRank << " is calling buildTree" << endl;
+			cout << key+4 << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << myRank << " is calling buildTree" << endl;
 			buildTree(data, rows, cols, tree->r, tree->rightComm, newRank, numRightNodes, tree->r->name);
-			cout << key+5 << " : " << __FUNCTION__ << " : Depth " << " Rank " << myRank << " has returned from buildTree" << endl;
+			cout << key+5 << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << myRank << " has returned from buildTree" << endl;
 		}
 
 		// cout << "buildTree_parallel : Rank " << myRank 
