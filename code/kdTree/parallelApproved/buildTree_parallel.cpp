@@ -76,7 +76,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			MPI_Comm_split(tree->thisComm, color, myRank, &tempComm);
 			tree->leftComm = tempComm;
 			int newRank = _Undefined_;
-			MPI_Get_rank(tempComm, &newRank);
+			MPI_Comm_rank(tempComm, &newRank);
 			cout << __FUNCTION__ << " : Rank " << myRank << " has a new communicator " << tempComm 
 				<< " and is now rank " << newRank << endl;
 
@@ -100,7 +100,10 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			MPI_Comm tempComm;
 			MPI_Comm_split(tree->thisComm, color, myRank, &tempComm);
 			tree->rightComm = tempComm;
-			cout << __FUNCTION__ << " : Rank " << myRank << " has a new communicator " << tempComm << endl;
+			int newRank = _Undefined_;
+			MPI_Comm_rank(tempComm, &newRank);
+			cout << __FUNCTION__ << " : Rank " << myRank << " has a new communicator " << tempComm 
+				<< " and is now rank " << newRank << endl;
 
 			tree->r->p = tree;
 			tree->r->depth = tree->depth+1;
