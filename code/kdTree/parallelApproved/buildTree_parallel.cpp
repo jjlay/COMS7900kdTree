@@ -90,7 +90,8 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 	// Split right
 	{
 	//	cout << key+10 << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank << " is going right" << endl;
-		tree->r = new Tree;
+
+    tree->r = new Tree;
 		tree->r->name = tree->name + "r";
 		tree->l = nullptr;
 		tree->leftComm = MPI_COMM_SELF;
