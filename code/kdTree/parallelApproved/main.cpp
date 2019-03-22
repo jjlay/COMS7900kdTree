@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 	
 	// total number of files to read
-	const int maxFilesToProc = 3;
+	const int maxFilesToProc = 8;
 
 	// number of lines PER FILE
 	const int maxRows = 10;
