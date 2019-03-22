@@ -102,7 +102,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 	}
 	else 
 	{
-		cout << key+1 << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currenRank << " is going right" << endl;
+		cout << key+1 << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank << " is going right" << endl;
 		tree->r = new Tree;
 		tree->r->name = tree->name + "r";
 		tree->l = nullptr;
