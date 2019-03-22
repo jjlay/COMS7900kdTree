@@ -29,7 +29,7 @@
 // Returns:
 //   Nothing
 
-void transmitMinMax(double min, double max) {
+void transmitMinMax( double min, double max, MPI_Comm comm ) {
 
 	auto minMax = new double[2];
 
@@ -37,7 +37,7 @@ void transmitMinMax(double min, double max) {
 	minMax[_MAX_] = max;
 
 	int result = MPI_Send(minMax, 2, MPI_DOUBLE, Rank0,
-		mpi_Tag_SendMinMax, MPI_COMM_WORLD);
+		mpi_Tag_SendMinMax, comm);
 }
 
 

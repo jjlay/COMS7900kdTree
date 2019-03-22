@@ -112,7 +112,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	// Send minimums and maximums
 	myMin = min(array, rows, cols, _X_);
 	myMax = max(array, rows, cols, _X_);
-	transmitMinMax(myMin, myMax);
+	transmitMinMax( myMin, myMax, comm );
 	
 	if (myRank == 0) {
 		cout.precision(10);
@@ -121,7 +121,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	//	allMaxs[Rank0] = 0.0;
 
 		for (auto r = 0; r < numNodes; r++) {
-			receiveMinMax(r, &allMins[r], &allMaxs[r]);
+			receiveMinMax( r, &allMins[r], &allMaxs[r], comm );
 		//	cout << r << " " << allMins[r] << " " << allMaxs[r] << endl;
 		}
 		
@@ -181,7 +181,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 //		std::cout << "binE: " << binE[0] << " " << binE[1] << " " << binE[2] << " " << binE[3] << std::endl;
 		
 		// Transmit initial bin edges
-		transmitBinEdges( binE, numNodes );
+		transmitBinEdges( binE, numNodes, comm );
 	} else {
 		// Receive initial bin edges
 		result = MPI_Recv( binE, numNodes+1, MPI_DOUBLE, 0,
@@ -251,7 +251,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 		}
 //	*/	
 		// Transmit isUniform update
-		transmitUniformity( isUniform, numNodes);
+		transmitUniformity( isUniform, numNodes, comm );
 	} else { 
 		// Receive isUniform update
 		result = MPI_Recv( isUniform, 1, MPI_INT, 0,
@@ -278,7 +278,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	//		cout << "binE: " << binE[0] << " " << binE[1] << " " << binE[2] << " " << binE[3] << endl;
 			
 			// Transmit initial bin edges
-			transmitBinEdges( binE, numNodes );
+			transmitBinEdges( binE, numNodes, comm );
 		} else {
 			// Receive initial bin edges
 			result = MPI_Recv( binE, numNodes+1, MPI_DOUBLE, 0,
@@ -349,7 +349,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 			}
 	//	*/	
 			// Transmit isUniform update
-			transmitUniformity( isUniform, numNodes);
+			transmitUniformity( isUniform, numNodes, comm);
 		} else { 
 			// Receive isUniform update
 			result = MPI_Recv( isUniform, 1, MPI_INT, 0,
@@ -438,7 +438,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 
 	}
 
-	MPI_Barrier(MPI_COMM_WORLD);
+	MPI_Barrier( comm );
 
 
 	//////////////////////////////
@@ -447,7 +447,8 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	//                          //
 	//////////////////////////////
 
-	MPI_Barrier(MPI_COMM_WORLD);
+	MPI_Barrier( comm );
+
         cout << "\n **********At Swap Arrays ******* with rank : " << myRank  << endl;
         int F_rows = int(numLines);
         int F_cols = 4;
@@ -467,7 +468,9 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
                 }
         	MPI_Barrier(MPI_COMM_WORLD);
         }
-        MPI_Barrier(MPI_COMM_WORLD);
+
+        MPI_Barrier( comm );
+
 	cout << "rank: " << myRank << " has made it to cleanup !!!!!!!!!!!!!!!!!!!!!!!!! " << endl;
         // Cleanup elements from same node
         for(int clean = 0; clean< numNodes; clean++){
