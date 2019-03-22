@@ -37,7 +37,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 		int numLeftNodes = numNodes / 2;
 		int numRightNodes = numNodes - numLeftNodes;
 
-		cout << key << " : buildTree_parallel : Rank " << myRank << ", Left nodes = " << numLeftNodes << ", Right nodes = " << numRightNodes << endl;
+		cout << key << " : buildTree_parallel : Depth " << tree->depth << " Rank " << myRank << ", Left nodes = " << numLeftNodes << ", Right nodes = " << numRightNodes << endl;
 
 		// Get global mins and maxs
 		double globalMinX = 0;
