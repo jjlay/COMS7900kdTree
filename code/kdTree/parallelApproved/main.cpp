@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 	const int maxFilesToProc = 8;
 
 	// number of lines PER FILE
-	const int maxRows = 10;
+	const int maxRows = 100;
 	
 	int sortInd = 1; // x = 1
 
