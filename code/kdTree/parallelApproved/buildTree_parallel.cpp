@@ -95,7 +95,8 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 
 			buildTree(data, rows, cols, tree->l, tree->leftComm, newRank, numLeftNodes);
 		}
-		else {
+		else 
+		{
 			cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << myRank << " is going right" << endl;
 			tree->r = new Tree;
 			tree->r->name = tree->name + "r";
@@ -134,6 +135,7 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 	} else {
 		// We should never reach this section as there
 		// will be more rows than nodes
+		cout << "!!! WE DO NOT BELONG HERE !!!" << endl;
 	}
 	
 }
