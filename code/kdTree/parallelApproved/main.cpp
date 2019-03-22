@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
 	tree->thisComm = MPI_COMM_WORLD;
 	tree->name = "t";
 
-	buildTree( array, rows, cols, tree, MPI_COMM_WORLD, myRank, numNodes, tree->name );
+	buildTree( array, rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
 	
 	/*
 	cout << "root " << tree->i << endl;
