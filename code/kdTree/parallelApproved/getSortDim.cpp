@@ -90,9 +90,9 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 		transmitMinMax(xMin, xMax, comm);
 	}
 	
-	cout << "Rank " << myRank
-		<< " Name " << tree->name
-		<< " is in getSortDim before y min" << endl;
+//	cout << "Rank " << myRank
+//		<< " Name " << tree->name
+//		<< " is in getSortDim before y min" << endl;
 	// y min/max
 	if( myRank == 0 ) {
 		allMins[0][_Y_] = yMin;
@@ -117,9 +117,9 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 		transmitMinMax(yMin, yMax, comm);
 	}
 	
-	cout << "Rank " << myRank
-		<< " Name " << tree->name
-		<< " is in getSortDim before z min" << endl;
+//	cout << "Rank " << myRank
+//		<< " Name " << tree->name
+//		<< " is in getSortDim before z min" << endl;
 	// z min/max
 	if( myRank == 0 ) {
 		allMins[0][_Z_] = zMin;
@@ -144,9 +144,9 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 		transmitMinMax(zMin, zMax, comm);
 	}
 	
-	cout << "Rank " << myRank
-		<< " Name " << tree->name
-		<< " is in getSortDim before range" << endl;
+//	cout << "Rank " << myRank
+//		<< " Name " << tree->name
+//		<< " is in getSortDim before range" << endl;
 	if( myRank == 0 ) {
 		auto rangeX = maxGlobal[_X_] - minGlobal[_X_];
 		auto rangeY = maxGlobal[_Y_] - minGlobal[_Y_];

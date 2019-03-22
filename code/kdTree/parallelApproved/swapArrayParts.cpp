@@ -75,13 +75,13 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
 
 //        cout << "myRank: " << myRank << " rank to who " << toWho << " is in swap array"<< endl;
 	if(fromWho == myRank) {
-        	cout << "myRank: " << myRank << endl;
+//        	cout << "myRank: " << myRank << endl;
                 for(int mi =0; mi<maxRank+1; mi++){
                         myBinI[mi] = binIPTR[mi];
-			cout << myBinI[mi] << endl;
+//			cout << myBinI[mi] << endl;
                 }
                 MPI_Isend(myBinI, (maxRank+1), MPI_INT, toWho,999, comm, &request);
-                cout << "Rank: " << myRank << " has sent ibin to: " << toWho << endl;
+//                cout << "Rank: " << myRank << " has sent ibin to: " << toWho << endl;
         }
         if(myRank ==toWho){
                 MPI_Recv(yourBinI, (maxRank+1), MPI_INT, fromWho , 999, comm, &status);
@@ -90,7 +90,7 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
                 storedBinIstart[fromWho+1] = myStartRow;
                 storedBinIend[fromWho+1] = myEndRow;
  //               sleep(myRank);
-                cout << "Rank: " << myRank<< " has received binI from: " << fromWho << endl;
+//                cout << "Rank: " << myRank<< " has received binI from: " << fromWho << endl;
          //       for (int itest = 0; itest< maxRank+1; itest++){
           //              cout << yourBinI[itest] << " " ;
            //     }
@@ -110,7 +110,7 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
 		}
 
                 mySendStartingPoint = 4*(myBinI[toWho]);
-		cout << "Rank " << myRank << " is sending " << myAmountToSend << " to " << toWho << endl;
+//		cout << "Rank " << myRank << " is sending " << myAmountToSend << " to " << toWho << endl;
                 MPI_Isend(&myArray[mySendStartingPoint], myAmountToSend, MPI_DOUBLE, toWho, 888,  comm, &request);
               //  cout << "Rank: " << myRank << " has sent the array to: " << toWho << " of size " << myAmountToSend << endl;
                 //cout << "Last Rank: " << myRank << " received: loc-" << myArray[4*999] << " :x- " << myArray[4*999+1] << " :y- " << myArray[4*999+2] << " :z- " <<myArray[999*4+3]<< endl;
