@@ -32,10 +32,11 @@ void buildTree(double *data, int rows, int cols, Tree *tree, MPI_Comm comm, int 
 	int key = 50000 + (tree->depth) * 100;
 
 	if( q > 1 ) {
-		cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << myRank << " parallel on communicator " << comm << endl;
+		cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << myRank << " parallel named " << tree->name << endl;
 		buildTree_parallel( data, rows, cols, tree, comm, myRank, q );
 	} else {
-		cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << myRank << " serial " << " on communicataor " << comm << endl;
+		tree->name += "*";
+		cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << myRank << " serial named " << tree->name << endl;
 		//buildTree_serial( data, rows, cols, tree);
 	}
 	

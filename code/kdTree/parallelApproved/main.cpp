@@ -178,6 +178,7 @@ int main(int argc, char *argv[])
 	tree->leftComm = MPI_COMM_SELF;
 	tree->rightComm = MPI_COMM_SELF;
 	tree->thisComm = MPI_COMM_WORLD;
+	tree->name = "t";
 
 	buildTree( array, rows, cols, tree, MPI_COMM_WORLD, myRank, numNodes );
 	

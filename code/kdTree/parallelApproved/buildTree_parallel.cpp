@@ -68,18 +68,21 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 		int color = 0;
 
 		if (myRank < numLeftNodes) {
-			cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << myRank << " is going left on communicator " << tree->thisComm << endl;
+			cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << myRank << " is going left" << endl;
 			tree->l = new Tree;
+			tree->l->name = tree->name + "l";
 			tree->r = nullptr;
 			tree->rightComm = MPI_COMM_SELF;
 			color = mpi_Color_Left;
 			MPI_Comm tempComm;
 			MPI_Comm_split(tree->thisComm, color, myRank, &tempComm);
 			tree->leftComm = tempComm;
+			
 			int newRank = _Undefined_;
 			MPI_Comm_rank(tempComm, &newRank);
-			cout << key << " : " << __FUNCTION__ << " : Rank " << myRank << " has a new communicator " << tempComm 
-				<< " and is now rank " << newRank << endl;
+			
+			cout << key << " : " << __FUNCTION__ << " : Rank " << myRank << " has a new communicator and is now rank " << newRank 
+				<< " called " << tree->l->name << endl;
 
 			tree->l->p = tree;
 			tree->l->depth = tree->depth+1;
@@ -93,18 +96,21 @@ void buildTree_parallel( double *data, int rows, int cols, Tree *tree, MPI_Comm 
 			buildTree(data, rows, cols, tree->l, tree->leftComm, newRank, numLeftNodes);
 		}
 		else {
-			cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << myRank << " is going right on communicator " << tree->thisComm << endl;
+			cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << myRank << " is going right" << endl;
 			tree->r = new Tree;
+			tree->r->name = tree->name + "r";
 			tree->l = nullptr;
 			tree->leftComm = MPI_COMM_SELF;
 			color = mpi_Color_Right;
 			MPI_Comm tempComm;
 			MPI_Comm_split(tree->thisComm, color, myRank, &tempComm);
 			tree->rightComm = tempComm;
+
 			int newRank = _Undefined_;
 			MPI_Comm_rank(tempComm, &newRank);
-			cout << key << " : " << __FUNCTION__ << " : Rank " << myRank << " has a new communicator " << tempComm 
-				<< " and is now rank " << newRank << endl;
+			
+			cout << key << " : " << __FUNCTION__ << " : Rank " << myRank << " has a new communicator and is now rank " << newRank 
+				<< " called " << tree->r->name << endl;
 
 			tree->r->p = tree;
 			tree->r->depth = tree->depth+1;
