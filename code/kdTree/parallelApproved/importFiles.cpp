@@ -60,7 +60,7 @@ void importFiles(vector<string> files, int myRank,
 		//
 
 		const char *cstrFileName = f.c_str();
-		cout << "importFiles : Importing " << cstrFileName << endl;
+		cout << "40000 : importFiles : Importing " << cstrFileName << endl;
 
 		// Open the file
 		FILE *inFile;

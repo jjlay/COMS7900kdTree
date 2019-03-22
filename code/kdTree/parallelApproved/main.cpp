@@ -198,9 +198,9 @@ int main(int argc, char *argv[])
 	cout << tree->r->z1 << " " << tree->r->z2 << endl;
 	*/
 	
-	cout << "Rank " << myRank << " finished  buildTree" << endl;
+	cout << " 99999 : Rank " << myRank << " finished  buildTree" << endl;
 
-  MPI_Barrier(MPI_COMM_WORLD);
+	MPI_Barrier(MPI_COMM_WORLD);
 	
 	////////////////
 	// searchTree //

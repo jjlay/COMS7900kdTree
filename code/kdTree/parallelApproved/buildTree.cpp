@@ -29,11 +29,13 @@ void buildTree(double *data, int rows, int cols, Tree *tree, MPI_Comm comm, int 
 	int q;
 	MPI_Comm_size( comm, &q );
 	
+	int key = 50000 + (tree->depth) * 100;
+
 	if( q > 1 ) {
-		cout << __FUNCTION__ << " : Rank " << myRank << " parallel on communicator " << comm << endl;
+		cout << key << " : " << __FUNCTION__ << " : Rank " << myRank << " parallel on communicator " << comm << endl;
 		buildTree_parallel( data, rows, cols, tree, comm, myRank, q );
 	} else {
-		cout << __FUNCTION__ << " : Rank " << myRank << " serial " << " on communicataor " << comm << endl;
+		cout << key << " : " << __FUNCTION__ << " : Rank " << myRank << " serial " << " on communicataor " << comm << endl;
 		//buildTree_serial( data, rows, cols, tree);
 	}
 	

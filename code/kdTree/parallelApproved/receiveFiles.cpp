@@ -64,7 +64,6 @@ vector<string> receiveFiles(int myRank) {
 
 	int Run = 1;
 	
-
 	while(Run) {
 		// Look for a filename
 		mpiReturn = MPI_Irecv(buffer, mpi_Max_Filename, MPI_BYTE,
@@ -86,7 +85,6 @@ vector<string> receiveFiles(int myRank) {
 			files.push_back(s);
 		}
 	}
-//	cout << myRank << endl;
 
 	return files;
 }
