@@ -50,7 +50,7 @@ using namespace std;
 
 void distributeFiles(vector<string> files, int numWorkers) {
 
-	cout << "distributeFiles: Sending " << files.size() << " files to " << numWorkers << " nodes" << endl;
+	cout << "20000 : distributeFiles: Sending " << files.size() << " files to " << numWorkers << " nodes" << endl;
 
 	int currentRank = 0;
 	int mpiReturn;

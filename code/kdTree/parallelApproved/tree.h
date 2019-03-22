@@ -1,6 +1,21 @@
 #pragma once
 
 //
+// Parallel includes
+//
+
+#include "mpi.h"
+
+//
+// Standard includes
+//
+
+#include <string>
+
+using namespace std;
+
+
+//
 // Struct
 //
 
@@ -11,7 +26,11 @@ struct Tree {
 	Tree *l;  // Left child
 	Tree *r;  // Right child
 	int i;    // Sort index
-	
+
+	MPI_Comm parentComm, leftComm, rightComm, thisComm;
+
+	string name;
+
 	double x1;  // Min x
 	double x2;  // Max x
 	double y1;  // Min y

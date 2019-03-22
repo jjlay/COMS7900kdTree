@@ -60,7 +60,7 @@ void importFiles(vector<string> files, int myRank,
 		//
 
 		const char *cstrFileName = f.c_str();
-		cout << "importFiles : Importing " << cstrFileName << endl;
+		cout << "40000 : importFiles : Importing " << cstrFileName << endl;
 
 		// Open the file
 		FILE *inFile;
@@ -121,9 +121,9 @@ void importFiles(vector<string> files, int myRank,
 		fclose(inFile);
 	}
 
-	cout << "importFiles : Rank " << myRank << ", rows = " << *rows << ", minX = " << minX << ", maxX = " << maxX
-		<< ", minY = " << minY << ", maxY = " << maxY 
-		<< ", minZ = " << minZ << ", maxZ = " << maxZ << endl;
+//	cout << "importFiles : Rank " << myRank << ", rows = " << *rows << ", minX = " << minX << ", maxX = " << maxX
+//		<< ", minY = " << minY << ", maxY = " << maxY 
+//		<< ", minZ = " << minZ << ", maxZ = " << maxZ << endl;
 }
 
 //

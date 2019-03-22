@@ -76,10 +76,10 @@ int main(int argc, char *argv[])
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 	
 	// total number of files to read
-	const int maxFilesToProc = 3;
+	const int maxFilesToProc = 8;
 
 	// number of lines PER FILE
-	const int maxRows = 10;
+	const int maxRows = 100;
 	
 	int sortInd = 1; // x = 1
 
@@ -161,9 +161,9 @@ int main(int argc, char *argv[])
 		arrayIndex += 4;
 	}
 
-	cout << "main : Rank " << myRank << ", rows = " << rows << ", minX = " << minX << ", maxX = " << maxX
-		<< ", minY = " << minY << ", maxY = " << maxY 
-		<< ", minZ = " << minZ << ", maxZ = " << maxZ << endl;
+//	cout << "main : Rank " << myRank << ", rows = " << rows << ", minX = " << minX << ", maxX = " << maxX
+//		<< ", minY = " << minY << ", maxY = " << maxY 
+//		<< ", minZ = " << minZ << ", maxZ = " << maxZ << endl;
 
 	///////////////
 	// buildTree //
@@ -173,9 +173,14 @@ int main(int argc, char *argv[])
 	auto tree = new struct Tree;
 	tree->p = nullptr;
 	tree->depth = 0;
-	tree->n     = maxRows*maxFilesToProc;
-	
-	buildTree( array, rows, cols, tree, MPI_COMM_WORLD, myRank, numNodes );
+	tree->n     = rows;
+	tree->parentComm = MPI_COMM_SELF;
+	tree->leftComm = MPI_COMM_SELF;
+	tree->rightComm = MPI_COMM_SELF;
+	tree->thisComm = MPI_COMM_WORLD;
+	tree->name = "t";
+
+	buildTree( array, rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
 	
 	/*
 	cout << "root " << tree->i << endl;
@@ -194,9 +199,9 @@ int main(int argc, char *argv[])
 	cout << tree->r->z1 << " " << tree->r->z2 << endl;
 	*/
 	
-	cout << "Rank " << myRank << " finished  buildTree" << endl;
+	cout << "99999 : Rank " << myRank << " finished  buildTree" << endl;
 
-  MPI_Barrier(MPI_COMM_WORLD);
+	MPI_Barrier(MPI_COMM_WORLD);
 	
 	////////////////
 	// searchTree //
