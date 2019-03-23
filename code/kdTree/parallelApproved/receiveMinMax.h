@@ -1,5 +1,8 @@
 #pragma once
 
+#include "mpi.h"
+
+
 //
 // Function: receiveMinMax
 //
@@ -11,6 +14,6 @@
 // Returns:
 //   Nothing
 
-void receiveMinMax(int sourceRank, double *min, double *max);
+void receiveMinMax(int sourceRank, double *min, double *max, MPI_Comm comm);
 
 

@@ -1,5 +1,8 @@
 #pragma once
 
+#include "mpi.h"
+
+
 //
 // Function: transmitMinMax
 //
@@ -10,4 +13,7 @@
 // Returns:
 //   Nothing
 
-void transmitMinMax(double min, double max);
+void transmitMinMax( double min, double max, MPI_Comm comm );
+
+
+

@@ -29,7 +29,7 @@
 // Returns:
 //   Nothing
 
-void receiveMinMax(int sourceRank, double *min, double *max) {
+void receiveMinMax(int sourceRank, double *min, double *max, MPI_Comm comm) {
 
 	MPI_Status status;
 	auto minMax = new double[2];
@@ -38,7 +38,7 @@ void receiveMinMax(int sourceRank, double *min, double *max) {
 	minMax[_MAX_] = 0.0;
 
 	int result = MPI_Recv(minMax, 2, MPI_DOUBLE, sourceRank,
-		mpi_Tag_SendMinMax, MPI_COMM_WORLD, &status);
+		mpi_Tag_SendMinMax, comm, &status);
 
 	int counter;
 	MPI_Get_count(&status, MPI_DOUBLE, &counter);

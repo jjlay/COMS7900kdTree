@@ -131,40 +131,9 @@ int main(int argc, char *argv[])
 
 	MPI_Barrier(MPI_COMM_WORLD);
 	
-	////////////////////////
-	// Check min and max  //
-	////////////////////////
 
-	// Debug
-	double minX = 9999, maxX = -9999, minY = 9999, maxY = -9999, minZ = 9999, maxZ = -9999;
-	unsigned long int arrayIndex = 0;
-
-	for (auto i = 0; i < rows; i++) {
-		if (array[arrayIndex + _X_] < minX)
-			minX = array[arrayIndex + _X_];
-
-		if (array[arrayIndex + _X_] > maxX)
-			maxX = array[arrayIndex + _X_];
-
-		if (array[arrayIndex + _Y_] < minY)
-			minY = array[arrayIndex + _Y_];
-
-		if (array[arrayIndex + _Y_] > maxY)
-			maxY = array[arrayIndex + _Y_];
-
-		if (array[arrayIndex + _Z_] < minZ)
-			minZ = array[arrayIndex + _Z_];
-
-		if (array[arrayIndex + _Z_] > maxZ)
-			maxZ = array[arrayIndex + _Z_];
-
-		arrayIndex += 4;
-	}
-
-//	cout << "main : Rank " << myRank << ", rows = " << rows << ", minX = " << minX << ", maxX = " << maxX
-//		<< ", minY = " << minY << ", maxY = " << maxY 
-//		<< ", minZ = " << minZ << ", maxZ = " << maxZ << endl;
-
+  
+  
 	///////////////
 	// buildTree //
 	///////////////
@@ -180,7 +149,7 @@ int main(int argc, char *argv[])
 	tree->thisComm = MPI_COMM_WORLD;
 	tree->name = "t";
 
-	buildTree( array, rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
+	buildTree( &array, rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
 	
 	/*
 	cout << "root " << tree->i << endl;

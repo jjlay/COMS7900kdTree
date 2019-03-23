@@ -4,6 +4,8 @@
 
 //#undef _DEBUG_
 
+#include "mpi.h"
+
 //
 // STL includes
 //
@@ -30,4 +32,7 @@
 //Function: swapArrayParts
 //
 
-void swapArrayParts(double *myArray[], int *rowPTR, int *colPTR, int myrank, int numranks, int *binIPTR, int fromWho, int toWho);
+void swapArrayParts(double *myArray[], int *rowPTR, int *colPTR, int myrank, int numranks, int *binIPTR, int fromWho, int toWho, MPI_Comm comm);
+
+
+

@@ -25,7 +25,7 @@ using namespace std;
 // Function: buildTree
 //
 
-void buildTree(double *data, int rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes, string name ) {
+void buildTree(double *data[], int rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes, string name ) {
 	
 	int q = 0, currentRank = 0;
 	MPI_Comm_size( comm, &q );
@@ -35,17 +35,19 @@ void buildTree(double *data, int rows, int cols, Tree *tree, MPI_Comm comm, int 
 
 
 	if( q > 1 ) {
-		cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank 
-			<< " parallel named " << tree->name  << " q = " << q << " called by " << tree->name
-			<< endl;
-		buildTree_parallel( data, rows, cols, tree, comm, myRank, q );
+	//	cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank 
+	//		<< " parallel named " << tree->name  << " q = " << q << " called by " << tree->name
+	//		<< endl;
+		double *array = data[0];
+		buildTree_parallel( &array, rows, cols, tree, comm, currentRank, q );
+		*data = array;
 	} 
 	else 
 	{
 		tree->name += "*";
-		cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank 
-			<< " serial named " << tree->name  << " q = " << q << " called by " << tree->name
-			<< endl;
+	//	cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank 
+	//		<< " serial named " << tree->name  << " q = " << q << " called by " << tree->name
+	//		<< endl;
 		//buildTree_serial( data, rows, cols, tree);
 	}
 	

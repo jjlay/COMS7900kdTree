@@ -1,5 +1,7 @@
 #pragma once
 
+#include "mpi.h"
+
 
 //
 // Function: receiveBinCounts
@@ -13,6 +15,6 @@
 //    Nothing
 //
 
-void receiveBinCounts(int *bins, int numWorkers);
+void receiveBinCounts(int *bins, int numWorkers, MPI_Comm comm );
 
 

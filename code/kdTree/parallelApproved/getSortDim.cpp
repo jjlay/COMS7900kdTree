@@ -14,6 +14,9 @@
 
 #include <unistd.h>
 #include <time.h>
+#include <math.h>
+
+
 //
 // Parallel includes
 //
@@ -42,6 +45,9 @@ using namespace std;
 
 int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int numNodes, MPI_Comm comm )
 {
+	cout << "Rank " << myRank
+		<< " Name " << tree->name
+		<< " is in getSortDim" << endl;
 	int sortDim = _X_;
 	
 	// get local xyz min max
@@ -64,7 +70,7 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 		allMins[0][_X_] = xMin;
 		allMaxs[0][_X_] = xMax;
 		for (auto r = 1; r < numNodes; r++) {
-			receiveMinMax(r, &allMins[r][_X_], &allMaxs[r][_X_]);
+			receiveMinMax(r, &allMins[r][_X_], &allMaxs[r][_X_], comm);
 		}
 		
 		minGlobal[_X_] = allMins[0][_X_];
@@ -76,17 +82,23 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 				maxGlobal[_X_] = allMaxs[r][_X_];
 		}
 		
-		cout << "X: " << minGlobal[_X_] << " " << maxGlobal[_X_] << endl;
+		cout << "Rank " << myRank
+			<< " Name " << tree->name
+			<<  " X: " << minGlobal[_X_] << " " << maxGlobal[_X_] << endl;
 	} else {
-		transmitMinMax(xMin, xMax);
+		
+		transmitMinMax(xMin, xMax, comm);
 	}
 	
+//	cout << "Rank " << myRank
+//		<< " Name " << tree->name
+//		<< " is in getSortDim before y min" << endl;
 	// y min/max
 	if( myRank == 0 ) {
 		allMins[0][_Y_] = yMin;
 		allMaxs[0][_Y_] = yMax;
 		for (auto r = 1; r < numNodes; r++) {
-			receiveMinMax(r, &allMins[r][_Y_], &allMaxs[r][_Y_]);
+			receiveMinMax(r, &allMins[r][_Y_], &allMaxs[r][_Y_], comm);
 		}
 		
 		minGlobal[_Y_] = allMins[0][_Y_];
@@ -98,17 +110,22 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 				maxGlobal[_Y_] = allMaxs[r][_Y_];
 		}
 		
-		cout << "Y: " << minGlobal[_Y_] << " " << maxGlobal[_Y_] << endl;
+		cout << "Rank " << myRank 
+			<< " Name " << tree->name
+			<< " Y: " << minGlobal[_Y_] << " " << maxGlobal[_Y_] << endl;
 	} else {
-		transmitMinMax(yMin, yMax);
+		transmitMinMax(yMin, yMax, comm);
 	}
 	
+//	cout << "Rank " << myRank
+//		<< " Name " << tree->name
+//		<< " is in getSortDim before z min" << endl;
 	// z min/max
 	if( myRank == 0 ) {
 		allMins[0][_Z_] = zMin;
 		allMaxs[0][_Z_] = zMax;
 		for (auto r = 1; r < numNodes; r++) {
-			receiveMinMax(r, &allMins[r][_Z_], &allMaxs[r][_Z_]);
+			receiveMinMax(r, &allMins[r][_Z_], &allMaxs[r][_Z_], comm);
 		}
 		
 		minGlobal[_Z_] = allMins[0][_Z_];
@@ -120,11 +137,16 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 				maxGlobal[_Z_] = allMaxs[r][_Z_];
 		}
 		
-		cout << "Z: " << minGlobal[_Z_] << " " << maxGlobal[_Z_] << endl;
+		cout << "Rank " << myRank 
+			<< " Name " << tree->name
+			<< " Z: " << minGlobal[_Z_] << " " << maxGlobal[_Z_] << endl;
 	} else {
-		transmitMinMax(zMin, zMax);
+		transmitMinMax(zMin, zMax, comm);
 	}
 	
+//	cout << "Rank " << myRank
+//		<< " Name " << tree->name
+//		<< " is in getSortDim before range" << endl;
 	if( myRank == 0 ) {
 		auto rangeX = maxGlobal[_X_] - minGlobal[_X_];
 		auto rangeY = maxGlobal[_Y_] - minGlobal[_Y_];
@@ -145,8 +167,27 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 		}
 	}
 	
+	tree->x1 = minGlobal[_X_];
+	tree->x2 = maxGlobal[_X_];
+	tree->y1 = minGlobal[_Y_];
+	tree->y2 = maxGlobal[_Y_];
+	tree->z1 = minGlobal[_Z_];
+	tree->z2 = maxGlobal[_Z_];
+
+	tree->c[_INDEX_] = _Undefined_;
+	tree->c[_X_] = (minGlobal[_X_] + maxGlobal[_X_]) / 2.0;
+	tree->c[_Y_] = (minGlobal[_Y_] + maxGlobal[_Y_]) / 2.0;
+	tree->c[_Z_] = (minGlobal[_Z_] + maxGlobal[_Z_]) / 2.0;
+
+	tree->radius = sqrt(pow(tree->c[_X_] - minGlobal[_X_], 2.0) +
+			pow(tree->c[_Y_] - minGlobal[_Y_], 2.0) +
+			pow(tree->c[_Z_] - minGlobal[_Z_], 2.0));
+
+	cout << "Rank " << myRank
+		<< " Name " << tree->name 
+		<< " is about to broadcast" << endl;
 	MPI_Bcast( &sortDim, 1, MPI_INT, 0, comm );
-	
+
 	return sortDim;
 	
 }
