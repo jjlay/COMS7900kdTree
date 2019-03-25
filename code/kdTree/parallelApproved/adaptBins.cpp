@@ -25,7 +25,7 @@ void adaptBins( double *binE, int *binC, int numWorkers) {
 	
 	for( int i = 1; i < numWorkers; i++ ) {
 		
-		dC = ( 2.0*(binC[i] - binC[i-1]) )/( binC[i] + binC[i-1] );
+		dC = ( 2.0*(binC[i] - binC[i-1]) )/( 1.0*binC[i] + 1.0*binC[i-1] + 0.000001 );
 		
 	//	if( dC > 0 ) {
 	//		dB = binE[i+1] - binE[i];
