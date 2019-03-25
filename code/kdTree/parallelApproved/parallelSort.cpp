@@ -255,7 +255,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	// end first iteration
 	
 	int iterations = 1;
-	int deathCount = 100;  // Number of iterations we will allow adaptBins to be stuck
+//	int deathCount = 100;  // Number of iterations we will allow adaptBins to be stuck
 	
 	while( ( *isUniform == 0 ) && (iterations < abortCount) ) {
 //	while( iterations < 2 ) {
@@ -267,7 +267,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 			// new
 		//	adaptBins( binE, binCt, numNodes, numLines, avgPtsPerWorker );
 			// old
-			adaptBins( binE, binCt, numNodes );
+			adaptBins( binE, binCt, numNodes, iterations );
 			
 	//		cout << "binE: " << binE[0] << " " << binE[1] << " " << binE[2] << " " << binE[3] << endl;
 			
