@@ -36,7 +36,6 @@ void binData( double *data, double *binE, int myRank, int sortInd,
 	
 	int a, b, c;
 	
-	std::cout.precision(17);
 	/*
 	if( myRank == rank ) {
 	std::cout << "maxRows " << numPoints << std::endl;

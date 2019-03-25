@@ -34,8 +34,7 @@
 #include "getLinearBins.h"
 #include "adaptBins.h"
 #include "testUniformity.h"
-// #include "binData.h"
-#include "binData2.h"
+#include "binData.h"
 #include "receiveMinMax.h"
 #include "transmitMinMax.h"
 #include "transmitBinEdges.h"
@@ -113,7 +112,6 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	transmitMinMax( myMin, myMax, comm );
 	
 	if (myRank == 0) {
-		cout.precision(10);
 		// Receive minimums and maximums
 	//	allMins[Rank0] = 0.0;
 	//	allMaxs[Rank0] = 0.0;
@@ -175,7 +173,6 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 		
 		// Calculate initial bin edges
 		getLinearBins( binE, numNodes, myRank, minGlobal, maxGlobal );  // for real
-		std::cout.precision(17);
 //		std::cout << "binE: " << binE[0] << " " << binE[1] << " " << binE[2] << " " << binE[3] << std::endl;
 		
 		// Transmit initial bin edges
@@ -193,9 +190,9 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	}
 	
 	// get intitial bin counts, indices
-	binData2( array, binE, myRank, sortInd,
+	binData( array, binE, myRank, sortInd,
 		numNodes, rows, binI_1D, binC); // for real
-//	cout << myRank << " binC: " << binC[0] << " " << binC[1] << " " << binC[2] << endl;
+	cout << myRank << " binC: " << binC[0] << " " << binC[1] << " " << binC[2] << endl;
 	
 	if( myRank == 0 ){
 		// Receive initial bin counts
@@ -204,7 +201,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 			binCt[j] = binCt[j] + binC[j];
 		}
 
-//		cout << myRank << " binCt: ";
+//		cout << myRank << "first binCt: ";
 //		for( int i = 0; i < numNodes; i++ ) {
 //			cout << binCt[i] << " ";
 //		}
@@ -216,7 +213,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	
 		// Transmit initial bin indices
 		result = MPI_Send( binI_1D, numNodes+1, MPI_INT, 0,
-			mpi_Tag_BinCounts, comm );
+			mpi_Tag_BinIndices, comm );
 	}
 	
 	if( myRank == 0 ) {
@@ -272,7 +269,6 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 			// old
 			adaptBins( binE, binCt, numNodes );
 			
-			cout.precision(17);
 	//		cout << "binE: " << binE[0] << " " << binE[1] << " " << binE[2] << " " << binE[3] << endl;
 			
 			// Transmit initial bin edges
@@ -291,7 +287,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 		}
 		
 		// get intitial bin counts, indices
-		binData2( array, binE, myRank, sortInd,
+		binData( array, binE, myRank, sortInd,
 			numNodes, rows, binI_1D, binC); // for real
 	//	cout << myRank << " binC: " << binC[0] << " " << binC[1] << " " << binC[2] << endl;
 		
@@ -314,7 +310,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 		
 			// Transmit initial bin indices
 			result = MPI_Send( binI_1D, numNodes+1, MPI_INT, 0,
-				mpi_Tag_BinCounts, comm );
+				mpi_Tag_BinIndices, comm );
 		}
 		
 		if( myRank == 0 ) {
@@ -363,14 +359,11 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 		cout << "Aborted adaptBins at iteration " << iterations << endl;
 
 		cout << "Rank " << myRank << " Bin counts are:" << endl;
+		cout << "Number of nodes " << numNodes << endl;
 
 		for (auto i = 0; i < numNodes; i++) {
-			cout << "binC[" << i << "] = " << binC[i] << ", "
+			cout << "binCt[" << i << "] = " << binCt[i] << ", "
 				<< "binE[" << i << "] = " << binE[i] << ", ";
-
-			if (myRank != Rank0)
-				cout << "binI[" << i << "] = " << binI_1D[i];
-
 			cout << endl;
 		}
 

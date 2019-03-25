@@ -11,6 +11,6 @@
 // Function: buildTree
 //
 
-void buildTree_serial(double *data, int rows, int cols, Tree *tree);
+void buildTree_serial(double *data, int *rows, int cols, Tree *tree);
 
 

@@ -42,7 +42,7 @@ void receiveBinIndices( int **binI, int numWorkers, MPI_Comm comm ) {
 		
 		// add the binC's
 		result = MPI_Recv( part, numWorkers+1, MPI_INT, i,
-			mpi_Tag_BinCounts, comm, &status );
+			mpi_Tag_BinIndices, comm, &status );
 		
 		for( int j = 0; j < numWorkers+1; j++ ) {
 			binI[i][j] = part[j];
