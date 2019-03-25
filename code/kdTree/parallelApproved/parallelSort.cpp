@@ -382,7 +382,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 // multiline start	
 	// Broadcast binI_2D to workers
 	for( int i = 0; i < numNodes; i++ ) {
-		result = MPI_Bcast( binI_2D[i], numNodes+1, MPI_DOUBLE, 0, comm );
+		result = MPI_Bcast( binI_2D[i], numNodes+1, MPI_INT, 0, comm );
 	}
 // multiline end
 
