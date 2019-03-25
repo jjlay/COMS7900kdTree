@@ -23,7 +23,7 @@ using namespace std;
 // Function: buildTree
 //
 
-void buildTree_serial(double *data, int rows, int cols, Tree *tree) {
+void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 
 	// function tree = buildTree( data, tree )
 	//     
@@ -33,9 +33,9 @@ void buildTree_serial(double *data, int rows, int cols, Tree *tree) {
 	//     [ nPts, nDim ] = size( data );
 	//     tree(1).n = nPts;
 
-	tree->n = rows;
+	tree->n = *rows;
 
-	if (rows > 1) {
+	if (*rows > 1) {
 		//     tree(1).c = [ 0.5*( min(data(:,1)) + max(data(:,1)) ), 0.5*( min(data(:,2)) + max(data(:,2)) )];
 		//     
 		//     if nPts > 1
@@ -53,24 +53,24 @@ void buildTree_serial(double *data, int rows, int cols, Tree *tree) {
 
 	//	sortData(data, cols, rows, _X_);
 		
-		auto xMin = min( data, rows, cols, _X_ );
-		auto xMax = max( data, rows, cols, _X_ );
+		auto xMin = min( data, *rows, cols, _X_ );
+		auto xMax = max( data, *rows, cols, _X_ );
 		auto rangeX = xMax - xMin;
 
 		// cout << endl << "Min X: " << xMin << ", Max X: " << xMax << ", Range X: " << rangeX << endl << endl;
 
 	//	sortData(data, cols, rows, _Y_);
 
-		auto yMin = min( data, rows, cols, _Y_ );
-		auto yMax = max( data, rows, cols, _Y_ );
+		auto yMin = min( data, *rows, cols, _Y_ );
+		auto yMax = max( data, *rows, cols, _Y_ );
 		auto rangeY = yMax - yMin;
 
 		// cout << endl << "Min Y: " << yMin << ", Max Y: " << yMax << ", Range Y: " << rangeY << endl << endl;
 
 	//	sortData(data, cols, rows, _Z_);
 
-		auto zMin = min( data, rows, cols, _Z_ );
-		auto zMax = max( data, rows, cols, _Z_ );
+		auto zMin = min( data, *rows, cols, _Z_ );
+		auto zMax = max( data, *rows, cols, _Z_ );
 		auto rangeZ = zMax - zMin;
 
 		// cout << endl << "Min Z: " << zMin << ", Max Z: " << zMax << ", Range Z: " << rangeZ << endl << endl;
@@ -118,7 +118,7 @@ void buildTree_serial(double *data, int rows, int cols, Tree *tree) {
 		//         % sort
 		//         [tmp, ind] = sort( data(:,sortInd) );
 
-		sortData(data, cols, rows, sortInd);
+		sortData(data, cols, *rows, sortInd);
 
 		//         dataSort   = zeros( nPts, 2 );
 		//         if sortInd == 1
@@ -131,8 +131,8 @@ void buildTree_serial(double *data, int rows, int cols, Tree *tree) {
 		//         
 		//         half = cast( floor(nPts/2), 'uint16' );
 
-		int leftCount = rows / 2;
-		int rightCount = rows - leftCount;
+		int leftCount = *rows / 2;
+		int rightCount = *rows - leftCount;
 
 		//         
 		//         tree(1).i = sortInd;
@@ -200,8 +200,8 @@ void buildTree_serial(double *data, int rows, int cols, Tree *tree) {
 		//         tree(1).l = treeLeft;
 		//         tree(1).r = treeRight;
 
-		buildTree_serial(leftPtr, leftCount, cols, tree->l);
-		buildTree_serial(rightPtr, rightCount, cols, tree->r);
+		buildTree_serial(leftPtr, &leftCount, cols, tree->l);
+		buildTree_serial(rightPtr, &rightCount, cols, tree->r);
 	}
 	else
 	{

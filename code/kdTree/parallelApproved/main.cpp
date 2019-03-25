@@ -36,9 +36,8 @@
 #include "getLinearBins.h"
 #include "adaptBins.h"
 #include "testUniformity.h"
-#include "binData.h"
-#include "binData2.h"
 #include "receiveMinMax.h"
+#include "binData.h"
 #include "transmitMinMax.h"
 #include "transmitBinEdges.h"
 #include "receiveBinCounts.h"
@@ -76,10 +75,10 @@ int main(int argc, char *argv[])
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 	
 	// total number of files to read
-	const int maxFilesToProc = 8;
+	const int maxFilesToProc = 4;
 
 	// number of lines PER FILE
-	const int maxRows = 100;
+	const int maxRows = 5;
 	
 	int sortInd = 1; // x = 1
 
@@ -131,9 +130,7 @@ int main(int argc, char *argv[])
 
 	MPI_Barrier(MPI_COMM_WORLD);
 	
-
-  
-  
+ 
 	///////////////
 	// buildTree //
 	///////////////
@@ -149,8 +146,19 @@ int main(int argc, char *argv[])
 	tree->thisComm = MPI_COMM_WORLD;
 	tree->name = "t";
 
-	buildTree( &array, rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
+	buildTree( &array, &rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
+
+	sleep(myRank+1);
 	
+	for (auto i = 0; i < rows; i++ ) {
+		cout << "1111 : Rank " << myRank << " Row " << i << " X " << array[(i*_ROW_WIDTH_) + _X_] 
+			<< " Y " << array[(i*_ROW_WIDTH_) + _Y_] 
+			<< " Z " << array[(i*_ROW_WIDTH_) + _Z_] << endl;
+		if (i == 0) 
+			i = rows - 2;
+	} 
+ 
+
 	/*
 	cout << "root " << tree->i << endl;
 	cout << tree->x1 << " " << tree->x2 << endl;
