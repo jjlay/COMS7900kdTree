@@ -34,8 +34,8 @@
 #include "getLinearBins.h"
 #include "adaptBins.h"
 #include "testUniformity.h"
-// #include "binData.h"
-#include "binData2.h"
+#include "binData.h"
+// #include "binData2.h"
 #include "receiveMinMax.h"
 #include "transmitMinMax.h"
 #include "transmitBinEdges.h"
@@ -188,7 +188,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	}
 	
 	// get intitial bin counts, indices
-	binData2( array, binE, myRank, sortInd,
+	binData( array, binE, myRank, sortInd,
 		numNodes, rows, binI_1D, binC); // for real
 //	cout << myRank << " binC: " << binC[0] << " " << binC[1] << " " << binC[2] << endl;
 	
@@ -286,7 +286,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 		}
 		
 		// get intitial bin counts, indices
-		binData2( array, binE, myRank, sortInd,
+		binData( array, binE, myRank, sortInd,
 			numNodes, rows, binI_1D, binC); // for real
 	//	cout << myRank << " binC: " << binC[0] << " " << binC[1] << " " << binC[2] << endl;
 		

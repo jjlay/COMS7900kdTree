@@ -169,7 +169,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	isUniform[0] = -1;
 	
 	if (myRank == 0) {
-//		std::cout << "ITERATION: 0" << std::endl;
+		std::cout << "ITERATION: 0" << std::endl;
 		
 		// Calculate initial bin edges
 		getLinearBins( binE, numNodes, myRank, minGlobal, maxGlobal );  // for real
@@ -201,11 +201,11 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 			binCt[j] = binCt[j] + binC[j];
 		}
 
-//		cout << myRank << "first binCt: ";
-//		for( int i = 0; i < numNodes; i++ ) {
-//			cout << binCt[i] << " ";
-//		}
-//		cout << std::endl;
+		cout << myRank << "first binCt: ";
+		for( int i = 0; i < numNodes; i++ ) {
+			cout << binCt[i] << " ";
+		}
+		cout << std::endl;
 	} else {
 		// Transmit initial bin counts
 		result = MPI_Send( binC, numNodes, MPI_INT, 0,
@@ -232,9 +232,9 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	*/
 		
 		// Determine if uniform
-		*isUniform = testUniformity( binC, numNodes, thresh, &uniformity );
+		*isUniform = testUniformity( binCt, numNodes, thresh, &uniformity );
 		
-	/*		
+			
 		if( *isUniform == 1 ) {
 			std::cout << "Threshold:  " << thresh << std::endl;
 			std::cout << "Uniformity: " << uniformity << std::endl;
@@ -244,7 +244,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 			std::cout << "Uniformity: " << uniformity << std::endl;
 			std::cout << "CONTINUE: the bins aren't uniform" << std::endl;
 		}
-	*/	
+		
 		// Transmit isUniform update
 		transmitUniformity( isUniform, numNodes, comm );
 	} else { 
@@ -261,7 +261,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 //	while( iterations < 2 ) {
 		
 		if (myRank == 0) {
-//			cout << "ITERATION: " << iterations << endl;
+			cout << "ITERATION: " << iterations << endl;
 			
 			// Adapt bin edges
 			// new
@@ -298,11 +298,11 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 				binCt[j] = binCt[j] + binC[j];
 			}
 	
-//			cout << myRank << " binCt: ";
-//			for( int i = 0; i < numNodes; i++ ) {
-//				cout << binCt[i] << " ";
-//			}
-//			cout << std::endl;
+			cout << myRank << " binCt: ";
+			for( int i = 0; i < numNodes; i++ ) {
+				cout << binCt[i] << " ";
+			}
+			cout << std::endl;
 		} else {
 			// Transmit initial bin counts
 			result = MPI_Send( binC, numNodes, MPI_INT, 0,
@@ -329,9 +329,9 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 		*/
 			
 			// Determine if uniform
-			*isUniform = testUniformity( binC, numNodes, thresh, &uniformity );
+			*isUniform = testUniformity( binCt, numNodes, thresh, &uniformity );
 			
-		/*		
+			
 			if( *isUniform == 1 ) {
 				std::cout << "Threshold:  " << thresh << std::endl;
 				std::cout << "Uniformity: " << uniformity << std::endl;
@@ -341,7 +341,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 				std::cout << "Uniformity: " << uniformity << std::endl;
 				std::cout << "CONTINUE: the bins aren't uniform" << std::endl;
 			}
-		*/	
+			
 			// Transmit isUniform update
 			transmitUniformity( isUniform, numNodes, comm);
 		} else { 
