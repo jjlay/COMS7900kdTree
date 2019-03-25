@@ -39,8 +39,7 @@ int testUniformity( int *binC, int numWorkers, double thresh, double *uniformity
 	}
 	avgPts = ( avgPts/numWorkers + 0.0000001 );
 	
-	cout << minPts << " " << avgPts << " " << maxPts << endl;
-	
+//	cout << minPts << " " << avgPts << " " << maxPts << endl;
 	
 	// average metric
 //	*uniformity = (maxPts - avgPts)/avgPts + (avgPts - minPts)/avgPts;

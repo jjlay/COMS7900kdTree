@@ -55,9 +55,9 @@ void buildTree_parallel( double *data[], int *rows, int cols, Tree *tree, MPI_Co
 	
 	// parallelSort
 	double *array = data[0];
-	cout << "before " << myRank << endl;
+//	cout << "before " << myRank << endl;
 	parallelSort( myRank, numNodes, &array, rows, &cols, sortDim, comm );
-	cout << "after " << myRank << endl;
+//	cout << "after " << myRank << endl;
 	*data = array;
 	
 	int color = 0;

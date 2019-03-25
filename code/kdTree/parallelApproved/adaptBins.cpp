@@ -39,7 +39,7 @@ void adaptBins( double *binE, int *binC, int numWorkers, int step ) {
 		dB = binE[i+1] - binE[i];
 		
 		scale = 1 - (1 - 0.1)*(1 - exp(-0.03*step));
-		cout << scale << endl;
+	//	cout << scale << endl;
 		
 	//	diff[i] = 0.15*dC*dB;
 	//	diff[i] = 0.45*dC*dB;

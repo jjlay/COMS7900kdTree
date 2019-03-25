@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
 	sleep(myRank+1);
 	
 	for (auto i = 0; i < rows; i++ ) {
-		cout << "1111 : Rank " << myRank << " Row " << i << " X " << array[(i*_ROW_WIDTH_) + _X_] 
+		cout << "11111 : Rank " << myRank << " Row " << i << " X " << array[(i*_ROW_WIDTH_) + _X_] 
 			<< " Y " << array[(i*_ROW_WIDTH_) + _Y_] 
 			<< " Z " << array[(i*_ROW_WIDTH_) + _Z_] << endl;
 		if (i == 0) 
