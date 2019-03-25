@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 	
-	delete array;
+	// delete array;
 	
 	MPI_Finalize();
 
