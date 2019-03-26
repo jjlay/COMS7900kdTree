@@ -32,8 +32,8 @@ void dumpTree(Tree *t, int depth, ofstream *output, int rank) {
     << padding << "----------" << endl;
 
   if (t->l != nullptr)
-    dumpTree(t->l, depth+1, output);
+    dumpTree(t->l, depth+1, output, rank);
 
   if (t->r != nullptr)
-    dumpTree(t->r, depth+1, output);
+    dumpTree(t->r, depth+1, output, rank);
 }
