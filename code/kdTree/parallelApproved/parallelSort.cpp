@@ -487,8 +487,10 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	MPI_Barrier(comm);
 
 	// Final sort
-	//LL_sort(array, rows, cols, sortInd);
-	sortData(array, cols, rows, sortInd);
+	// LL_sort(array, rows, cols, sortInd);
+	
+	// commented out for speed, unecessary in kdTree
+//	sortData(array, cols, rows, sortInd);
 	
 //	cout << "Rank " << myRank << " array after clean up " << rows << endl;
 	
