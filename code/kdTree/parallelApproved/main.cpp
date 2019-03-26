@@ -10,7 +10,7 @@
 #include <fstream>
 #include <iomanip>
 #include <string>
-#include <chrono> 
+#include <chrono>
 
 #include <unistd.h>
 #include <time.h>
@@ -49,6 +49,7 @@
 #include "swapArrayParts.h"
 #include "cleanUp.h"
 #include "parallelSort.h"
+#include "dumpTree.h"
 
 // buildTree
 #include "tree.h"
@@ -71,17 +72,15 @@ int main(int argc, char *argv[])
 
 	string processorName = "";
 	int myRank = 0, numNodes = 0;
-	
-	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
-	
-	// total number of files to read
 
-  const int maxFilesToProc = 100;
+	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
+
+	// total number of files to read
+	const int maxFilesToProc = 4;
 
 	// number of lines PER FILE
-	const int maxRows = 10000;
+	const int maxRows = 5;
 
-  
 	int sortInd = 1; // x = 1
 
 	//////////////////
@@ -101,7 +100,7 @@ int main(int argc, char *argv[])
 	// Distribute files to workers
 	if (myRank == 0)
 		distributeFiles( FilenameArray, numNodes );
-	
+
 	// Receive file list
 	FilenameArray = receiveFiles(myRank);
 
@@ -113,7 +112,7 @@ int main(int argc, char *argv[])
 	}
 
 	MPI_Barrier(MPI_COMM_WORLD);
-	
+
 	int rows = 0, cols = _ROW_WIDTH_;
 
 	// Read data files in
@@ -127,16 +126,16 @@ int main(int argc, char *argv[])
 	importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows, arrayLimit);
 
 	MPI_Request tempRequest;
-	MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD, 
+	MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD,
 		&tempRequest);
 
 	MPI_Barrier(MPI_COMM_WORLD);
-	
- 
+
+
 	///////////////
 	// buildTree //
 	///////////////
-	
+
 	// initialize tree
 	auto tree = new struct Tree;
 	tree->p = nullptr;
@@ -151,50 +150,37 @@ int main(int argc, char *argv[])
 	buildTree( &array, &rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
 
 	sleep(myRank+1);
-	
+
 	for (auto i = 0; i < rows; i++ ) {
-		cout << "11111 : Rank " << myRank << " Row " << i << " X " << array[(i*_ROW_WIDTH_) + _X_] 
-			<< " Y " << array[(i*_ROW_WIDTH_) + _Y_] 
+		cout << "1111 : Rank " << myRank << " Row " << i << " X " << array[(i*_ROW_WIDTH_) + _X_]
+			<< " Y " << array[(i*_ROW_WIDTH_) + _Y_]
 			<< " Z " << array[(i*_ROW_WIDTH_) + _Z_] << endl;
-		if (i == 0) 
+		if (i == 0)
 			i = rows - 2;
-	} 
- 
+	}
 
-	/*
-	cout << "root " << tree->i << endl;
-	cout << tree->x1 << " " << tree->x2 << endl;
-	cout << tree->y1 << " " << tree->y2 << endl;
-	cout << tree->z1 << " " << tree->z2 << endl;
-	
-	cout << "left" << endl;
-	cout << tree->l->x1 << " " << tree->l->x2 << endl;
-	cout << tree->l->y1 << " " << tree->l->y2 << endl;
-	cout << tree->l->z1 << " " << tree->l->z2 << endl;
+	string dumpFile = "dump-" + to_string(myRank) + ".txt";
+	ofstream d;
 
-	cout << "right" << endl;
-	cout << tree->r->x1 << " " << tree->r->x2 << endl;
-	cout << tree->r->y1 << " " << tree->r->y2 << endl;
-	cout << tree->r->z1 << " " << tree->r->z2 << endl;
-	*/
-	
+	d.open(dumpFile, ios::out);
+	dumpTree(tree, 0, &d);
+	d.close();
+
 	cout << "99999 : Rank " << myRank << " finished  buildTree" << endl;
 
 	MPI_Barrier(MPI_COMM_WORLD);
-	
+
 	////////////////
 	// searchTree //
 	////////////////
-	
+
 	// output
-	
+
 	MPI_Barrier(MPI_COMM_WORLD);
-	
+
 	// delete array;
-	
+
 	MPI_Finalize();
 
 	return _OKAY_;
 }
-
-
