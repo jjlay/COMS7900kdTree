@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 	// number of lines PER FILE
 	const int maxRows = 10000;
 
-	int sortInd = 1; // x = 1
+	int sortInd = _Z_; // x = 1
 	
 
 	//////////////////

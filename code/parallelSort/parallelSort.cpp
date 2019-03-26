@@ -103,8 +103,8 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	double minGlobal, maxGlobal;
 	
 	// Send minimums and maximums
-	myMin = min(array, rows, cols, _X_);
-	myMax = max(array, rows, cols, _X_);
+	myMin = min(array, rows, cols, sortInd );
+	myMax = max(array, rows, cols, sortInd );
 	transmitMinMax(myMin, myMax);
 	
 	if (myRank == 0) {
@@ -170,8 +170,13 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 		
 		// Calculate initial bin edges
 		getLinearBins( binE, numNodes, myRank, minGlobal, maxGlobal );  // for real
-		std::cout.precision(17);
-//		std::cout << "binE: " << binE[0] << " " << binE[1] << " " << binE[2] << " " << binE[3] << std::endl;
+		std::cout.precision(10);
+		
+		cout << myRank << " binE: ";
+		for( int i = 0; i < numNodes+1; i++ ) {
+			cout << binE[i] << " ";
+		}
+		cout << std::endl;
 		
 		// Transmit initial bin edges
 		transmitBinEdges( binE, numNodes );
@@ -268,8 +273,13 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 			// old
 		//	adaptBins( binE, binCt, numNodes );
 			
-			cout.precision(17);
-	//		cout << "binE: " << binE[0] << " " << binE[1] << " " << binE[2] << " " << binE[3] << endl;
+			cout.precision(10);
+			
+			cout << myRank << " binE: ";
+			for( int i = 0; i < numNodes+1; i++ ) {
+				cout << binE[i] << " ";
+			}
+			cout << std::endl;
 			
 			// Transmit initial bin edges
 			transmitBinEdges( binE, numNodes );
