@@ -192,7 +192,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	// get intitial bin counts, indices
 	binData( array, binE, myRank, sortInd,
 		numNodes, rows, binI_1D, binC); // for real
-	cout << myRank << " binC: " << binC[0] << " " << binC[1] << " " << binC[2] << endl;
+//	cout << myRank << " binC: " << binC[0] << " " << binC[1] << " " << binC[2] << endl;
 	
 	if( myRank == 0 ){
 		// Receive initial bin counts
@@ -356,7 +356,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	
 	// print iterations required for uniformity
 	if (myRank == 0)
-		cout << "ITERATION: " << iterations << endl;
+		cout << "ITERATIONS: " << iterations << endl;
 	
 	
 	if ((iterations >= abortCount) && (myRank == Rank0)) {

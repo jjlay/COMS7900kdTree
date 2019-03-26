@@ -38,6 +38,7 @@ void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, i
 
 
 	if( q > 1 ) {
+/*
 		ofstream f;
 		auto newName = name + "-" + to_string(myRank) + ".csv";
 		f.open(newName, ios::out);
@@ -55,6 +56,8 @@ void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, i
 		f << tempMin << ", " << tempMax << endl;
 
 		f.close();
+*/
+
 	//	cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank
 	//		<< " parallel named " << tree->name  << " q = " << q << " called by " << tree->name
 	//		<< endl;
@@ -63,7 +66,7 @@ void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, i
 		buildTree_parallel( &array, rows, cols, tree, comm, currentRank, q );
 		*data = array;
 
-    /*
+/*
 		ofstream f;
 		auto newName = name + "-" + to_string(myRank) + ".csv";
 		f.open(newName, ios::out);
@@ -110,11 +113,14 @@ void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, i
 		tree->name += "*";
 		tree->source = _Source_buildTree_serial;
 
-
 	//	cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank
 	//		<< " serial named " << tree->name  << " q = " << q << " called by " << tree->name
 	//		<< endl;
-		//buildTree_serial( data, rows, cols, tree);
+		buildTree_serial( data, rows, cols, tree);
 	}
 
 }
+
+
+
+
