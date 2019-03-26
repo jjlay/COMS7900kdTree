@@ -63,7 +63,7 @@ void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, i
 		buildTree_parallel( &array, rows, cols, tree, comm, currentRank, q );
 		*data = array;
 
-/*
+    /*
 		ofstream f;
 		auto newName = name + "-" + to_string(myRank) + ".csv";
 		f.open(newName, ios::out);
@@ -83,11 +83,11 @@ void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, i
 		f.close();
 */
 
-	//	cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank
+	//	cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank 
 	//		<< " parallel named " << tree->name  << " q = " << q << " called by " << tree->name
 	//		<< endl;
-	}
-	else
+	} 
+	else 
 	{
 		ofstream f;
 		auto newName = name + "-" + to_string(myRank) + ".csv";

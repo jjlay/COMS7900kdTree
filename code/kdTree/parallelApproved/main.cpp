@@ -76,12 +76,12 @@ int main(int argc, char *argv[])
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 
 	// total number of files to read
-	const int maxFilesToProc = 8;
+  const int maxFilesToProc = 100;
 
 	// number of lines PER FILE
-	const int maxRows = 10;
+	const int maxRows = 10000;
 
-	int sortInd = 1; // x = 1
+  int sortInd = 1; // x = 1
 
 	//////////////////
 	// Data Import  //
@@ -152,8 +152,8 @@ int main(int argc, char *argv[])
 	sleep(myRank+1);
 
 	for (auto i = 0; i < rows; i++ ) {
-		cout << "1111 : Rank " << myRank << " Row " << i << " X " << array[(i*_ROW_WIDTH_) + _X_]
-			<< " Y " << array[(i*_ROW_WIDTH_) + _Y_]
+		cout << "11111 : Rank " << myRank << " Row " << i << " X " << array[(i*_ROW_WIDTH_) + _X_] 
+			<< " Y " << array[(i*_ROW_WIDTH_) + _Y_] 
 			<< " Z " << array[(i*_ROW_WIDTH_) + _Z_] << endl;
 		if (i == 0)
 			i = rows - 2;
