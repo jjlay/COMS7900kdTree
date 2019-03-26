@@ -39,8 +39,8 @@ void dumpTree(Tree *t, int depth, ofstream *output, int rank) {
     << padding << "z-min: " << t->z1 << ", z-max: " << t->z2 << endl
     << padding << "Node depth: " << t->depth << endl
     << padding << "Number of points: " << t->n << endl
-    << padding << "Center of node: " << c[_X_] << ", " << c[_Y_] << ", " << c[_Z_] <<endl
-    << padding << "Radius: " << radius << endl
+    << padding << "Center of node: " << t->c[_X_] << ", " << t->c[_Y_] << ", " << t->c[_Z_] <<endl
+    << padding << "Radius: " << t->radius << endl
     << padding << "----------" << endl;
 
   if (t->l != nullptr)
