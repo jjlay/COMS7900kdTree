@@ -29,6 +29,9 @@ void dumpTree(Tree *t, int depth, ofstream *output, int rank) {
     << padding << "Rank: " << rank << endl
     << padding << "Depth: " << depth << endl
     << padding << "Name: " << t->name << endl
+    << padding << "Parent: " << (t->p == nullptr ? "none" : t->p->name) << endl;
+    << padding << "Left child: " << (t->l == nullptr ? "none" : t->l->name) << endl;
+    << padding << "Right child: " << (t->r == nullptr ? "none" : t->r->name) << endl;
     << padding << "----------" << endl;
 
   if (t->l != nullptr)
