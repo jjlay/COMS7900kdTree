@@ -4,6 +4,8 @@
 //
 
 #include "tree.h"
+#include "definitions.h"
+
 
 //
 // Standard includes
