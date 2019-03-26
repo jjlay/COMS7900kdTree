@@ -11,6 +11,7 @@
 
 #include <fstream>
 #include <string>
+#include <iostream>
 
 
 //
@@ -23,6 +24,11 @@ void dumpTree(Tree *t, int depth, ofstream *output) {
 
   for (auto i = 0; i < depth; i++)
     padding += " ";
+
+  cout << padding << "----------" << endl
+      << padding << "Depth: " << depth << endl
+      << padding << "Name: " << t->name << endl
+      << padding << "----------" << endl;
 
   *output << padding << "----------" << endl
     << padding << "Depth: " << depth << endl
