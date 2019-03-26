@@ -116,7 +116,7 @@ void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, i
 	//	cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank
 	//		<< " serial named " << tree->name  << " q = " << q << " called by " << tree->name
 	//		<< endl;
-		buildTree_serial( data, rows, cols, tree);
+		buildTree_serial( *data, rows, cols, tree);
 	}
 
 }

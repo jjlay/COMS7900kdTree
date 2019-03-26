@@ -65,8 +65,6 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	double myMax = 0.0;
 	//number of lines TOTAL
 	unsigned int numLines;
-	// average lines per worker node
-	int avgPtsPerWorker = numLines / numNodes;
 	
         // Perform initial sort
         //sortArray(array, rows, cols, sortInd);
@@ -99,6 +97,8 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 		MPI_Send(rowsPTR, 1, MPI_INT, 0, 1111, comm );
 	}
 
+	// average lines per worker node
+	int avgPtsPerWorker = numLines / numNodes;
 	
 	MPI_Barrier(comm);
 
@@ -265,9 +265,9 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 			
 			// Adapt bin edges
 			// new
-		//	adaptBins( binE, binCt, numNodes, numLines, avgPtsPerWorker );
+			adaptBins( binE, binCt, numNodes, numLines, avgPtsPerWorker );
 			// old
-			adaptBins( binE, binCt, numNodes, iterations );
+		//	adaptBins( binE, binCt, numNodes, iterations );
 			
 	//		cout << "binE: " << binE[0] << " " << binE[1] << " " << binE[2] << " " << binE[3] << endl;
 			

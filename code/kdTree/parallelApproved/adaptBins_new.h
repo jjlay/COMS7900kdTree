@@ -28,13 +28,12 @@
 //
 
 #include "definitions.h"
-#include "Data.h"
 
 
 //
 // Function: importFiles
 //
 
-void adaptBins( double *binE, int *binC, int NumWorkers, double numLines, int avgPtsPerWorker );
+void adaptBins( double *binE, int *binC, int NumWorkers, int numLines, double avgPtsPerWorker );
 	
 
