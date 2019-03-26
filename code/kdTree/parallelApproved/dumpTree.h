@@ -16,4 +16,4 @@
 // Function: dumpTree
 //
 
-void dumpTree(Tree *t, int depth, ofstream *output);
+void dumpTree(Tree *t, int depth, ofstream *output, int rank);

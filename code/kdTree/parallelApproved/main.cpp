@@ -160,16 +160,13 @@ int main(int argc, char *argv[])
 	}
 
 	MPI_Barrier(MPI_COMM_WORLD);
-	
+
 	string dumpFile = "dump-" + to_string(myRank) + ".txt";
 	ofstream d;
 
-	cout << "Rank " << myRank << " is dumping tree" << endl;
 	d.open(dumpFile, ios::out);
-	dumpTree(tree, 0, &d);
+	dumpTree(tree, 0, &d, myRank);
 	d.close();
-
-	cout << "99999 : Rank " << myRank << " finished  buildTree" << endl;
 
 	MPI_Barrier(MPI_COMM_WORLD);
 
