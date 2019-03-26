@@ -26,7 +26,7 @@ void dumpTree(Tree *t, int depth, ofstream *output) {
 
   *output << padding << "----------" << endl
     << padding << "Depth: " << depth << endl
-    << padding << "Name: " << t->Name << endl
+    << padding << "Name: " << t->name << endl
     << padding << "----------" << endl;
 
   dumpTree(t->l, depth+1, output);
