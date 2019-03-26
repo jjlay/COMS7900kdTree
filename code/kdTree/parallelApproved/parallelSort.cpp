@@ -232,9 +232,9 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	*/
 		
 		// Determine if uniform
-		*isUniform = testUniformity( binC, numNodes, thresh, &uniformity );
+		*isUniform = testUniformity( binCt, numNodes, thresh, &uniformity );
 		
-	/*		
+	/*
 		if( *isUniform == 1 ) {
 			std::cout << "Threshold:  " << thresh << std::endl;
 			std::cout << "Uniformity: " << uniformity << std::endl;
@@ -255,7 +255,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	// end first iteration
 	
 	int iterations = 1;
-	int deathCount = 100;  // Number of iterations we will allow adaptBins to be stuck
+//	int deathCount = 100;  // Number of iterations we will allow adaptBins to be stuck
 	
 	while( ( *isUniform == 0 ) && (iterations < abortCount) ) {
 //	while( iterations < 2 ) {
@@ -267,7 +267,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 			// new
 		//	adaptBins( binE, binCt, numNodes, numLines, avgPtsPerWorker );
 			// old
-			adaptBins( binE, binCt, numNodes );
+			adaptBins( binE, binCt, numNodes, iterations );
 			
 	//		cout << "binE: " << binE[0] << " " << binE[1] << " " << binE[2] << " " << binE[3] << endl;
 			
@@ -329,9 +329,9 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 		*/
 			
 			// Determine if uniform
-			*isUniform = testUniformity( binC, numNodes, thresh, &uniformity );
+			*isUniform = testUniformity( binCt, numNodes, thresh, &uniformity );
 			
-		/*		
+		/*	
 			if( *isUniform == 1 ) {
 				std::cout << "Threshold:  " << thresh << std::endl;
 				std::cout << "Uniformity: " << uniformity << std::endl;
@@ -341,7 +341,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 				std::cout << "Uniformity: " << uniformity << std::endl;
 				std::cout << "CONTINUE: the bins aren't uniform" << std::endl;
 			}
-		*/	
+		*/
 			// Transmit isUniform update
 			transmitUniformity( isUniform, numNodes, comm);
 		} else { 
@@ -352,6 +352,11 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 		
 		iterations++;
 	}
+	
+	
+	// print iterations required for uniformity
+	if (myRank == 0)
+		cout << "ITERATION: " << iterations << endl;
 	
 	
 	if ((iterations >= abortCount) && (myRank == Rank0)) {
