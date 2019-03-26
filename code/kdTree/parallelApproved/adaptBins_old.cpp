@@ -19,7 +19,7 @@ using namespace std;
 // Function: importFiles
 //
 
-void adaptBins( double *binE, int *binC, int numWorkers, int step ) {
+void adaptBins_old( double *binE, int *binC, int numWorkers, int step ) {
 	// binE = bin edges, binC = bin counts
 	
 	double *diff = new double[numWorkers+1];

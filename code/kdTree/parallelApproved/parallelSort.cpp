@@ -11,7 +11,7 @@
 #include <iomanip>
 #include <string>
 #include <chrono> 
-
+#include "math.h"
 #include <unistd.h>
 #include <time.h>
 //
@@ -33,6 +33,8 @@
 #include "importFiles.h"
 #include "getLinearBins.h"
 #include "adaptBins.h"
+#include "adaptBins_new.h"
+#include "adaptBins_old.h"
 #include "testUniformity.h"
 #include "binData.h"
 #include "receiveMinMax.h"
@@ -271,10 +273,14 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 			cout << "ITERATION: " << iterations << endl;
 			
 			// Adapt bin edges
-			// new
-			adaptBins( binE, binCt, numNodes, numLines, avgPtsPerWorker );
-			// old
-		//	adaptBins( binE, binCt, numNodes, iterations );
+			// new: linear interp
+		//	adaptBins( binE, binCt, numNodes, numLines, avgPtsPerWorker );
+			
+			if( iterations % 2 == 1) {
+				adaptBins_new( binE, binCt, numNodes, numLines, avgPtsPerWorker );
+			} else {
+				adaptBins_old( binE, binCt, numNodes, iterations );
+			}
 			
 			cout << myRank << " binE: ";
 			for( int i = 0; i < numNodes+1; i++ ) {
