@@ -75,11 +75,13 @@ int main(int argc, char *argv[])
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 	
 	// total number of files to read
-	const int maxFilesToProc = 100;
+
+  const int maxFilesToProc = 100;
 
 	// number of lines PER FILE
 	const int maxRows = 10000;
-	
+
+  
 	int sortInd = 1; // x = 1
 
 	//////////////////
