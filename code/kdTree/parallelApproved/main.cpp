@@ -159,6 +159,8 @@ int main(int argc, char *argv[])
 			i = rows - 2;
 	}
 
+	MPI_Barrier(MPI_COMM_WORLD);
+	
 	string dumpFile = "dump-" + to_string(myRank) + ".txt";
 	ofstream d;
 
