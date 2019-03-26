@@ -162,6 +162,7 @@ int main(int argc, char *argv[])
 	string dumpFile = "dump-" + to_string(myRank) + ".txt";
 	ofstream d;
 
+	cout << "Rank " << myRank << " is dumping tree" << endl;
 	d.open(dumpFile, ios::out);
 	dumpTree(tree, 0, &d);
 	d.close();
