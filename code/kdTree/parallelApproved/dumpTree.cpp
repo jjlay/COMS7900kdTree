@@ -38,6 +38,6 @@ void dumpTree(Tree *t, int depth, ofstream *output) {
   if (t->l != nullptr)
     dumpTree(t->l, depth+1, output);
 
-  if (t-r != nullptr)
+  if (t->r != nullptr)
     dumpTree(t->r, depth+1, output);
 }
