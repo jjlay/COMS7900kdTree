@@ -26,6 +26,7 @@ struct Tree {
 	Tree *l;  // Left child
 	Tree *r;  // Right child
 	int i;    // Sort index
+	int source; // Which buildTree created it
 
 	MPI_Comm parentComm, leftComm, rightComm, thisComm;
 

@@ -6,7 +6,7 @@
 
 //
 // Control
-// 
+//
 
 #define _DEBUG_
 #define _TIMING_
@@ -93,3 +93,10 @@
 #define _MAX_ROWS_ 20000000  // Max number of rows in file
 
 
+//
+// buildTree sources
+//
+
+#define _Source_buildTree_unknown     0
+#define _Source_buildTree_parallel   -1
+#define _Source_buildTree_serial     -2

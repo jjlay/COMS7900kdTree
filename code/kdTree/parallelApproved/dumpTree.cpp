@@ -33,8 +33,17 @@ void dumpTree(Tree *t, int depth, ofstream *output, int rank) {
     << padding << "Name: " << t->name << endl
     << padding << "Parent: " << (t->p == nullptr ? "none" : t->p->name) << endl
     << padding << "Left child: " << (t->l == nullptr ? "none" : t->l->name) << endl
-    << padding << "Right child: " << (t->r == nullptr ? "none" : t->r->name) << endl
-    << padding << "x-min: " << t->x1 << ", x-max: " << t->x2 << endl
+    << padding << "Right child: " << (t->r == nullptr ? "none" : t->r->name) << endl;
+
+  if (t->source == _Source_buildTree_parallel)
+    *output << padding << "Source: buildTree_parallel" << endl;
+  else
+    if (t->source == _Source_buildTree_serial)
+      *output << padding << "Source: buildTree_parallel" << endl;
+    else
+      *output << padding << "Source: unknown" << endl;
+
+  *output << padding << "x-min: " << t->x1 << ", x-max: " << t->x2 << endl
     << padding << "y-min: " << t->y1 << ", y-max: " << t->y2 << endl
     << padding << "z-min: " << t->z1 << ", z-max: " << t->z2 << endl
     << padding << "Node depth: " << t->depth << endl
