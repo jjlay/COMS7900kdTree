@@ -57,6 +57,10 @@ void search501(int myRank, string path) {
   importFiles(listOfFiles, myRank, searchable, &rows, &cols, maxSearchRows,
     maxArraySize);
 
+  auto buffer = new double[_SEARCH_WIDTH_]();
+  buffer[_SIGNAL_] = mpi_Signal_Run;
+  int messageSize = sizeof(double) * _SEARCH_WIDTH_;
+
   for (auto rad = 0; rad < numberRadii; rad++) {
     for (auto r = 0; r < rows; r++) {
       // Perform the search
@@ -67,6 +71,13 @@ void search501(int myRank, string path) {
       auto searchIndex = searchable[offset + _INDEX_];
       auto radius = radii[rad];
 
+      buffer[_X_] = searchX;
+      buffer[_Y_] = searchY;
+      buffer[_Z_] = searchZ;
+      buffer[_RADIUS_] = radius;
     }
   }
+
+  buffer[_SIGNAL_] = mpi_Signal_Halt;
+  MPI_Bcast((void *)buffer, messageSize, MPI_DOUBLE, Rank0, MPI_COMM_WORLD);
 }

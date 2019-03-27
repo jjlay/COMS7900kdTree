@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
 	// searchTree //
 	////////////////
 
-	if (myRank == 0) {
+	if (myRank == Rank0) {
 		search501(myRank, path);
 	}
 	else {
