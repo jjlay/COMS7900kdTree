@@ -86,4 +86,5 @@ void search501(int myRank, string path) {
 
   buffer[_SIGNAL_] = mpi_Signal_Halt;
   MPI_Bcast((void *)buffer, messageSize, MPI_DOUBLE, Rank0, MPI_COMM_WORLD);
+  delete buffer;
 }

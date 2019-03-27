@@ -186,11 +186,11 @@ int main(int argc, char *argv[])
 		searchWorker(myRank);
 	}
 
-	// output
-
+	//////////////
+	// Wrap Up  //
+	//////////////
+	
 	MPI_Barrier(MPI_COMM_WORLD);
-
-	// delete array;
 
 	MPI_Finalize();
 

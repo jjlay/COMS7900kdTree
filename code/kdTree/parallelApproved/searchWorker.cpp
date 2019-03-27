@@ -37,4 +37,6 @@ void searchWorker(int myRank) {
   if (buffer[_SIGNAL_] == mpi_Signal_Halt) {
     cout << "Rank " << myRank << " is halting searchWorker" << endl;
   }
+
+  delete buffer;
 }
