@@ -177,7 +177,12 @@ int main(int argc, char *argv[])
 	// searchTree //
 	////////////////
 
-	search501(myRank);
+	if (myRank == 0) {
+		search501(myRank);
+	}
+	else {
+		// Worker
+	}
 
 	// output
 
