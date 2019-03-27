@@ -44,7 +44,7 @@ void search501(int myRank, string path) {
   //
 
   string filename = path + "datafile00501.txt";
-  const int maxSearchRows = 10;
+  const int maxSearchRows = 5;
 
   const int numberRadii = 3;
   double radii[] = {0.01, 0.05, 0.10};
@@ -81,6 +81,7 @@ void search501(int myRank, string path) {
       buffer[_Y_] = searchY;
       buffer[_Z_] = searchZ;
       buffer[_RADIUS_] = radius;
+      MPI_Bcast((void *)buffer, messageSize, MPI_DOUBLE, Rank0, MPI_COMM_WORLD);
     }
   }
 

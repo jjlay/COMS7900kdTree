@@ -34,9 +34,15 @@ void searchWorker(int myRank) {
 
   MPI_Bcast((void *)buffer, messageSize, MPI_DOUBLE, Rank0, MPI_COMM_WORLD);
 
-  if (buffer[_SIGNAL_] == mpi_Signal_Halt) {
-    cout << "Rank " << myRank << " is halting searchWorker" << endl;
+  while (buffer[_SIGNAL_] == mpi_Signal_Run) {
+    cout << "Rank " << myRank << " searching (" << buffer[_X_]
+      << ", " << buffer[_Y_] << ", " << buffer[_Z_] << ") in radius "
+      << buffer[_RADIUS_] << endl;
+
+      MPI_Bcast((void *)buffer, messageSize, MPI_DOUBLE, Rank0, MPI_COMM_WORLD);
   }
+
+  cout << "Rank " << myRank << " is halting searchWorker" << endl;
 
   delete buffer;
 }
