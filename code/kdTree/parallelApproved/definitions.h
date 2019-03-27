@@ -46,6 +46,8 @@
 #define mpi_Tag_isUnif       60
 #define mpi_Tag_RowCount     70
 
+#define mpi_Tag_Search       80
+
 
 //
 // MPI Colors
@@ -53,6 +55,18 @@
 
 #define mpi_Color_Left   0
 #define mpi_Color_Right  1
+
+
+//
+// MPI Search
+//
+
+#define mpi_Signal_Run   -1
+#define mpi_Signal_Halt  -4
+
+#define _SIGNAL_          0
+#define _RADIUS_          4
+#define _SEARCH_WIDTH_    5
 
 
 //
