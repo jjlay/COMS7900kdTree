@@ -153,7 +153,7 @@ void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 
 		tree->l->name = tree->name + "l";
 		tree->r->name = tree->name + "l";
-		
+
 		// Set the children's parent
 		tree->l->p = tree;
 		tree->r->p = tree;
@@ -214,6 +214,8 @@ void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 		//
 		// end
 		//
+
+		tree->name += "!";
 
 		tree->d[_INDEX_] = data[_INDEX_];
 		tree->d[_X_] = data[_X_];
