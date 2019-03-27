@@ -60,8 +60,8 @@ int searchTreeLocal(Tree *tree, double searchCenter[4], double radius, int depth
 		}
 		else {
 			// Intersection!
-			found += searchTreeJJ(tree->l, searchCenter, radius, depth+1);
-			found += searchTreeJJ(tree->r, searchCenter, radius, depth+1);
+			found += searchTreeLocal(tree->l, searchCenter, radius, depth+1);
+			found += searchTreeLocal(tree->r, searchCenter, radius, depth+1);
 		}
 	}
 
