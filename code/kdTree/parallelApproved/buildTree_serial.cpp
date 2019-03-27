@@ -51,23 +51,17 @@ void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 		//         ylen = ymax - ymin;
 		//         
 
-	//	sortData(data, cols, rows, _X_);
-		
 		auto xMin = min( data, *rows, cols, _X_ );
 		auto xMax = max( data, *rows, cols, _X_ );
 		auto rangeX = xMax - xMin;
 
 		// cout << endl << "Min X: " << xMin << ", Max X: " << xMax << ", Range X: " << rangeX << endl << endl;
 
-	//	sortData(data, cols, rows, _Y_);
-
 		auto yMin = min( data, *rows, cols, _Y_ );
 		auto yMax = max( data, *rows, cols, _Y_ );
 		auto rangeY = yMax - yMin;
 
 		// cout << endl << "Min Y: " << yMin << ", Max Y: " << yMax << ", Range Y: " << rangeY << endl << endl;
-
-	//	sortData(data, cols, rows, _Z_);
 
 		auto zMin = min( data, *rows, cols, _Z_ );
 		auto zMax = max( data, *rows, cols, _Z_ );
