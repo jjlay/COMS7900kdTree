@@ -65,7 +65,7 @@ void search501(int myRank, string path) {
 
   auto buffer = new double[_SEARCH_WIDTH_]();
   buffer[_SIGNAL_] = mpi_Signal_Run;
-  int messageSize = sizeof(double) * _SEARCH_WIDTH_;
+  const int messageSize = _SEARCH_WIDTH_;
 
   for (auto rad = 0; rad < numberRadii; rad++) {
     for (auto r = 0; r < rows; r++) {

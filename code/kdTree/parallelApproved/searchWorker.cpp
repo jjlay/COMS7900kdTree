@@ -30,7 +30,7 @@ void searchWorker(int myRank) {
   cout << "Rank " << myRank << " is a searchWorker" << endl;
 
   auto buffer = new double[_SEARCH_WIDTH_]();
-  int messageSize = _SEARCH_WIDTH_ * sizeof(double);
+  const int messageSize = _SEARCH_WIDTH_;
 
   MPI_Bcast((void *)buffer, messageSize, MPI_DOUBLE, Rank0, MPI_COMM_WORLD);
 
