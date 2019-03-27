@@ -120,4 +120,3 @@ void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, i
 	}
 
 }
-
