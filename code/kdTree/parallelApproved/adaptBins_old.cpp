@@ -25,7 +25,6 @@ void adaptBins_old( double *binE, int *binC, int numWorkers, int step ) {
 	double *diff = new double[numWorkers+1];
 	double dC, dB, scale;
 	
-	cout << step << endl;
 	for( int i = 1; i < numWorkers; i++ ) {
 		
 		dC = ( 2.0*(binC[i] - binC[i-1]) )/( 1.0*binC[i] + 1.0*binC[i-1] + 0.000001 );
@@ -49,10 +48,8 @@ void adaptBins_old( double *binE, int *binC, int numWorkers, int step ) {
 	}
 	
 	for( int i = 1; i < numWorkers; i++ ) {
-		cout << diff[i] << " ";
 		binE[i] = binE[i] + diff[i];
 	}
-	cout << endl;
 	
 }
 

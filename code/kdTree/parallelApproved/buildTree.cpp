@@ -30,9 +30,10 @@ using namespace std;
 
 void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes, string name ) {
 
-	int q = 0, currentRank = 0;
+	int q = 0, currentRank = 0, rootRank;
 	MPI_Comm_size( comm, &q );
 	MPI_Comm_rank( comm, &currentRank );
+	MPI_Comm_rank( MPI_COMM_WORLD, &rootRank );
 
 	int key = 50000 + (tree->depth) * 100;
 
@@ -116,7 +117,10 @@ void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, i
 	//	cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank
 	//		<< " serial named " << tree->name  << " q = " << q << " called by " << tree->name
 	//		<< endl;
+		
+		cout << rootRank << " before serial" << endl;
 		buildTree_serial( *data, rows, cols, tree);
+		cout << rootRank << " after serial" << endl;
 	}
 
 }

@@ -59,7 +59,6 @@ void adaptBins_new( double *binE, int *binC, int numWorkers, int numLines, doubl
 		while( binCum[ind+1] < (j+1)*avgPtsPerWorker ) {
 			ind++;
 		}
-		cout << ind << endl;
 		
 		// get binE2
 		binE2[j+1] = binE[ind] + ( (j+1)*avgPtsPerWorker - binCum[ind] )/binC[ind]*( binE[ind+1] - binE[ind] );
