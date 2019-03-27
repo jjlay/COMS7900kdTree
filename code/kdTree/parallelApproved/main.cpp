@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
 	////////////////
 
 	if (myRank == 0) {
-		search501(myRank);
+		search501(myRank, path);
 	}
 	else {
 		// Worker

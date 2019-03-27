@@ -30,14 +30,14 @@ using namespace std;
 // Function: search501
 //
 
-void search501(int myRank) {
+void search501(int myRank, string path) {
   cout << "Rank " << myRank << " has started search501" << endl;
 
   //
   // Setup
   //
 
-  const string filename = "data501.txt";
+  string filename = path + "data501.txt";
   const int maxSearchRows = 10;
 
   const int numberRadii = 3;
@@ -66,7 +66,7 @@ void search501(int myRank) {
       auto searchZ = searchable[offset + _Z_];
       auto searchIndex = searchable[offset + _INDEX_];
       auto radius = radii[rad];
-      
+
     }
   }
 }
