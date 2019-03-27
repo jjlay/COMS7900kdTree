@@ -1,0 +1,64 @@
+----------
+Rank: 2
+Depth: 0
+Name: t
+Parent: none
+Left child: tl
+Right child: none
+Source: buildTree_parallel
+x-min: 6.92474e-310, x-max: 6.92474e-310
+y-min: 2.122e-314, y-max: 2.122e-314
+z-min: 9.65415e-315, z-max: 3.68421e+180
+Node depth: 0
+Number of points: 10
+Center of node: 6.92474e-310, 2.122e-314, 1.84211e+180
+Radius: inf
+----------
+  ----------
+  Rank: 2
+  Depth: 1
+  Name: tl
+  Parent: t
+  Left child: none
+  Right child: tlr
+  Source: buildTree_parallel
+  x-min: 1.80177e-316, x-max: 6.92474e-310
+  y-min: 1.8016e-316, y-max: 1.80068e-316
+  z-min: 1.8016e-316, z-max: 1.80067e-316
+  Node depth: 1
+  Number of points: 0
+  Center of node: 3.46237e-310, 1.80114e-316, 1.80113e-316
+  Radius: 0
+  ----------
+    ----------
+    Rank: 2
+    Depth: 2
+    Name: tlr
+    Parent: tl
+    Left child: tlrl*
+    Right child: none
+    Source: buildTree_parallel
+    x-min: 0.201549, x-max: 1.05253
+    y-min: 0.367227, y-max: 1.15287
+    z-min: -0.039897, z-max: 0.519265
+    Node depth: 2
+    Number of points: 0
+    Center of node: 0.627042, 0.760051, 0.239684
+    Radius: 0.643055
+    ----------
+      ----------
+      Rank: 2
+      Depth: 3
+      Name: tlrl*
+      Parent: tlr
+      Left child: none
+      Right child: none
+      Source: buildTree_parallel
+      x-min: 0.539374, x-max: 0.603381
+      y-min: 0.420407, y-max: 9.04e+09
+      z-min: 0.568588, z-max: 0.400114
+      Node depth: 3
+      Number of points: 1069681466
+      Center of node: 0.766808, 0.45094, 0.377429
+      Radius: 7.64e+09
+      ----------
