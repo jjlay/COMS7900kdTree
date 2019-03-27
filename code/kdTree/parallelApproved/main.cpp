@@ -54,6 +54,7 @@
 // buildTree
 #include "tree.h"
 #include "buildTree.h"
+#include "searchTree.h"
 
 
 
@@ -149,7 +150,8 @@ int main(int argc, char *argv[])
 
 	buildTree( &array, &rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
 
-	sleep(myRank+1);
+
+//	sleep(myRank+1);
 
 	for (auto i = 0; i < rows; i++ ) {
 		cout << "11111 : Rank " << myRank << " Row " << i << " X " << array[(i*_ROW_WIDTH_) + _X_] 
@@ -175,9 +177,19 @@ int main(int argc, char *argv[])
 	////////////////
 	// searchTree //
 	////////////////
-
+	
+	double point[] = { 1, 0.5, 0.5, 0.5 };
+	double rad   = 0.25;
+	
+	searchTree( point, rad, &array, &rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
+	
 	// output
-
+	
+	
+	
+	
+	
+	
 	MPI_Barrier(MPI_COMM_WORLD);
 
 	// delete array;
