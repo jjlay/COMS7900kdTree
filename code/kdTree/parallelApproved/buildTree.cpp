@@ -118,9 +118,9 @@ void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, i
 	//		<< " serial named " << tree->name  << " q = " << q << " called by " << tree->name
 	//		<< endl;
 		
-		cout << rootRank << " before serial" << endl;
+	//	cout << rootRank << " before serial" << endl;
 		buildTree_serial( *data, rows, cols, tree);
-		cout << rootRank << " after serial" << endl;
+	//	cout << rootRank << " after serial" << endl;
 	}
 
 }

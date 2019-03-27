@@ -45,9 +45,9 @@ using namespace std;
 
 int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int numNodes, MPI_Comm comm )
 {
-	cout << "Rank " << myRank
-		<< " Name " << tree->name
-		<< " is in getSortDim" << endl;
+//	cout << "Rank " << myRank
+//		<< " Name " << tree->name
+//		<< " is in getSortDim" << endl;
 	int sortDim = _X_;
 	
 	// get local xyz min max
@@ -167,13 +167,17 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 		}
 	}
 	
+	// bcast mins'maxs for tree storage
+	MPI_Bcast( minGlobal, 4, MPI_DOUBLE, 0, tree->thisComm );
+	MPI_Bcast( maxGlobal, 4, MPI_DOUBLE, 0, tree->thisComm );
+	
 	tree->x1 = minGlobal[_X_];
 	tree->x2 = maxGlobal[_X_];
 	tree->y1 = minGlobal[_Y_];
 	tree->y2 = maxGlobal[_Y_];
 	tree->z1 = minGlobal[_Z_];
 	tree->z2 = maxGlobal[_Z_];
-
+	
 	tree->c[_INDEX_] = _Undefined_;
 	tree->c[_X_] = (minGlobal[_X_] + maxGlobal[_X_]) / 2.0;
 	tree->c[_Y_] = (minGlobal[_Y_] + maxGlobal[_Y_]) / 2.0;
@@ -183,9 +187,10 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 			pow(tree->c[_Y_] - minGlobal[_Y_], 2.0) +
 			pow(tree->c[_Z_] - minGlobal[_Z_], 2.0));
 
-	cout << "Rank " << myRank
-		<< " Name " << tree->name 
-		<< " is about to broadcast" << endl;
+//	cout << "Rank " << myRank
+//		<< " Name " << tree->name 
+//		<< " is about to broadcast" << endl;
+	
 	MPI_Bcast( &sortDim, 1, MPI_INT, 0, comm );
 
 	return sortDim;
