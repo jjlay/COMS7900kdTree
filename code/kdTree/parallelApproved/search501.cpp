@@ -37,7 +37,7 @@ void search501(int myRank, string path) {
   // Setup
   //
 
-  string filename = path + "data00501.txt";
+  string filename = path + "datafile00501.txt";
   const int maxSearchRows = 10;
 
   const int numberRadii = 3;
