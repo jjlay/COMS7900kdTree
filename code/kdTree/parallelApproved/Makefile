@@ -9,7 +9,7 @@ main : main.o getSortDim.o buildTree.o buildTree_serial.o \
 			 receiveMinMax.o binData.o transmitBinEdges.o receiveBinCounts.o \
 			 transmitUniformity.o receiveBinIndices.o exportResults.o min.o \
 			 max.o swapArrayParts.o cleanUp.o sortData.o dumpTree.o \
-			 searchTreeLocal.o search501.o
+			 searchTreeLocal.o search501.o searchWorker.o
 	$(CC) $(CFLAGS) -o main main.o getSortDim.o buildTree.o \
                      buildTree_serial.o buildTree_parallel.o \
 										 parallelSort.o initializeMPI.o listFiles.o \
@@ -20,7 +20,7 @@ main : main.o getSortDim.o buildTree.o buildTree_serial.o \
 										 transmitBinEdges.o receiveBinCounts.o \
 										 transmitUniformity.o receiveBinIndices.o exportResults.o \
 										 min.o max.o swapArrayParts.o cleanUp.o sortData.o \
-										 dumpTree.o searchTreeLocal.o search501.o
+										 dumpTree.o searchTreeLocal.o search501.o searchWorker.o
 
 %.o : %.cpp definitions.h
 	$(CC) $(CFLAGS) -c $<

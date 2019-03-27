@@ -51,6 +51,7 @@
 #include "parallelSort.h"
 #include "dumpTree.h"
 #include "search501.h"
+#include "searchWorker.h"
 
 // buildTree
 #include "tree.h"
@@ -182,6 +183,7 @@ int main(int argc, char *argv[])
 	}
 	else {
 		// Worker
+		searchWorker(myRank);
 	}
 
 	// output
