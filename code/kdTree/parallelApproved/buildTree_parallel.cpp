@@ -50,7 +50,6 @@ void buildTree_parallel( double *data[], int *rows, int cols, Tree *tree, MPI_Co
 	int numLeftNodes = numNodes / 2;
 	int numRightNodes = numNodes - numLeftNodes;
 
-	// getSortDim crashes the code!
 	int sortDim = getSortDim( *data, *rows, cols, tree, currentRank, numNodes, comm );
 	
 //	cout << "sortdim " << sortDim << endl;

@@ -56,6 +56,7 @@
 // buildTree
 #include "tree.h"
 #include "buildTree.h"
+#include "searchTree.h"
 
 
 
@@ -78,10 +79,10 @@ int main(int argc, char *argv[])
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 
 	// total number of files to read
-	const int maxFilesToProc = 10;
+	const int maxFilesToProc = 30;
 
 	// number of lines PER FILE
-	const int maxRows = 100;
+	const int maxRows = 1000;
 
 	int sortInd = 1; // x = 1
 
@@ -151,7 +152,8 @@ int main(int argc, char *argv[])
 
 	buildTree( &array, &rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
 
-	sleep(myRank+1);
+
+//	sleep(myRank+1);
 
 	for (auto i = 0; i < rows; i++ ) {
 		cout << "11111 : Rank " << myRank << " Row " << i << " X " << array[(i*_ROW_WIDTH_) + _X_]
@@ -177,18 +179,17 @@ int main(int argc, char *argv[])
 	////////////////
 	// searchTree //
 	////////////////
-
-	if (myRank == Rank0) {
-		search501(myRank, path);
-	}
-	else {
-		// Worker
-		searchWorker(myRank);
-	}
-
-	//////////////
-	// Wrap Up  //
-	//////////////
+	
+	double point[] = { 1, 0.5, 0.5, 0.5 };
+	double rad   = 0.25;
+	
+	searchTree( point, rad, &array, &rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
+	
+	// output
+	
+	
+	
+	
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 
