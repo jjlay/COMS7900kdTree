@@ -6,6 +6,12 @@
 #include "definitions.h"
 #include "importFiles.h"
 
+//
+// Parallel includes
+//
+
+#include "mpi.h"
+
 
 //
 // STL includes
