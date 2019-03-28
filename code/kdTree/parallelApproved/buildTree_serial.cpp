@@ -26,9 +26,9 @@ using namespace std;
 void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 
 	// function tree = buildTree( data, tree )
-	//     
+	//
 	//     % pause(0.1)
-	//     
+	//
 	//     % get length
 	//     [ nPts, nDim ] = size( data );
 	//     tree(1).n = nPts;
@@ -37,37 +37,31 @@ void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 
 	if (*rows > 1) {
 		//     tree(1).c = [ 0.5*( min(data(:,1)) + max(data(:,1)) ), 0.5*( min(data(:,2)) + max(data(:,2)) )];
-		//     
+		//
 		//     if nPts > 1
 		//         disp("Creating branch...")
-		//         
+		//
 		//         % get range and sortInd
 		//         xmin = min( data(:,1) );
 		//         xmax = max( data(:,1) );
 		//         ymin = min( data(:,2) );
 		//         ymax = max( data(:,2) );
-		//     
+		//
 		//         xlen = xmax - xmin;
 		//         ylen = ymax - ymin;
-		//         
+		//
 
-	//	sortData(data, cols, rows, _X_);
-		
 		auto xMin = min( data, *rows, cols, _X_ );
 		auto xMax = max( data, *rows, cols, _X_ );
 		auto rangeX = xMax - xMin;
 
 		// cout << endl << "Min X: " << xMin << ", Max X: " << xMax << ", Range X: " << rangeX << endl << endl;
 
-	//	sortData(data, cols, rows, _Y_);
-
 		auto yMin = min( data, *rows, cols, _Y_ );
 		auto yMax = max( data, *rows, cols, _Y_ );
 		auto rangeY = yMax - yMin;
 
 		// cout << endl << "Min Y: " << yMin << ", Max Y: " << yMax << ", Range Y: " << rangeY << endl << endl;
-
-	//	sortData(data, cols, rows, _Z_);
 
 		auto zMin = min( data, *rows, cols, _Z_ );
 		auto zMax = max( data, *rows, cols, _Z_ );
@@ -96,7 +90,7 @@ void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 		tree->z1 = zMin;
 		tree->z2 = zMax;
 
-		//         
+		//
 		//         if xlen > ylen
 		//             sortInd = 1;
 		//         else
@@ -128,19 +122,19 @@ void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 		//             dataSort(:,1) = data(ind,1);
 		//             dataSort(:,2) = tmp;
 		//         end
-		//         
+		//
 		//         half = cast( floor(nPts/2), 'uint16' );
 
 		int leftCount = *rows / 2;
 		int rightCount = *rows - leftCount;
 
-		//         
+		//
 		//         tree(1).i = sortInd;
 
 		tree->i = sortInd;
 
 		//         tree(1).v = 0.5*( dataSort(half,sortInd) + dataSort(half+1,sortInd) );
-		//         
+		//
 		//         % split
 		//         dataLeft  = dataSort(1:half,:);
 		//         dataRight = dataSort(half+1:end,:);
@@ -148,7 +142,7 @@ void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 		auto leftPtr = &data[0];
 		auto rightPtr = &data[(leftCount * cols)];
 
-		//         
+		//
 		//         % call buildTree
 		//         treeLeft  = struct( 'p',{}, 'l',{}, 'r',{}, 'i',{}, 'v',{}, 'x1',{}, 'x2',{}, 'y1',{}, 'y2',{} );
 		//         treeRight = struct( 'p',{}, 'l',{}, 'r',{}, 'i',{}, 'v',{}, 'x1',{}, 'x2',{}, 'y1',{}, 'y2',{} );
@@ -157,6 +151,9 @@ void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 		tree->l = new Tree;
 		tree->r = new Tree;
 
+		tree->l->name = tree->name + "l";
+		tree->r->name = tree->name + "l";
+
 		// Set the children's parent
 		tree->l->p = tree;
 		tree->r->p = tree;
@@ -164,13 +161,13 @@ void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 		tree->l->depth = tree->depth + 1;
 		tree->r->depth = tree->depth + 1;
 
-		//         
+		//
 		// %         if sortInd == 1
 		// %             treeLeft(1).x1 = tree(1).x1;
 		// %             treeLeft(1).x2 = tree(1).v;
 		// %             treeLeft(1).y1 = tree(1).y1;
 		// %             treeLeft(1).y2 = tree(1).y2;
-		// %             
+		// %
 		// %             treeRight(1).x1 = tree(1).v;
 		// %             treeRight(1).x2 = tree(1).x2;
 		// %             treeRight(1).y1 = tree(1).y1;
@@ -180,23 +177,23 @@ void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 		// %             treeLeft(1).x2 = tree(1).x2;
 		// %             treeLeft(1).y1 = tree(1).y1;
 		// %             treeLeft(1).y2 = tree(1).v;
-		// %             
+		// %
 		// %             treeRight(1).x1 = tree(1).x1;
 		// %             treeRight(1).x2 = tree(1).x2;
 		// %             treeRight(1).y1 = tree(1).v;
 		// %             treeRight(1).y2 = tree(1).y2;
 		// %         end
-		//         
+		//
 		//         if ~isempty(dataLeft)
 		//             treeLeft = buildTree( dataLeft, treeLeft );
 		//         end
 		//         if ~isempty(dataLeft)
 		//             treeRight = buildTree( dataRight, treeRight );
 		//         end
-		//         
+		//
 		//         treeLeft(1).p = tree;
 		//         treeLeft(1).p = tree;
-		//                 
+		//
 		//         tree(1).l = treeLeft;
 		//         tree(1).r = treeRight;
 
@@ -214,9 +211,11 @@ void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 		//         tree(1).y2 = data(2);
 		//         disp("Branch complete")
 		//     end
-		//     
+		//
 		// end
-		// 
+		//
+
+		tree->name += "!";
 
 		tree->d[_INDEX_] = data[_INDEX_];
 		tree->d[_X_] = data[_X_];
@@ -235,7 +234,3 @@ void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 		// cout << "Depth of " << tree->depth << endl;
 	}
 }
-
-
-
-

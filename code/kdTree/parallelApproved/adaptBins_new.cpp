@@ -31,13 +31,12 @@ using namespace std;
 //
 
 #include "definitions.h"
-#include "Data.h"
 
 //
 // Function: importFiles
 //
 
-void adaptBins( double *binE, int *binC, int numWorkers, double numLines, int avgPtsPerWorker ) {
+void adaptBins_new( double *binE, int *binC, int numWorkers, int numLines, double avgPtsPerWorker ) {
 	// binE = bin edges, binC = bin counts
 	
 	double *binE2   = new double[numWorkers+1];    // the new bin edges, copy to binE
@@ -56,6 +55,7 @@ void adaptBins( double *binE, int *binC, int numWorkers, double numLines, int av
 	for( int j = 0; j < numWorkers-1; j++ ) {
 		// get ind
 		ind = 0;
+
 		while( binCum[ind+1] < (j+1)*avgPtsPerWorker ) {
 			ind++;
 		}
@@ -65,7 +65,6 @@ void adaptBins( double *binE, int *binC, int numWorkers, double numLines, int av
 	}
 	
 	for( int i = 1; i < numWorkers; i++ ) {
-	//	cout << "adapt: " << i << " " << diff[i] << endl;
 		binE[i] = binE2[i];
 	}
 	

@@ -12,6 +12,7 @@
 #include <iostream>
 #include <iomanip>
 
+using namespace std;
 
 //
 // Function: testUniformity
@@ -36,7 +37,9 @@ int testUniformity( int *binC, int numWorkers, double thresh, double *uniformity
 		}
 
 	}
-	avgPts = avgPts/numWorkers;
+	avgPts = ( avgPts/numWorkers + 0.0000001 );
+	
+//	cout << minPts << " " << avgPts << " " << maxPts << endl;
 	
 	// average metric
 //	*uniformity = (maxPts - avgPts)/avgPts + (avgPts - minPts)/avgPts;
