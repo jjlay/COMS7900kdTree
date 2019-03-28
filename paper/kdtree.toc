@@ -7,7 +7,7 @@
 \contentsline {subsubsection}{\numberline {2.1.1}\texttt {parallelSort}}{2}
 \contentsline {paragraph}{\numberline {2.1.1.1}Conversion to function}{2}
 \contentsline {paragraph}{\numberline {2.1.1.2}Making rank 0 do work}{2}
-\contentsline {paragraph}{\numberline {2.1.1.3}Using different communicators}{2}
+\contentsline {paragraph}{\numberline {2.1.1.3}Using different communicators}{3}
 \contentsline {subsubsection}{\numberline {2.1.2}\texttt {adaptBins}}{3}
 \contentsline {subsection}{\numberline {2.2}$K$-d tree}{3}
 \contentsline {subsubsection}{\numberline {2.2.1}Building the tree}{3}
@@ -19,6 +19,11 @@
 \contentsline {paragraph}{\numberline {2.2.2.1}\texttt {searchTree\_serial}}{4}
 \contentsline {paragraph}{\numberline {2.2.2.2}\texttt {searchTree\_}PARALLEL???}{4}
 \contentsline {section}{\numberline {3}Testing and Validation}{4}
+\contentsline {subsection}{\numberline {3.1}Two MATLAB demos}{4}
+\contentsline {subsubsection}{\numberline {3.1.1}2D animation of tree building}{4}
+\contentsline {subsubsection}{\numberline {3.1.2}3D tree partitions from different orientations}{4}
+\contentsline {subsection}{\numberline {3.2}Timing Testing}{4}
+\contentsline {subsection}{\numberline {3.3}Search Results}{4}
 \contentsline {section}{\numberline {4}Results}{4}
 \contentsline {section}{\numberline {5}Conclusion}{4}
 \contentsline {section}{\numberline {6}Bibliography}{4}
