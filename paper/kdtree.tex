@@ -76,7 +76,7 @@ tabsize=3
 \maketitle
 
 \begin{abstract}
-In our first project, we implemented a parallel sorting algorithm which utilized a local gradient-type optimization search to equalize the amount of data across different compute nodes in order to achieve maximum efficiency. In this project, we applied this algorithm to the problem of parallel orthogonal recursive bisection, i.e., the construction of $k$-d trees. In order to do this, we had to heavily modify the sorting algorithm in several ways, including 1) turning it into a callable function, 2) letting the rank 0 head node perform work while still managing the tasks, 3) incorporating the use of different MPI communicators, and 4) altering the adaptive binning technique for better convergence.
+In our first project, we implemented a parallel sorting algorithm which utilized a local gradient-type optimization search to equalize the amount of data across different compute nodes in order to achieve maximum efficiency. In this project, we applied this algorithm to the problem of parallel orthogonal recursive bisection (ORB), i.e., the construction of $k$-d trees. In order to do this, we had to heavily modify the sorting algorithm in several ways, including 1) turning it into a callable function, 2) letting the rank 0 head node perform work while still managing the tasks, 3) incorporating the use of different MPI communicators, and 4) altering the adaptive binning technique for better convergence.
 
 In this paper, we will discuss how our $k$-d tree algorithm works, how we solved the various issues plaguing parallel sort (mentioned above), and how we tested and validated our work. We conclude with a discussion of the major difficulties in completing this project and how these difficulties could be minimized in the future.
 \end{abstract}
@@ -154,6 +154,7 @@ Here we provide a helpful list of conventions, notations, and variable names use
 	\end{itemize}
 \end{mdframed}
 
+
 %%%%%%%%%%%%%
 %%% NEW SECTION %%%
 %%%%%%%%%%%%%
@@ -163,11 +164,14 @@ Here we discuss our implementation of the code
 \subsection{Altered parallel sorting}
 
 
-
-\subsubsection{General changes}
-
-
 \subsubsection{\texttt{parallelSort}}
+
+\paragraph{Conversion to function}
+
+\paragraph{Making rank 0 control and do work}
+
+\paragraph{Using different communicators}
+
 
 
 \subsubsection{\texttt{adaptBins}}
@@ -203,11 +207,31 @@ We discovered that this adaptation technique performs very will in initial steps
 \subsection{$K$-d tree}
 Used a Tree struct...
 
-\subsubsection{\texttt{buildTree}}
+
+\subsubsection{Building the tree}
+General notes
+
+\paragraph{\texttt{buildTree}}
 
 
 
-\subsubsection{\texttt{searchTree}}
+\paragraph{\texttt{buildTree\_parallel}}
+
+
+
+\paragraph{\texttt{buildTree\_serial}}
+This was the first function written after our initial prototyping phase was completed. It essentially performs a serial version of ORB which can be executed on a single compute node.
+
+
+\paragraph{\texttt{getSortDim}}
+This function is used by \texttt{buildTree\_parallel} in order to determine which is the longest axis, i.e., the sort dimension. In addition to this, it also fills in the struct for the current tree node with the global min/max in all three dimensions, as well as the center of the bounding box defined by these values.
+
+
+\subsubsection{Searching the tree}
+
+\paragraph{\texttt{searchTree\_serial}}
+
+\paragraph{\texttt{searchTree\_parallel}}
 
 
 
