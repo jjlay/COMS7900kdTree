@@ -168,7 +168,7 @@ Here we discuss our implementation of the code
 
 \paragraph{Conversion to function}
 
-\paragraph{Making rank 0 control and do work}
+\paragraph{Making rank 0 do work}
 
 \paragraph{Using different communicators}
 
@@ -211,16 +211,23 @@ Used a Tree struct...
 \subsubsection{Building the tree}
 General notes
 
+
 \paragraph{\texttt{buildTree}}
-
-
-
-\paragraph{\texttt{buildTree\_parallel}}
-
+This function gets the number of compute nodes $q$ available in the current communicator and determines which function to run. If $q>1$, then we can still do a parallel sort with 2 compute nodes, so \texttt{buildTree\_parallel} is entered. If $q=1$, then \texttt{buildTree\_serial} is entered.
 
 
 \paragraph{\texttt{buildTree\_serial}}
 This was the first function written after our initial prototyping phase was completed. It essentially performs a serial version of ORB which can be executed on a single compute node.
+
+
+Upon completion, \texttt{buildTree\_serial} calls itself instead of \texttt{buildTree} since we still have $q=1$.
+
+
+\paragraph{\texttt{buildTree\_parallel}}
+This function performs essentially the same tasks as \texttt{buildTree\_serial}, but utilizing multiple nodes for speedup. Specifically, it takes advantage of \texttt{parallelSort} in order to speed up the partitioning of the data along the longest axis (determine by \texttt{getSortDim}, discussed below). 
+
+
+Upon completion, \texttt{buildTree\_parallel} has spawned 2 new communicators (a left and a right) each of which has half as many compute nodes as the parent communicator. All of the nodes from each side then call \texttt{buildTree} so that they can perform the $q$ check.
 
 
 \paragraph{\texttt{getSortDim}}
