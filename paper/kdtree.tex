@@ -97,6 +97,62 @@ EXTREME CODING FTW: catch errors quickly, no merge conflicts, everyone writes/kn
 
 We all wrote prototypes in several languages before attempting the full C++ parallel version. We chose to follow the format Graham used in his MATLAB implementation.
 
+\subsection{Variables and conventions}
+%%% NOTE %%%
+%%% NOTE %%%
+% 1) be consistent with the indices:
+% 2) say head node (not master node)
+% 3) say worker (not node) whenever possible
+%%% NOTE %%%
+%%% NOTE %%%
+
+Here we provide a helpful list of conventions, notations, and variable names used throughout this paper.
+
+\begin{mdframed}[backgroundcolor=blue!20]
+	Counts:
+	\setlength\itemsep{0.1pt}
+	\setlength\parskip{0.1pt}
+	\begin{itemize}
+		\setlength\itemsep{0.1pt}
+		\setlength\parskip{0.1pt}
+		\item $N$: number of nodes
+		\item $M$: max number of allowed time steps
+		\item $L$: number of lines to read per file
+		\item $L_w$: number of lines on the $w$th worker
+		\item $D$: total number of lines/data points
+	\end{itemize}
+\end{mdframed}
+
+\begin{mdframed}[backgroundcolor=blue!20]
+	Indices:
+	\setlength\itemsep{0.1pt}
+	\setlength\parskip{0.1pt}
+	\begin{itemize}
+		\setlength\itemsep{0.1pt}
+		\setlength\parskip{0.1pt}
+		\item $m = 0, \cdots, M$ is the time step of the bin adaptation scheme (likely less than $M$)
+		\item $n = 0, \cdots, W$ spans the nodes
+		\item $i = 0, \cdots, N$ spans the bin edges/indices
+		\item $j = 0, \cdots, N-1$ spans the bin counts (this will occasionally subscript binI/E as well)
+		\item $\ell_w = 0, \cdots, L_n-1$ spans the lines on the $n$-th node
+		\item $k = 0, \cdots, 3$ is the data column being sorted
+	\end{itemize}
+\end{mdframed}
+
+\begin{mdframed}[backgroundcolor=blue!20]
+	Variables:
+	\setlength\itemsep{0.1pt}
+	\setlength\parskip{0.1pt}
+	\begin{itemize}
+		\setlength\itemsep{0.1pt}
+		\setlength\parskip{0.1pt}
+		\item $\textrm{data}^n_{4\ell+k}$: data point on $\ell$th line and $k$th column on the $n$-th node
+		\item ${E}^m_j$: bin edges (0 indexed) at time step $m$
+		\item ${I}^{n,m}_j$: bin indices on node $n$
+		\item ${C}^{n,m}_j$: bin counts on node $n$ at time step $m$
+		\item ${C}^m_j$: total bin counts on head node (sum of node C's) at time step $m$
+	\end{itemize}
+\end{mdframed}
 
 %%%%%%%%%%%%%
 %%% NEW SECTION %%%
@@ -118,30 +174,30 @@ Here we discuss our implementation of the code
 Although our original adaptive binning scheme performed well, we wanted something which could do even better since $k$-d trees require many parallelSort calls. As a review, here is our original method:
 \begin{equation}
 	\begin{split}
-		\Delta C & = 2.0 ( \textrm{binC}^{0,m}_{i+1} - \textrm{binC}^{0,m}_i ) / ( \textrm{binC}^{0,m}_{i+1} + \textrm{binC}^{0,m}_i ) \\
-		\Delta B & = \textrm{binE}^m_{i+1} - \textrm{binE}^m_i \\
-		\textrm{binE}^{m+1}_i & = \textrm{binE}^m_i + \alpha \Delta C \Delta B
+		\Delta C & = 2.0 ( C^{m}_{i+1} - C^{m}_i ) / ( C^{m}_{i+1} + C^{m}_i ) \\
+		\Delta E & = E^m_{i+1} - E^m_i \\
+		E^{m+1}_i & = E^m_i + \alpha \Delta C \Delta E
 	\end{split}
 \end{equation}
 % added scale factor
-where $\alpha < 0.5$. This method will occasionally devolve into oscillatory behavior and not converge to the correct value. To combat this in the $k$-d tree project, we added a scale factor $S$ which decreases over time:
+where $C$ are the bin counts, $E$ are the bin edges, and $\alpha < 0.5$. This method will occasionally devolve into oscillatory behavior and not converge to the correct value. To combat this in the $k$-d tree project, we added a scale factor $S$ which decreases over time:
 \begin{equation}
 	\begin{split}
 		S & = 1 - (1 - 0.1) (1 - \textrm{exp}(-0.03 m) \\
-		\textrm{binE}^{m+1}_i & = \textrm{binE}^m_i + \alpha S \Delta C \Delta B
+		E^{m+1}_i & = E^m_i + \alpha S \Delta C \Delta E
 	\end{split}
 \end{equation}
 
-Since this method is local, it converges slowly at bin edges far away from high-density clusters. As such, we attempted to replace this method with a global method which uses linear interpolation to estimate where the bins would be evenly distributed. Define the function $C(x)$ as the linear approximation of the cumulative count distribution of the data points (so that it normalizes to the number of data points, not unity). Then,
+Since this method is local, it converges slowly at bin edges far away from high-density clusters. As such, we attempted to replace this method with a global method which uses linear interpolation to estimate where the bins would be evenly distributed. Define the function $\hat C(x)$ as the linear approximation of the cumulative count distribution of the data points (so that it normalizes to the number of data points, not unity). Then,
 \begin{equation}
-		C(x) = T(x) + \textrm{binC}
+		\hat C(x) = \hat C(E^m_{i'}) + C^m_{i'} \dfrac{x - E^m_{i'}}{E^m_{{i'}+1} - E^m_{i'}} = (i+1) \dfrac{D}{N}
+\end{equation}
+where $i'$ is the maximum index such that $\hat C(E_{i'}) < (i+1) \dfrac{D}{N}$ (note that $i'$ and $i$ are distinct integers). The right equality implies that we should solve for the value of $x$ such that it holds. This $x$ value will be the new $i$-th bin edge, $E^{m+1}_i$. Therefore,
+\begin{equation}
+		E^{m+1}_i = E^m_{i'} + \bigg( (i+1) \dfrac{D}{N} - C(E^m_{i'}) \bigg) (E^m_{{i'}+1} - E^m_{i'}) / C^m_{i'}
 \end{equation}
 
-
-
-
-
-We used the same binary search-based binning technique and stopping criterion from the previous project.
+We discovered that this adaptation technique performs very will in initial steps of adaptation, but is prone to oscillations near clusters of points. Now, since each of the two methods perform better and worse in different contexts, are solution was to simply alternate between at each step. This solved all of our convergence issues in testing. (Note that we still use the same binary search-based binning technique and stopping criterion from the previous project.)
 
 
 \subsection{$K$-d tree}
