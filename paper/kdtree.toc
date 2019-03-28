@@ -1,6 +1,7 @@
 \select@language {english}
 \contentsline {section}{\numberline {1}Introduction}{2}
-\contentsline {subsection}{\numberline {1.1}Variables and conventions}{2}
+\contentsline {subsection}{\numberline {1.1}Workflow}{2}
+\contentsline {subsection}{\numberline {1.2}Variables and conventions}{2}
 \contentsline {section}{\numberline {2}Implementation}{2}
 \contentsline {subsection}{\numberline {2.1}Altered parallel sorting}{2}
 \contentsline {subsubsection}{\numberline {2.1.1}\texttt {parallelSort}}{2}
@@ -16,7 +17,7 @@
 \contentsline {paragraph}{\numberline {2.2.1.4}\texttt {getSortDim}}{4}
 \contentsline {subsubsection}{\numberline {2.2.2}Searching the tree}{4}
 \contentsline {paragraph}{\numberline {2.2.2.1}\texttt {searchTree\_serial}}{4}
-\contentsline {paragraph}{\numberline {2.2.2.2}\texttt {searchTree\_parallel}}{4}
+\contentsline {paragraph}{\numberline {2.2.2.2}\texttt {searchTree\_}PARALLEL???}{4}
 \contentsline {section}{\numberline {3}Testing and Validation}{4}
 \contentsline {section}{\numberline {4}Results}{4}
 \contentsline {section}{\numberline {5}Conclusion}{4}
