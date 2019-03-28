@@ -207,9 +207,10 @@ We discovered that this adaptation technique performs very will in initial steps
 \subsection{$K$-d tree}
 Used a Tree struct...
 
+% JJ, talk about the Tree struct and what all fields it has
 
 \subsubsection{Building the tree}
-General notes
+General notes on the method...
 
 
 \paragraph{\texttt{buildTree}}
@@ -219,15 +220,15 @@ This function gets the number of compute nodes $q$ available in the current comm
 \paragraph{\texttt{buildTree\_serial}}
 This was the first function written after our initial prototyping phase was completed. It essentially performs a serial version of ORB which can be executed on a single compute node.
 
+% JJ, you wanna write this since you wrote the program?
 
 Upon completion, \texttt{buildTree\_serial} calls itself instead of \texttt{buildTree} since we still have $q=1$.
 
 
 \paragraph{\texttt{buildTree\_parallel}}
-This function performs essentially the same tasks as \texttt{buildTree\_serial}, but utilizing multiple nodes for speedup. Specifically, it takes advantage of \texttt{parallelSort} in order to speed up the partitioning of the data along the longest axis (determine by \texttt{getSortDim}, discussed below). 
+This function performs essentially the same tasks as \texttt{buildTree\_serial}, but utilizing multiple nodes for speedup. Specifically, it takes advantage of \texttt{parallelSort} in order to speed up the partitioning of the data along the longest axis (determine by \texttt{getSortDim}, discussed below). After the data has been sorted, the data is split by placing lower half (w.r.t. the sorted data values) of the compute nodes into a left communicator and the upper half into a right communicator. Each half then calls \texttt{buildTree}.
 
-
-Upon completion, \texttt{buildTree\_parallel} has spawned 2 new communicators (a left and a right) each of which has half as many compute nodes as the parent communicator. All of the nodes from each side then call \texttt{buildTree} so that they can perform the $q$ check.
+% Upon completion, \texttt{buildTree\_parallel} has spawned 2 new communicators (a left and a right) each of which has half as many compute nodes as the parent communicator. All of the nodes from each side then call \texttt{buildTree} so that they can perform the $q$ check.
 
 
 \paragraph{\texttt{getSortDim}}
