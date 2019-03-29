@@ -92,6 +92,7 @@ void importFiles(vector<string> files, int myRank,
 			(arrayIndex < arrayLimit-4) &&
 			(lines <_MAX_ROWS_))
 		{
+//			cout << myData[arrayIndex + _X_] << " " << myData[arrayIndex + _Y_] << " " << myData[arrayIndex + _Z_] << endl;
 			if (myData[arrayIndex + _X_] < minX)
 				minX = myData[arrayIndex + _X_];
 

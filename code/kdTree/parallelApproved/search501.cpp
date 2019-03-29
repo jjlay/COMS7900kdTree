@@ -29,6 +29,9 @@
 #include <iomanip>
 #include <string>
 
+#include "tree.h"
+#include "searchTree_serial.h"
+
 using namespace std;
 
 
@@ -36,56 +39,80 @@ using namespace std;
 // Function: search501
 //
 
-void search501(int myRank, string path) {
-  cout << "Rank " << myRank << " has started search501" << endl;
-
-  //
-  // Setup
-  //
-
-  string filename = path + "datafile00501.txt";
-  const int maxSearchRows = 5;
-
-  const int numberRadii = 3;
-  double radii[] = {0.01, 0.05, 0.10};
-
-  //
-  // Import the list of points to search
-  //
-
-  vector<string> listOfFiles;
-  listOfFiles.push_back(filename);
-
-  auto searchable = new double[_MAX_ROWS_ * _ROW_WIDTH_];
-  unsigned long int maxArraySize = _MAX_ROWS_ * _ROW_WIDTH_;
-
-  int rows = 0, cols = _ROW_WIDTH_;
-  importFiles(listOfFiles, myRank, searchable, &rows, &cols, maxSearchRows,
-    maxArraySize);
-
-  auto buffer = new double[_SEARCH_WIDTH_]();
-  buffer[_SIGNAL_] = mpi_Signal_Run;
-  const int messageSize = _SEARCH_WIDTH_;
-
-  for (auto rad = 0; rad < numberRadii; rad++) {
-    for (auto r = 0; r < rows; r++) {
-      // Perform the search
-      unsigned long int offset = r * _ROW_WIDTH_;
-      auto searchX = searchable[offset + _X_];
-      auto searchY = searchable[offset + _Y_];
-      auto searchZ = searchable[offset + _Z_];
-      auto searchIndex = searchable[offset + _INDEX_];
-      auto radius = radii[rad];
-
-      buffer[_X_] = searchX;
-      buffer[_Y_] = searchY;
-      buffer[_Z_] = searchZ;
-      buffer[_RADIUS_] = radius;
-      MPI_Bcast((void *)buffer, messageSize, MPI_DOUBLE, Rank0, MPI_COMM_WORLD);
-    }
-  }
-
-  buffer[_SIGNAL_] = mpi_Signal_Halt;
-  MPI_Bcast((void *)buffer, messageSize, MPI_DOUBLE, Rank0, MPI_COMM_WORLD);
-  delete buffer;
+void search501(int myRank, string path, Tree *tree) {
+	cout << "Rank " << myRank << " has started search501" << endl;
+	
+	//
+	// Setup
+	//
+	
+	string filename = path + "datafile00501.txt";
+	const int maxSearchRows = 5;
+	
+	const int numberRadii = 3;
+	double radii[] = {0.01, 0.05, 0.10};
+	
+	//
+	// Import the list of points to search
+	//
+	
+	vector<string> listOfFiles;
+	listOfFiles.push_back(filename);
+	
+	auto searchable = new double[_MAX_ROWS_ * _ROW_WIDTH_];
+	unsigned long int maxArraySize = _MAX_ROWS_ * _ROW_WIDTH_;
+	
+	int rows = 0, cols = _ROW_WIDTH_;
+	importFiles(listOfFiles, myRank, searchable, &rows, &cols, maxSearchRows,
+	  maxArraySize);
+	
+	auto buffer = new double[_SEARCH_WIDTH_]();
+	buffer[_SIGNAL_] = mpi_Signal_Run;
+	const int messageSize = _SEARCH_WIDTH_;
+	
+	double point[4];
+	unsigned long int offset;
+	double radius;
+	
+	int *foundEach;
+	int *foundAll;
+	
+	foundEach = (int*)malloc( rows*numberRadii*sizeof(int) );
+	foundAll  = (int*)malloc( rows*numberRadii*sizeof(int) );
+	
+	for (auto rad = 0; rad < numberRadii; rad++) {
+		for (auto r = 0; r < rows; r++) {
+			// Perform the search
+			radius = radii[rad];
+			offset = r * _ROW_WIDTH_;
+			point[0] = searchable[offset + _INDEX_];
+			point[1] = searchable[offset + _X_];
+			point[2] = searchable[offset + _Y_];
+			point[3] = searchable[offset + _Z_];
+			
+			
+			foundEach[ numberRadii*r + rad ] = searchTree_serial( point, radius, tree );
+		}
+	}
+	
+	// send
+	MPI_Reduce( foundEach, foundAll, rows*numberRadii, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD );
+	if( myRank == 0 ) {
+		cout << "POINTS FOUND:" << endl;
+		cout << radii[0] << " " << radii[1] << " " << radii[2] << endl;
+		for (auto r = 0; r < rows; r++) {
+				
+			cout << foundAll[ numberRadii*r ] << " " << foundAll[ numberRadii*r + 1 ] << " " << foundAll[ numberRadii*r + 2 ] << endl;
+				
+		}
+	}
+	
+	free(foundEach);
+	free(foundAll);
+	
 }
+
+
+
+
+
