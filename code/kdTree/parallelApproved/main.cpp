@@ -81,10 +81,10 @@ int main(int argc, char *argv[])
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 
 	// total number of files to read
-	const int maxFilesToProc = 5;
+	const int maxFilesToProc = 25;
 
 	// number of lines PER FILE
-	const int maxRows = 10;
+	const int maxRows = 1000;
 
 	int sortInd = 1; // x = 1
 
@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
 
 	sleep(5);
 
-/*
+
 	for (auto i = 0; i < rows; i++ ) {
 		cout << "11111 : Rank " << myRank << " Row " << i << " X " << array[(i*_ROW_WIDTH_) + _X_]
 			<< " Y " << array[(i*_ROW_WIDTH_) + _Y_]
@@ -164,7 +164,7 @@ int main(int argc, char *argv[])
 		if (i == 0)
 			i = rows - 2;
 	}
-*/
+
 	MPI_Barrier(MPI_COMM_WORLD);
 
 /*
@@ -182,23 +182,12 @@ int main(int argc, char *argv[])
 	// searchTree //
 	////////////////
 	
-	// deal with data	
-	double point[] = { 1.0, 0.5, 0.5, 0.5 };
-	double rad   = 0.25;
-	int    found = -1;
+	search501( myRank, path, tree);
 	
-//	cout << "yyyy " << tree->depth << " " << tree->c[_X_] << " " << tree->c[_Y_] << " " << tree->c[_Z_] << endl;
-	found = searchTree_serial( point, rad, array, &rows, cols, tree );
-	
-	cout << "myRank: " << myRank << " " << found << endl;
-	
-//	searchTree( point, rad, &array, &rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
-	
-	// output
-	
-	
-	
-	
+//	double point[] = { 1.0,	0.028974942191213,     0.083491489715285,    -0.066445096022865};
+//	double point[] = { 1.0, 0.0, 0.0, 0.0 };
+//	double rad   = 0.5;
+//	found = searchTree_serial( point, rad, tree );
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 

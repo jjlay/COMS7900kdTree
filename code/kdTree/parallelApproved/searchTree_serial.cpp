@@ -23,7 +23,7 @@ using namespace std;
 // Function: buildTree
 //
 
-int searchTree_serial(double *point, double rad, double *data, int *rows, int cols, Tree *tree) {
+int searchTree_serial(double *point, double rad, Tree *tree) {
 	
 	int myRank;
 	MPI_Comm_rank( MPI_COMM_WORLD, &myRank);
@@ -34,7 +34,7 @@ int searchTree_serial(double *point, double rad, double *data, int *rows, int co
 			   pow(point[_Y_] - tree->c[_Y_], 2.0) +
 			   pow(point[_Z_] - tree->c[_Z_], 2.0);
 
-	cout << "zzzz " << myRank << " " << tree->depth << " " << tree->radius <<  " " << tree->c[_X_] << " " << tree->c[_Y_] << " " << tree->c[_Z_] << endl;
+//	cout << "zzzz " << myRank << " " << tree->depth << " " << tree->radius <<  " " << tree->c[_X_] << " " << tree->c[_Y_] << " " << tree->c[_Z_] << endl;
 	
 	
 	int d = 1;
@@ -43,14 +43,19 @@ int searchTree_serial(double *point, double rad, double *data, int *rows, int co
 		
 		
 		
-		if ((tree->l == nullptr) || (tree->r == nullptr)) {
+		if ((tree->l == nullptr) && (tree->r == nullptr)) {
 			// Data point
+//			cout << "myRank: " << myRank << " the point: " << tree->d[1] << " " << tree->d[2] << " " << tree->d[3] << endl;
 			return 1;
 		}
 		else {
-			// Intersection!
-			found += searchTree_serial( point, rad, data, rows, cols, tree->l );
-			found += searchTree_serial( point, rad, data, rows, cols, tree->r );
+			if( tree->l != nullptr ) {
+				// Intersection!
+				found += searchTree_serial( point, rad, tree->l );
+			}
+			if( tree->r != nullptr ) {
+				found += searchTree_serial( point, rad, tree->r );
+			}
 		}
 	}
 	
