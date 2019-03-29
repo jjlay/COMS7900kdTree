@@ -81,10 +81,10 @@ int main(int argc, char *argv[])
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 
 	// total number of files to read
-	const int maxFilesToProc = 30;
+	const int maxFilesToProc = 5;
 
 	// number of lines PER FILE
-	const int maxRows = 1000;
+	const int maxRows = 10;
 
 	int sortInd = 1; // x = 1
 
@@ -189,6 +189,8 @@ int main(int argc, char *argv[])
 	
 //	cout << "yyyy " << tree->depth << " " << tree->c[_X_] << " " << tree->c[_Y_] << " " << tree->c[_Z_] << endl;
 	found = searchTree_serial( point, rad, array, &rows, cols, tree );
+	
+	cout << "myRank: " << myRank << " " << found << endl;
 	
 //	searchTree( point, rad, &array, &rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
 	
