@@ -66,6 +66,8 @@ tabsize=3
 %%%%%%%%% BEGIN DOCUMENT %%%%%%%%%
 %%%%%%%%% BEGIN DOCUMENT %%%%%%%%%
 
+%% Used tt when referring to function
+
 \begin{document}
 
 \title{Parallel Orthogonal Recursive Bisection}
@@ -90,12 +92,26 @@ In this paper, we will discuss how our $k$-d tree algorithm works, how we solved
 %%%%%%%%%%%%%
 \section{Introduction}
 
+% FARZI, DO THIS FOR FUNCTIONS
+\begin{lstlisting}
+	walk = RandomWalk(nStep, initPos, stdDev)
+\end{lstlisting}
+
+% GW
+STATEMENT OF THE PROBLEM: talk about orthogonal recursive bisection ORB, needed to search all the data with 3 radii and 501 file centers, return table of counts
+
+
+% farzi
 \subsection{Workflow}
 How we went about the project...
 
 new GitHub repo
 
 EXTREME CODING FTW: catch errors quickly, no merge conflicts, everyone writes/knows all the code
+
+used a parallelApproved dir in repo to minimize merge conflicts
+
+went to WPS instead of SCI due to better work environment and longer work time
 
 We all wrote prototypes in several languages before attempting the full C++ parallel version. We chose to follow the format Graham used in his MATLAB implementation.
 
@@ -107,8 +123,6 @@ We all wrote prototypes in several languages before attempting the full C++ para
 % 3) say worker (not node) whenever possible
 %%% NOTE %%%
 %%% NOTE %%%
-
-Here we provide a helpful list of conventions, notations, and variable names used throughout this paper.
 
 \begin{mdframed}[backgroundcolor=blue!20]
 	Counts:
@@ -161,19 +175,97 @@ Here we provide a helpful list of conventions, notations, and variable names use
 %%% NEW SECTION %%%
 %%%%%%%%%%%%%
 \section{Implementation}
+% JJ
+
 Here we discuss our implementation of the code
 
+we used C++ with C MPI calls, mpirun, qsub/qlogin, valgrind
+
+\subsection{\texttt{main}}
+% GW
+import: gets the list of files and imports their data into an array
+
+
+build: we build the tree using ORB to partition the data
+
+
+search: import the 501-st data file and perform a search on each, summing the total number of points found over several radii
+
+
+\subsection{$K$-d tree}
+% JJ, talk about the Tree struct and what all fields it has
+Used a Tree struct...
+
+
+\subsubsection{Building the tree}
+% General notes on the method...
+
+\paragraph{\texttt{buildTree}}
+% farzi, just add the listing
+This function gets the number of compute nodes $q$ available in the current communicator and determines which function to run. If $q>1$, then we can still do a parallel sort with 2 compute nodes, so \texttt{buildTree\_parallel} is entered. If $q=1$, then \texttt{buildTree\_serial} is entered.
+
+
+\paragraph{\texttt{buildTree\_serial}}
+This was the first function written after our initial prototyping phase was completed. It essentially performs a serial version of ORB which can be executed on a single compute node.
+
+% JJ, you wanna write this since you wrote the program?
+
+Upon completion, \texttt{buildTree\_serial} calls itself instead of \texttt{buildTree} since we still have $q=1$.
+
+
+\paragraph{\texttt{buildTree\_parallel}}
+This function performs essentially the same tasks as \texttt{buildTree\_serial}, but utilizing multiple nodes for speedup. Specifically, it takes advantage of \texttt{parallelSort} in order to speed up the partitioning of the data along the longest axis (determine by \texttt{getSortDim}, discussed below). After the data has been sorted, the data is split by placing lower half (w.r.t. the sorted data values) of the compute nodes into a left communicator and the upper half into a right communicator. Each half then calls \texttt{buildTree}.
+
+% Upon completion, \texttt{buildTree\_parallel} has spawned 2 new communicators (a left and a right) each of which has half as many compute nodes as the parent communicator. All of the nodes from each side then call \texttt{buildTree} so that they can perform the $q$ check.
+
+
+\paragraph{\texttt{getSortDim}}
+This function is used by \texttt{buildTree\_parallel} in order to determine which is the longest axis, i.e., the sort dimension. In addition to this, it also fills in the struct for the current tree node with the global min/max in all three dimensions. To do this, each node gets its own min/max for each axis and sends them to rank 0 (w.r.t. the current communicator). Rank 0 then determines the global min/max and them MPI\_Bcast's those values back to the other ranks. This allows each communicator to sort their data independently along different axes. The center of the bounding box defined by these values min's/max's is also stored in the tree struct. 
+
+
+\subsubsection{Searching the tree}
+
+
+
+\paragraph{\texttt{searchTree\_serial}}
+% GW
+This function is called by all ranks and returns an integer which equals the number of points found by the rank that called it. It takes as arguments the point and radius (which specifies a search sphere) and the root of the tree created by \texttt{buildTree}. To perform the search, a check is done to determine of the search sphere intersects the bounding sphere of each data partition:
+\begin{equation}
+		test
+\end{equation}
+If this check returns false, then there are no data points within the search sphere contained in that partition. If true, then another check is performed to check if the partition contains only a single point (if so, it increments the found count); otherwise the search branches and calls itself, creating a recursive loop.
+
+
+ADD PSEUDOCODE
+
+
+\paragraph{\texttt{search501}}
+% JJ, edit if you wan since you wrote most of this
+Each node calls this function which reads the 501-st data file, whose contents are the centers of the search spheres. It then loops through \texttt{searchTree\_serial} through all of the sphere centers for three different radii (0., 0., 0.). The counts on each node are then stored. After all searches are complete, then an MPI\_Reduce is performed by all nodes, thus adding all of the counts into a single array which is exported to a file.
+
+
 \subsection{Altered parallel sorting}
+We had to adjust our parallel sorting algorithm a great extend to integrate it into the new project.
 
 
 \subsubsection{\texttt{parallelSort}}
 
+% GW, farzi
+
 \paragraph{Conversion to function}
+This was easiest aspect, since we merely found all of the required params...
+
+the one difficulty was handling the *data[] thing
+
 
 \paragraph{Making rank 0 do work}
+Why do this: super inefficient
+
+this required some clever rearrangement of if statements in several sections of the code, ost notably, the adaptive binning section
+
 
 \paragraph{Using different communicators}
-
+Since kdtree requires multiple comms, it was necessary that parallel sort (any many functions it contains) was given the current communicator. This was not a terribly difficult modification, but it was quite tedious since there were many functions which required alterations to their header files.
 
 
 \subsubsection{\texttt{adaptBins}}
@@ -206,51 +298,16 @@ where $i'$ is the maximum index such that $\hat C(E_{i'}) < (i+1) \dfrac{D}{N}$ 
 We discovered that this adaptation technique performs very will in initial steps of adaptation, but is prone to oscillations near clusters of points. Now, since each of the two methods perform better and worse in different contexts, are solution was to simply alternate between at each step. This solved all of our convergence issues in testing. (Note that we still use the same binary search-based binning technique and stopping criterion from the previous project.)
 
 
-\subsection{$K$-d tree}
-Used a Tree struct...
-
-% JJ, talk about the Tree struct and what all fields it has
-
-\subsubsection{Building the tree}
-General notes on the method...
-
-
-\paragraph{\texttt{buildTree}}
-This function gets the number of compute nodes $q$ available in the current communicator and determines which function to run. If $q>1$, then we can still do a parallel sort with 2 compute nodes, so \texttt{buildTree\_parallel} is entered. If $q=1$, then \texttt{buildTree\_serial} is entered.
-
-
-\paragraph{\texttt{buildTree\_serial}}
-This was the first function written after our initial prototyping phase was completed. It essentially performs a serial version of ORB which can be executed on a single compute node.
-
-% JJ, you wanna write this since you wrote the program?
-
-Upon completion, \texttt{buildTree\_serial} calls itself instead of \texttt{buildTree} since we still have $q=1$.
-
-
-\paragraph{\texttt{buildTree\_parallel}}
-This function performs essentially the same tasks as \texttt{buildTree\_serial}, but utilizing multiple nodes for speedup. Specifically, it takes advantage of \texttt{parallelSort} in order to speed up the partitioning of the data along the longest axis (determine by \texttt{getSortDim}, discussed below). After the data has been sorted, the data is split by placing lower half (w.r.t. the sorted data values) of the compute nodes into a left communicator and the upper half into a right communicator. Each half then calls \texttt{buildTree}.
-
-% Upon completion, \texttt{buildTree\_parallel} has spawned 2 new communicators (a left and a right) each of which has half as many compute nodes as the parent communicator. All of the nodes from each side then call \texttt{buildTree} so that they can perform the $q$ check.
-
-
-\paragraph{\texttt{getSortDim}}
-This function is used by \texttt{buildTree\_parallel} in order to determine which is the longest axis, i.e., the sort dimension. In addition to this, it also fills in the struct for the current tree node with the global min/max in all three dimensions, as well as the center of the bounding box defined by these values.
-
-
-\subsubsection{Searching the tree}
-
-\paragraph{\texttt{searchTree\_serial}}
-
-\paragraph{\texttt{searchTree\_}PARALLEL???}
 
 
 
 %%%%%%%%%%%%%
 %%% NEW SECTION %%%
 %%%%%%%%%%%%%
-\section{Testing and Validation}
+\section{Validation}
 
 
+% GW, farzi
 \subsection{Two MATLAB demos}
 Should these not be in the paper since animation is a pain without adobe??? Leave it for the presentation where we can just run it?
 
@@ -260,6 +317,19 @@ Should these not be in the paper since animation is a pain without adobe??? Leav
 \subsubsection{3D tree partitions from different orientations}
 In addition to our use of MATLAB for prototyping, we also used it to validate our tree building algorithm.
 
+
+\subsection{Other}
+able to get same counts for different number of nodes
+
+
+
+
+%%%%%%%%%%%%%
+%%% NEW SECTION %%%
+%%%%%%%%%%%%%
+\section{Results}
+
+% JJ
 
 \subsection{Timing Testing}
 
@@ -271,14 +341,15 @@ In addition to our use of MATLAB for prototyping, we also used it to validate ou
 %%%%%%%%%%%%%
 %%% NEW SECTION %%%
 %%%%%%%%%%%%%
-\section{Results}
-
-
-
-%%%%%%%%%%%%%
-%%% NEW SECTION %%%
-%%%%%%%%%%%%%
 \section{Conclusion}
+
+% everyone
+
+\subsection{Challenges}
+
+
+
+\subsection{Future Work}
 
 
 
