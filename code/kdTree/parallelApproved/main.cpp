@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 	const int maxFilesToProc = 30;
 
 	// number of lines PER FILE
-	const int maxRows = 100;
+	const int maxRows = 1000;
 
 	int sortInd = 1; // x = 1
 
@@ -154,7 +154,6 @@ int main(int argc, char *argv[])
 
 	buildTree( &array, &rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
 
-
 	sleep(5);
 
 /*
@@ -183,8 +182,7 @@ int main(int argc, char *argv[])
 	// searchTree //
 	////////////////
 	
-	// deal with data
-	
+	// deal with data	
 	double point[] = { 1.0, 0.5, 0.5, 0.5 };
 	double rad   = 0.25;
 	int    found = -1;
