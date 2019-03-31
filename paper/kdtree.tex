@@ -205,8 +205,11 @@ search: import the 501-st data file and perform a search on each, summing the to
 %%%%%%%%%
 
 \subsection{K-d tree}
+%
 % JJ, talk about the Tree struct and what all fields it has
-Used a Tree struct...
+%
+
+The design of the k-d tree required storing information for organizing the parallel distribution of the data and the data held locally on the node. Rather than create two different type of structures, the code utilized a single C \texttt{struct} which is defined as:
 
 \lstset{language=C++, keepspaces=true}
 \begin{lstlisting}
@@ -246,6 +249,154 @@ struct Tree {
 	double index;  // File row index from source data
 }
 \end{lstlisting}
+
+%%%%%%%%%
+%
+% Subsubsection: Constants
+%
+%%%%%%%%%
+
+\subsubsection{Constants}
+
+C preprocessor identifiers were defined and used in place of numeric constants for readability. Data points were defined as an array of \texttt{double} of size four consistently even when only three values were needed. The four positions were referenced using:
+
+\lstset{language=C++, keepspaces=true}
+\begin{lstlisting}
+#define _INDEX_   0  // Row index from source datafile
+#define _X_       1
+#define _Y_       2
+#define _Z_       3
+\end{lstlisting}
+
+A single tree is create and populated by both the parallel and serial versions of \texttt{buildTree}. To aid with debugging, each node is marked with an identifier to show which function created it. The identifiers for the sources are:
+
+\lstset{language=C++, keepspaces=true}
+\begin{lstlisting}
+#define _Source_buildTree_unknown     0
+#define _Source_buildTree_parallel   -1
+#define _Source_buildTree_serial     -2
+\end{lstlisting}
+
+
+
+%%%%%%%%%
+%
+% Subsubsection: Parallel Variable
+%
+%%%%%%%%%
+
+\subsubsection{Parallel variables}
+
+The \texttt{struct} variables used during the initial division of the tree among the nodes and their purpose are:
+
+\begin{description}
+    \item[\texttt{i}]{The dimension that was split by the MPI communicator.}
+    \item[\texttt{source}]{During the parallel phase, this value is set to \texttt{\_Source\_buildTree\_parallel}.}
+    \item[\texttt{parentComm}]{The parent MPI communicator that created this node. The root node stores a value of \texttt{MPI\_COMM\_SELF} in lieu of a null.}
+    \item[\texttt{leftComm}]{}
+    \item[\texttt{rightComm}]{}
+    \item[\texttt{thisComm}]{}
+\end{description}
+
+\lstset{language=C++, keepspaces=true}
+\begin{lstlisting}
+	int i;      // Sort dimension used to split this node
+	int source; // Which buildTree function created it
+
+    // Pointers used for parallel tree
+	MPI_Comm parentComm;  // Parent MPI communicator
+	MPI_Comm leftComm;    // Left child MPI communicator
+	MPI_Comm rightComm;   // Right child MPI communicator
+	MPI_Comm thisComm;    // MPI communicator that the node belongs to
+
+    // Each node in the tree has a unique identifier
+	string name;
+
+    // For nodes with children, this holds the min and max for
+    // the child nodes
+	double x1;  // Min x
+	double x2;  // Max x
+	double y1;  // Min y
+	double y2;  // Max y
+	double z1;  // Min z
+	double z2;  // Max z
+
+	int depth;  // Depth of the node in the tree
+	int n;      // Number of points
+
+	double c[4];    // Center of this tree
+	double radius;  // Radius of this tree
+\end{lstlisting}
+
+\begin{figure}
+\includegraphics[width=0.9\textwidth]{images/communicators.png}
+\caption{Example of parallel variables using eight nodes}
+\end{figure}
+%%%%%%%%%
+%
+% Subsubsection: Serial variables
+%
+%%%%%%%%%
+
+\subsubsection{Serial variables}
+
+\lstset{language=C++, keepspaces=true}
+\begin{lstlisting}
+    // Pointers used for local tree
+	Tree *p;    // Parent
+	Tree *l;    // Left child
+	Tree *r;    // Right child
+	int i;      // Sort dimension used to split this node
+	int source; // Which buildTree function created it
+
+    // Each node in the tree has a unique identifier
+	string name;
+
+    // For nodes with children, this holds the min and max for
+    // the child nodes
+	double x1;  // Min x
+	double x2;  // Max x
+	double y1;  // Min y
+	double y2;  // Max y
+	double z1;  // Min z
+	double z2;  // Max z
+
+	int depth;  // Depth of the node in the tree
+	int n;      // Number of points
+
+	double c[4];    // Center of this tree
+	double radius;  // Radius of this tree
+\end{lstlisting}
+
+%%%%%%%%%
+%
+% Subsubsection: Data point variables
+%
+%%%%%%%%%
+
+\subsubsection{Data point variables}
+
+\lstset{language=C++, keepspaces=true}
+\begin{lstlisting}
+
+    // Pointers used for local tree
+	Tree *p;    // Parent
+	Tree *l;    // Left child
+	Tree *r;    // Right child
+
+	int source; // Which buildTree function created it
+
+    // Each node in the tree has a unique identifier
+	string name;
+
+	int depth;  // Depth of the node in the tree
+	int n;      // Number of points
+
+	double d[4];   // Data point coordinates
+	double index;  // File row index from source data
+}
+\end{lstlisting}
+
 
 %%%%%%%%%
 %
