@@ -174,9 +174,12 @@ We all wrote prototypes in several languages before attempting the full C++ para
 \end{mdframed}
 
 
-%%%%%%%%%%%%%
-%%% NEW SECTION %%%
-%%%%%%%%%%%%%
+%%%%%%%%%
+%
+% Section: Implementation
+%
+%%%%%%%%%
+
 \section{Implementation}
 % JJ
 
@@ -205,19 +208,27 @@ search: import the 501-st data file and perform a search on each, summing the to
 % JJ, talk about the Tree struct and what all fields it has
 Used a Tree struct...
 
-\lstset{language=C++}
+\lstset{language=C++, keepspaces=true}
 \begin{lstlisting}
 struct Tree {
-	Tree *p;  // Parent
-	Tree *l;  // Left child
-	Tree *r;  // Right child
-	int i;    // Sort index
-	int source; // Which buildTree created it
+    // Pointers used for local tree
+	Tree *p;    // Parent
+	Tree *l;    // Left child
+	Tree *r;    // Right child
+	int i;      // Sort dimension used to split this node
+	int source; // Which buildTree function created it
 
-	MPI_Comm parentComm, leftComm, rightComm, thisComm;
+    // Pointers used for parallel tree
+	MPI_Comm parentComm;  // Parent communicator
+	MPI_Comm leftComm;    // Left child communicator
+	MPI_Comm rightComm;   // Right child communicator
+	MPI_Comm thisComm;    // Communicator that the node belongs to
 
+    // Each node in the tree has a unique identifier
 	string name;
 
+    // For nodes with children, this holds the min and max for
+    // the child nodes
 	double x1;  // Min x
 	double x2;  // Max x
 	double y1;  // Min y
@@ -225,14 +236,14 @@ struct Tree {
 	double z1;  // Min z
 	double z2;  // Max z
 
-	int depth;
+	int depth;  // Depth of the node in the tree
 	int n;      // Number of points
 
-	double c[4];  // Center of this tree
-	double radius;
+	double c[4];    // Center of this tree
+	double radius;  // Radius of this tree
 
-	double d[4];  // Data point
-	double index;  // File row index
+	double d[4];   // Data point coordinates
+	double index;  // File row index from source data
 }
 \end{lstlisting}
 
@@ -253,7 +264,9 @@ This function gets the number of compute nodes $q$ available in the current comm
 \paragraph{\texttt{buildTree\_serial}}
 This was the first function written after our initial prototyping phase was completed. It essentially performs a serial version of ORB which can be executed on a single compute node.
 
+%
 % JJ, you wanna write this since you wrote the program?
+%
 
 Upon completion, \texttt{buildTree\_serial} calls itself instead of \texttt{buildTree} since we still have $q=1$.
 
@@ -285,7 +298,10 @@ ADD PSEUDOCODE
 
 
 \paragraph{\texttt{search501}}
+%
 % JJ, edit if you wan since you wrote most of this
+%
+
 Each node calls this function which reads the 501-st data file, whose contents are the centers of the search spheres. It then loops through \texttt{searchTree\_serial} through all of the sphere centers for three different radii (0., 0., 0.). The counts on each node are then stored. After all searches are complete, then an MPI\_Reduce is performed by all nodes, thus adding all of the counts into a single array which is exported to a file.
 
 
@@ -369,15 +385,30 @@ able to get same counts for different number of nodes
 
 
 
-%%%%%%%%%%%%%
-%%% NEW SECTION %%%
-%%%%%%%%%%%%%
+%%%%%%%%%
+%
+% Section: Results
+%
+%%%%%%%%%
+
 \section{Results}
 
 % JJ
 
+%%%%%%%%%
+%
+% Subsection: Timing Testing
+%
+%%%%%%%%%
+
 \subsection{Timing Testing}
 
+
+%%%%%%%%%
+%
+% Subsection: Search Results
+%
+%%%%%%%%%
 
 \subsection{Search Results}
 
