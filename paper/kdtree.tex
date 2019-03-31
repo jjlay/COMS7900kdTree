@@ -17,6 +17,9 @@
 \usepackage{varwidth}
 \usepackage[linesnumbered,ruled]{algorithm2e}
 
+% For displaying code
+\usepackage{listings}
+
 % Theorem
 \newtheorem{theorem}{Theorem}
 
@@ -181,11 +184,6 @@ Here we discuss our implementation of the code
 
 we used C++ with C MPI calls, mpirun, qsub/qlogin, valgrind
 
-\begin{enumerate}
-\item VALGRIND
-\end{enumerate}
-
-
 \subsection{\texttt{main}}
 % GW
 import: gets the list of files and imports their data into an array
@@ -197,10 +195,52 @@ build: we build the tree using ORB to partition the data
 search: import the 501-st data file and perform a search on each, summing the total number of points found over several radii
 
 
-\subsection{$K$-d tree}
+%%%%%%%%%
+%
+% Subsection: K-d Tree
+%
+%%%%%%%%%
+
+\subsection{K-d tree}
 % JJ, talk about the Tree struct and what all fields it has
 Used a Tree struct...
 
+\lstset{language=C++}
+\begin{lstlisting}
+struct Tree {
+	Tree *p;  // Parent
+	Tree *l;  // Left child
+	Tree *r;  // Right child
+	int i;    // Sort index
+	int source; // Which buildTree created it
+
+	MPI_Comm parentComm, leftComm, rightComm, thisComm;
+
+	string name;
+
+	double x1;  // Min x
+	double x2;  // Max x
+	double y1;  // Min y
+	double y2;  // Max y
+	double z1;  // Min z
+	double z2;  // Max z
+
+	int depth;
+	int n;      // Number of points
+
+	double c[4];  // Center of this tree
+	double radius;
+
+	double d[4];  // Data point
+	double index;  // File row index
+}
+\end{lstlisting}
+
+%%%%%%%%%
+%
+% Subsection: Building the tree
+%
+%%%%%%%%%
 
 \subsubsection{Building the tree}
 % General notes on the method...
