@@ -81,10 +81,10 @@ int main(int argc, char *argv[])
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 
 	// total number of files to read
-	const int maxFilesToProc = 25;
+	const int maxFilesToProc = 1000;
 
 	// number of lines PER FILE
-	const int maxRows = 1000;
+	const int maxRows = _MAX_ROWS_ ;
 
 	int sortInd = 1; // x = 1
 
@@ -117,6 +117,7 @@ int main(int argc, char *argv[])
 	}
 
 	MPI_Barrier(MPI_COMM_WORLD);
+
 
 	int rows = 0, cols = _ROW_WIDTH_;
 
@@ -154,29 +155,9 @@ int main(int argc, char *argv[])
 
 	buildTree( &array, &rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
 
-	sleep(5);
-
-
-	for (auto i = 0; i < rows; i++ ) {
-		cout << "11111 : Rank " << myRank << " Row " << i << " X " << array[(i*_ROW_WIDTH_) + _X_]
-			<< " Y " << array[(i*_ROW_WIDTH_) + _Y_]
-			<< " Z " << array[(i*_ROW_WIDTH_) + _Z_] << endl;
-		if (i == 0)
-			i = rows - 2;
-	}
 
 	MPI_Barrier(MPI_COMM_WORLD);
 
-/*
-	string dumpFile = "dump-" + to_string(myRank) + ".txt";
-	ofstream d;
-
-	d.open(dumpFile, ios::out);
-	dumpTree(tree, 0, &d, myRank);
-	d.close();
-*/
-
-	MPI_Barrier(MPI_COMM_WORLD);
 
 	////////////////
 	// searchTree //
@@ -184,10 +165,6 @@ int main(int argc, char *argv[])
 	
 	search501( myRank, path, tree);
 	
-//	double point[] = { 1.0,	0.028974942191213,     0.083491489715285,    -0.066445096022865};
-//	double point[] = { 1.0, 0.0, 0.0, 0.0 };
-//	double rad   = 0.5;
-//	found = searchTree_serial( point, rad, tree );
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 

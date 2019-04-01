@@ -4,30 +4,34 @@
 \contentsline {subsection}{\numberline {1.2}Variables and conventions}{2}
 \contentsline {section}{\numberline {2}Implementation}{3}
 \contentsline {subsection}{\numberline {2.1}\texttt {main}}{3}
-\contentsline {subsection}{\numberline {2.2}$K$-d tree}{3}
-\contentsline {subsubsection}{\numberline {2.2.1}Building the tree}{3}
-\contentsline {paragraph}{\numberline {2.2.1.1}\texttt {buildTree}}{3}
-\contentsline {paragraph}{\numberline {2.2.1.2}\texttt {buildTree\_serial}}{3}
-\contentsline {paragraph}{\numberline {2.2.1.3}\texttt {buildTree\_parallel}}{3}
-\contentsline {paragraph}{\numberline {2.2.1.4}\texttt {getSortDim}}{3}
-\contentsline {subsubsection}{\numberline {2.2.2}Searching the tree}{3}
-\contentsline {paragraph}{\numberline {2.2.2.1}\texttt {searchTree\_serial}}{3}
-\contentsline {paragraph}{\numberline {2.2.2.2}\texttt {search501}}{4}
-\contentsline {subsection}{\numberline {2.3}Altered parallel sorting}{4}
-\contentsline {subsubsection}{\numberline {2.3.1}\texttt {parallelSort}}{4}
-\contentsline {paragraph}{\numberline {2.3.1.1}Conversion to function}{4}
-\contentsline {paragraph}{\numberline {2.3.1.2}Making rank 0 do work}{4}
-\contentsline {paragraph}{\numberline {2.3.1.3}Using different communicators}{4}
-\contentsline {subsubsection}{\numberline {2.3.2}\texttt {adaptBins}}{4}
-\contentsline {section}{\numberline {3}Validation}{5}
-\contentsline {subsection}{\numberline {3.1}Two MATLAB demos}{5}
-\contentsline {subsubsection}{\numberline {3.1.1}2D animation of tree building}{5}
-\contentsline {subsubsection}{\numberline {3.1.2}3D tree partitions from different orientations}{5}
-\contentsline {subsection}{\numberline {3.2}Other}{5}
-\contentsline {section}{\numberline {4}Results}{5}
-\contentsline {subsection}{\numberline {4.1}Timing Testing}{5}
-\contentsline {subsection}{\numberline {4.2}Search Results}{5}
-\contentsline {section}{\numberline {5}Conclusion}{5}
-\contentsline {subsection}{\numberline {5.1}Challenges}{5}
-\contentsline {subsection}{\numberline {5.2}Future Work}{5}
-\contentsline {section}{\numberline {6}Bibliography}{5}
+\contentsline {subsection}{\numberline {2.2}K-d tree}{3}
+\contentsline {subsubsection}{\numberline {2.2.1}Constants}{4}
+\contentsline {subsubsection}{\numberline {2.2.2}Tree Node Naming}{4}
+\contentsline {subsubsection}{\numberline {2.2.3}Parallel variables}{4}
+\contentsline {subsubsection}{\numberline {2.2.4}Serial variables}{5}
+\contentsline {subsubsection}{\numberline {2.2.5}Data point variables}{6}
+\contentsline {subsubsection}{\numberline {2.2.6}Building the tree}{6}
+\contentsline {paragraph}{\numberline {2.2.6.1}\texttt {buildTree}}{6}
+\contentsline {paragraph}{\numberline {2.2.6.2}\texttt {buildTree\_serial}}{6}
+\contentsline {paragraph}{\numberline {2.2.6.3}\texttt {buildTree\_parallel}}{6}
+\contentsline {paragraph}{\numberline {2.2.6.4}\texttt {getSortDim}}{7}
+\contentsline {subsubsection}{\numberline {2.2.7}Searching the tree}{7}
+\contentsline {paragraph}{\numberline {2.2.7.1}\texttt {searchTree\_serial}}{7}
+\contentsline {paragraph}{\numberline {2.2.7.2}\texttt {search501}}{7}
+\contentsline {subsection}{\numberline {2.3}Altered parallel sorting}{7}
+\contentsline {subsubsection}{\numberline {2.3.1}\texttt {parallelSort}}{7}
+\contentsline {paragraph}{\numberline {2.3.1.1}Conversion to function}{7}
+\contentsline {paragraph}{\numberline {2.3.1.2}Making rank 0 do work}{7}
+\contentsline {paragraph}{\numberline {2.3.1.3}Using different communicators}{7}
+\contentsline {subsubsection}{\numberline {2.3.2}\texttt {adaptBins}}{8}
+\contentsline {section}{\numberline {3}Validation}{8}
+\contentsline {subsection}{\numberline {3.1}Two MATLAB demos}{8}
+\contentsline {subsubsection}{\numberline {3.1.1}2D animation of tree building}{8}
+\contentsline {subsubsection}{\numberline {3.1.2}3D tree partitions from different orientations}{8}
+\contentsline {subsection}{\numberline {3.2}Other}{9}
+\contentsline {section}{\numberline {4}Results}{9}
+\contentsline {subsection}{\numberline {4.1}Timing Testing}{9}
+\contentsline {subsection}{\numberline {4.2}Search Results}{9}
+\contentsline {section}{\numberline {5}Conclusions}{9}
+\contentsline {subsection}{\numberline {5.1}Challenges}{9}
+\contentsline {subsection}{\numberline {5.2}Future Work}{9}
