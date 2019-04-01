@@ -182,14 +182,15 @@ Here we discuss our implementation of the code
 we used C++ with C MPI calls, mpirun, qsub/qlogin, valgrind
 
 \subsection{\texttt{main}}
-% GW
-import: gets the list of files and imports their data into an array
+Our \texttt{main} program is divided into three main phases (each of which is comprised of multiple functions): data import, tree building, and tree searching. The data import phase collects all of the relevant filenames of the data files, reads them, and places them into a single 1D array. The tree building phase begins by initializing an empty Tree struct (see below for explanation of the struct) which is then passed into the \texttt{buildTree} function which alters the struct's contents. The entire tree can then be navigated by using the tree's left, right, and parent fields. The final tree searching phase takes the completed tree struct as an argument along with a search sphere. The number of points within the search sphere is calculated for each
 
 
-build: we build the tree using ORB to partition the data
 
+% import: gets the list of files and imports their data into an array
 
-search: import the 501-st data file and perform a search on each, summing the total number of points found over several radii
+% build: we build the tree using ORB to partition the data
+
+% search: import the 501-st data file and perform a search on each, summing the total number of points found over several radii
 
 
 \subsection{$K$-d tree}
