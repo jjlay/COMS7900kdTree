@@ -49,6 +49,4 @@ void initializeMPI(std::string *processorName, int *myRank, int *numNodes, int a
 	*myRank = localMyRank;
 	*numNodes = localNumProcs;
 	*processorName = std::string(localProcName);
-
-	cout << "00000 : Worker " << localMyRank << " of " << localNumProcs << " called " << localProcName << endl;
 }
