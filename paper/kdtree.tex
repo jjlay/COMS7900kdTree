@@ -95,13 +95,14 @@ In this paper, we will discuss how our $k$-d tree algorithm works, how we solved
 %%%%%%%%%%%%%
 \section{Introduction}
 
-% GW
-STATEMENT OF THE PROBLEM: talk about orthogonal recursive bisection ORB, needed to search all the data with 3 radii and 501 file centers, return table of counts
+% farzi
+STATEMENT OF THE PROBLEM: talk about orthogonal recursive bisection ORB, needed to search all  data with 3 radii and 501 file centers, return table of counts
 
 
 % farzi
 \subsection{Workflow}
-One of the major issues we encountered during our last project was overwriting each other’s GitHub submissions. Our resolution was to create a master branch and three sub branches. Each person was assigned a sub branch that they could modify as they pleased. However, a modification in the master branch parallel approved folder required two or more party members consent. This vastly reduced the amount of issues encountered during push/pull request. 
+One of the major issues we encountered during our last project was overwriting each other’s GitHub submissions. Our resolution was to create a master branch and three sub branches. Each person was assigned a sub branch that they could modify as they pleased. However, a modification in the master branch parallel approved folder required two or more party members consent. This vastly reduced the amount of issues encountered during push/pull request.
+
 Another adjustment we made for our development process was to write our code together and in an accommodating space as opposed to assigning individual sections of code. We met on a regular basis, generally starting during our scheduled class period and extending through the lunch period. This allowed us to catch errors quickly, avoid merge conflicts and most significantly improved everyone's knowledge of how each component of the code works. 
 When the project was assigned each team member prototypes a version of serial KD tree in their preferred language. After several meetings it was determined that Graham’s MatLab implementation would be used as the guide for the project. 
 
@@ -113,6 +114,7 @@ When the project was assigned each team member prototypes a version of serial KD
 % 3) say worker (not node) whenever possible
 %%% NOTE %%%
 %%% NOTE %%%
+Note that we distinguish between \textbf{tree} nodes and \textbf{compute} nodes to avoid confusion.
 
 \begin{mdframed}[backgroundcolor=blue!20]
 	Counts:
@@ -136,12 +138,12 @@ When the project was assigned each team member prototypes a version of serial KD
 	\begin{itemize}
 		\setlength\itemsep{0.1pt}
 		\setlength\parskip{0.1pt}
-		\item $m = 0, \cdots, M$ is the time step of the bin adaptation scheme (likely less than $M$)
-		\item $n = 0, \cdots, W$ spans the nodes
-		\item $i = 0, \cdots, N$ spans the bin edges/indices
-		\item $j = 0, \cdots, N-1$ spans the bin counts (this will occasionally subscript binI/E as well)
-		\item $\ell_w = 0, \cdots, L_n-1$ spans the lines on the $n$-th node
-		\item $k = 0, \cdots, 3$ is the data column being sorted
+		\item $m = 0, \cdots, M$: the time step of the bin adaptation scheme (likely less than $M$)
+		\item $n = 0, \cdots, W$: spans the nodes
+		\item $i = 0, \cdots, N$: spans the bin edges/indices
+		\item $j = 0, \cdots, N-1$: spans the bin counts (this will occasionally subscript binI/E as well)
+		\item $\ell_w = 0, \cdots, L_n-1$: spans the lines on the $n$-th node
+		\item $k = 0, \cdots, 3$: the data column being sorted
 	\end{itemize}
 \end{mdframed}
 
@@ -271,7 +273,7 @@ A single tree is create and populated by both the parallel and serial versions o
 %
 %%%%%%%%%
 
-\subsubsection{Node Naming}
+\subsubsection{Tree Node Naming}
 
 Each node in the tree is assigned a unique identifier determined by its position. The top node is named \texttt{t}. The two child nodes of \texttt{t} are \texttt{tl} and \texttt{tr}. An \texttt{l} or \texttt{r} is appended to the parent's name to designate the direction it is below the parent. The final node of the parallel section appends an \texttt{*} to designate the transition from parallel to serial. The node of the tree containing the data point appends an \texttt{!}.
 
@@ -292,8 +294,8 @@ The \texttt{struct} variables used during the initial division of the tree among
     \item[\texttt{parentComm}]{The parent MPI communicator that created this node. The root node stores a value of \texttt{MPI\_COMM\_SELF} in lieu of a null.}
     \item[\texttt{leftComm}]{The MPI communicator of the \textit{left} child tree for the current node.}
     \item[\texttt{rightComm}]{The MPI communicator of the \textit{right} child tree for the current node.}
-    \item[\texttt{thisComm}]{The MPI communicator of the current node.}
-    \item[\texttt{name}]{The unique name of the node.}
+    \item[\texttt{thisComm}]{The MPI communicator of the current compute node.}
+    \item[\texttt{name}]{The unique name of the tree node.}
     \item[\texttt{x1}]{The minimum value of \textit{x} stored in this subtree.}
     \item[\texttt{x2}]{The maximum value of \textit{x} stored in this subtree.}
     \item[\texttt{y1}]{The minimum value of \textit{y} stored in this subtree.}
@@ -403,12 +405,9 @@ This function is used by \texttt{buildTree\_parallel} in order to determine whic
 % GW
 This function is called by all ranks and returns an integer which equals the number of points found by the rank that called it. It takes as arguments the point and radius (which specifies a search sphere) and the root of the tree created by \texttt{buildTree}. To perform the search, a check is done to determine of the search sphere intersects the bounding sphere of each data partition:
 \begin{equation}
-		test
+		r^2_\textrm{sphere center to box center} \le (r_{sphere} + r_{box})^2
 \end{equation}
-If this check returns false, then there are no data points within the search sphere contained in that partition. If true, then another check is performed to check if the partition contains only a single point (if so, it increments the found count); otherwise the search branches and calls itself, creating a recursive loop.
-
-
-ADD PSEUDOCODE
+We used the squared version of the formula to avoid computing the square root, thus saving time. If this check returns false, then there are no data points within the search sphere contained in that partition and the function exits. If true, then another check is performed to check if the left or right child tree are NULL. If they are both NULL, then by our definition of the tree, we have found a point that is a leaf of the tree, thus we increment the count and exit the function. Otherwise, we recursively call the function again using the correct child tree.
 
 
 \paragraph{\texttt{search501}}
@@ -416,7 +415,7 @@ ADD PSEUDOCODE
 % JJ, edit if you wan since you wrote most of this
 %
 
-Each node calls this function which reads the 501-st data file, whose contents are the centers of the search spheres. It then loops through \texttt{searchTree\_serial} through all of the sphere centers for three different radii (0., 0., 0.). The counts on each node are then stored. After all searches are complete, then an MPI\_Reduce is performed by all nodes, thus adding all of the counts into a single array which is exported to a file.
+Each compute node calls this function which reads the 501-st data file, whose contents are the centers of the search spheres. It then loops \texttt{searchTree\_serial} for all of the sphere centers for three different radii (0.01, 0.05, 0.10). The counts on each compute node are then stored. After all searches are complete, an MPI\_Reduce is performed by all nodes, thus adding all of the counts into a single array which is exported to a file.
 
 
 \subsection{Altered parallel sorting}
@@ -432,7 +431,8 @@ One of our first obstacles was modifying our original parallelSort program to wo
 
 
 \paragraph{Making rank 0 do work}
-The second issue was our use of rank 0 as the manager in our original parallelSort program. Our implantation of parallelSort had rank 0 manage while all the other ranks contained and performed operations on the actual data. However, when utilizing a KD tree all of the ranks are needed otherwise each time the tree forked and a new communication branch was formed the process would lose a rank due to a new rank 0 being formed. To resolve this problem  we had to make several clever adjustments in the sections of the code, most notably the adapt binning section. Other sections just needed to have the iteration increment from 0 instead of 1. 
+The second issue was our use of rank 0 as the manager in our original parallelSort program. Our implantation of parallelSort had rank 0 manage while all the other ranks contained and performed operations on the actual data. However, when utilizing a KD tree all of the ranks are needed otherwise each time the tree forked and a new communication branch was formed the process would lose a rank due to a new rank 0 being formed. To resolve this problem  we had to make several clever adjustments in the sections of the code, most notably the adapt binning section. Other sections just needed to have the iteration increment from 0 instead of 1.
+
 \paragraph{Using different communicators}
 Since kdtree requires multiple comms, it was necessary that parallel sort (any many functions it contains) was given the current communicator. This was not a terribly difficult modification, but it was quite tedious since there were many functions which required alterations to their header files.
 
@@ -480,7 +480,9 @@ We discovered that this adaptation technique performs very will in initial steps
 \subsection{Two MATLAB demos}
 Should these not be in the paper since animation is a pain without adobe??? Leave it for the presentation where we can just run it?
 
+
 \subsubsection{2D animation of tree building}
+When prototyping the code in MATLAB, we generated animated visualizations of the construction of a 2D tree. Due to the format, we cannot include the animation within this paper, but it shall be included in the presentation.
 
 
 \subsubsection{3D tree partitions from different orientations}
@@ -489,6 +491,10 @@ In addition to our use of MATLAB for prototyping, we also used it to validate ou
 
 \subsection{Other}
 able to get same counts for different number of nodes
+
+tiny radius about a point in the file
+
+huge radius which got ALL points
 
 
 
@@ -525,21 +531,48 @@ able to get same counts for different number of nodes
 %%%%%%%%%%%%%
 %%% NEW SECTION %%%
 %%%%%%%%%%%%%
-\section{Conclusion}
-
+\section{Conclusions}
 % everyone
+
 
 \subsection{Challenges}
 
 
+Bad
+\begin{itemize}
+	\item parallelSort conversions
+	\item memory leaks
+	\item multiple communicators (comm)
+	\item adaptBins not converging
+	\item cout clutter debug
+	\item out of bounds issues
+	\item *data[], *rows
+	\item didn't plan ahead what should be passed into functions, required constant editing of h files
+\end{itemize}
+
+Good
+\begin{itemize}
+	\item few merge conflicts
+	\item fast debugging through extreme coding
+	\item visualizing output (validation)
+	\item efficient delegation that avoided merge conflicts
+\end{itemize}
 
 \subsection{Future Work}
+
+\begin{itemize}
+	\item cloud
+	\item use this code for personal research
+\end{itemize}
+
+
+
 
 
 
 %%%%%%%%%%%%%
 %%% NEW SECTION %%%
 %%%%%%%%%%%%%
-\section{Bibliography}
+% \section{Bibliography}
 
 \end{document}
