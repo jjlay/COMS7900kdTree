@@ -321,35 +321,23 @@ The \texttt{struct} variables used during the initial division of the tree among
 
 \begin{description}
     \item[\texttt{p}]{Pointer to the parent of the current node. This value is \texttt{null} for the top node.}
+    \item[\texttt{l}]{Pointer to the \textit{left} child of the current node. This value is \texttt{null} for the data point.}
+    \item[\texttt{r}]{Pointer to the \textit{right} child of the current node. This value is \texttt{null} for the data point.}
+    \item[\texttt{i}]{The dimension that was split during the local tree construction.}
+    \item[\texttt{source}]{During the serial phase, this value is set to \texttt{\_Source\_buildTree\_serial}.}
+    \item[\texttt{name}]{The unique name of the node.}
+    \item[\texttt{x1}]{The minimum value of \textit{x} stored in this subtree.}
+    \item[\texttt{x2}]{The maximum value of \textit{x} stored in this subtree.}
+    \item[\texttt{y1}]{The minimum value of \textit{y} stored in this subtree.}
+    \item[\texttt{y2}]{The maximum value of \textit{y} stored in this subtree.}
+    \item[\texttt{z1}]{The minimum value of \textit{z} stored in this subtree.}
+    \item[\texttt{z2}]{The maximum value of \textit{z} stored in this subtree.}
+    \item[\texttt{depth}]{The depth within the tree of the current node. The top node has a depth of zero.}
+    \item[\texttt{n}]{The number of points contained within the subtree where the current node is the root.}
+    \item[\texttt{c[4]}]{The center of the subtree. Index for the array is described in section \ref{sec:constants}.}
+    \item[\texttt{radius}]{The distance from the center of the subtree to the furthest point.}
 \end{description}
 
-\lstset{language=C++, keepspaces=true}
-\begin{lstlisting}
-    // Pointers used for local tree
-	Tree *p;    // Parent
-	Tree *l;    // Left child
-	Tree *r;    // Right child
-	int i;      // Sort dimension used to split this node
-	int source; // Which buildTree function created it
-
-    // Each node in the tree has a unique identifier
-	string name;
-
-    // For nodes with children, this holds the min and max for
-    // the child nodes
-	double x1;  // Min x
-	double x2;  // Max x
-	double y1;  // Min y
-	double y2;  // Max y
-	double z1;  // Min z
-	double z2;  // Max z
-
-	int depth;  // Depth of the node in the tree
-	int n;      // Number of points
-
-	double c[4];    // Center of this tree
-	double radius;  // Radius of this tree
-\end{lstlisting}
 
 %%%%%%%%%
 %
@@ -359,26 +347,17 @@ The \texttt{struct} variables used during the initial division of the tree among
 
 \subsubsection{Data point variables}
 
-\lstset{language=C++, keepspaces=true}
-\begin{lstlisting}
-
-    // Pointers used for local tree
-	Tree *p;    // Parent
-	Tree *l;    // Left child
-	Tree *r;    // Right child
-
-	int source; // Which buildTree function created it
-
-    // Each node in the tree has a unique identifier
-	string name;
-
-	int depth;  // Depth of the node in the tree
-	int n;      // Number of points
-
-	double d[4];   // Data point coordinates
-	double index;  // File row index from source data
-}
-\end{lstlisting}
+\begin{description}
+    \item[\texttt{p}]{Pointer to the parent of the current node.}
+    \item[\texttt{l}]{Pointer to the \textit{left} child of the current node. This value is \texttt{null} for the data point.}
+    \item[\texttt{r}]{Pointer to the \textit{right} child of the current node. This value is \texttt{null} for the data point.}
+    \item[\texttt{source}]{During the serial phase, this value is set to \texttt{\_Source\_buildTree\_serial}.}
+    \item[\texttt{name}]{The unique name of the node.}
+    \item[\texttt{depth}]{The depth within the tree of the current node. The top node has a depth of zero.}
+    \item[\texttt{n}]{The number of points contained within the subtree where the current node is the root.}
+    \item[\texttt{d[4]}]{The data point.}
+    \item[\texttt{index}]{The row index of the data point as read from the source file.}
+\end{description}
 
 
 %%%%%%%%%
