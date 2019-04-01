@@ -95,28 +95,15 @@ In this paper, we will discuss how our $k$-d tree algorithm works, how we solved
 %%%%%%%%%%%%%
 \section{Introduction}
 
-% FARZI, DO THIS FOR FUNCTIONS
-\begin{lstlisting}
-	walk = RandomWalk(nStep, initPos, stdDev)
-\end{lstlisting}
-
 % GW
 STATEMENT OF THE PROBLEM: talk about orthogonal recursive bisection ORB, needed to search all the data with 3 radii and 501 file centers, return table of counts
 
 
 % farzi
 \subsection{Workflow}
-How we went about the project...
-
-new GitHub repo
-
-EXTREME CODING FTW: catch errors quickly, no merge conflicts, everyone writes/knows all the code
-
-used a parallelApproved dir in repo to minimize merge conflicts
-
-went to WPS instead of SCI due to better work environment and longer work time
-
-We all wrote prototypes in several languages before attempting the full C++ parallel version. We chose to follow the format Graham used in his MATLAB implementation.
+One of the major issues we encountered during our last project was overwriting each other’s GitHub submissions. Our resolution was to create a master branch and three sub branches. Each person was assigned a sub branch that they could modify as they pleased. However, a modification in the master branch parallel approved folder required two or more party members consent. This vastly reduced the amount of issues encountered during push/pull request. 
+Another adjustment we made for our development process was to write our code together and in an accommodating space as opposed to assigning individual sections of code. We met on a regular basis, generally starting during our scheduled class period and extending through the lunch period. This allowed us to catch errors quickly, avoid merge conflicts and most significantly improved everyone's knowledge of how each component of the code works. 
+When the project was assigned each team member prototypes a version of serial KD tree in their preferred language. After several meetings it was determined that Graham’s MatLab implementation would be used as the guide for the project. 
 
 \subsection{Variables and conventions}
 %%% NOTE %%%
@@ -256,7 +243,7 @@ struct Tree {
 %
 %%%%%%%%%
 
-\subsubsection{Constants}
+\subsubsection{Constants}\label{sec:constants}
 
 C preprocessor identifiers were defined and used in place of numeric constants for readability. Data points were defined as an array of \texttt{double} of size four consistently even when only three values were needed. The four positions were referenced using:
 
@@ -277,6 +264,15 @@ A single tree is create and populated by both the parallel and serial versions o
 #define _Source_buildTree_serial     -2
 \end{lstlisting}
 
+%%%%%%%%%
+%
+% Subsubsection: Naming
+%
+%%%%%%%%%
+
+\subsubsection{Node Naming}
+
+Each node in the tree is assigned a unique identifier determined by its position. The top node is named \texttt{t}. The two child nodes of \texttt{t} are \texttt{tl} and \texttt{tr}. An \texttt{l} or \texttt{r} is appended to the parent's name to designate the direction it is below the parent. The final node of the parallel section appends an \texttt{*} to designate the transition from parallel to serial. The node of the tree containing the data point appends an \texttt{!}.
 
 
 %%%%%%%%%
@@ -293,45 +289,28 @@ The \texttt{struct} variables used during the initial division of the tree among
     \item[\texttt{i}]{The dimension that was split by the MPI communicator.}
     \item[\texttt{source}]{During the parallel phase, this value is set to \texttt{\_Source\_buildTree\_parallel}.}
     \item[\texttt{parentComm}]{The parent MPI communicator that created this node. The root node stores a value of \texttt{MPI\_COMM\_SELF} in lieu of a null.}
-    \item[\texttt{leftComm}]{}
-    \item[\texttt{rightComm}]{}
-    \item[\texttt{thisComm}]{}
+    \item[\texttt{leftComm}]{The MPI communicator of the \textit{left} child tree for the current node.}
+    \item[\texttt{rightComm}]{The MPI communicator of the \textit{right} child tree for the current node.}
+    \item[\texttt{thisComm}]{The MPI communicator of the current node.}
+    \item[\texttt{name}]{The unique name of the node.}
+    \item[\texttt{x1}]{The minimum value of \textit{x} stored in this subtree.}
+    \item[\texttt{x2}]{The maximum value of \textit{x} stored in this subtree.}
+    \item[\texttt{y1}]{The minimum value of \textit{y} stored in this subtree.}
+    \item[\texttt{y2}]{The maximum value of \textit{y} stored in this subtree.}
+    \item[\texttt{z1}]{The minimum value of \textit{z} stored in this subtree.}
+    \item[\texttt{z2}]{The maximum value of \textit{z} stored in this subtree.}
+    \item[\texttt{depth}]{The depth within the tree of the current node. The top node has a depth of zero.}
+    \item[\texttt{n}]{The number of points contained within the subtree where the current node is the root.}
+    \item[\texttt{c[4]}]{The center of the subtree. Index for the array is described in section \ref{sec:constants}.}
+    \item[\texttt{radius}]{The distance from the center of the subtree to the furthest point.}
 \end{description}
-
-\lstset{language=C++, keepspaces=true}
-\begin{lstlisting}
-	int i;      // Sort dimension used to split this node
-	int source; // Which buildTree function created it
-
-    // Pointers used for parallel tree
-	MPI_Comm parentComm;  // Parent MPI communicator
-	MPI_Comm leftComm;    // Left child MPI communicator
-	MPI_Comm rightComm;   // Right child MPI communicator
-	MPI_Comm thisComm;    // MPI communicator that the node belongs to
-
-    // Each node in the tree has a unique identifier
-	string name;
-
-    // For nodes with children, this holds the min and max for
-    // the child nodes
-	double x1;  // Min x
-	double x2;  // Max x
-	double y1;  // Min y
-	double y2;  // Max y
-	double z1;  // Min z
-	double z2;  // Max z
-
-	int depth;  // Depth of the node in the tree
-	int n;      // Number of points
-
-	double c[4];    // Center of this tree
-	double radius;  // Radius of this tree
-\end{lstlisting}
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{images/communicators.png}
 \caption{Example of parallel variables using eight nodes}
 \end{figure}
+
+
 %%%%%%%%%
 %
 % Subsubsection: Serial variables
@@ -465,17 +444,11 @@ We had to adjust our parallel sorting algorithm a great extend to integrate it i
 % GW, farzi
 
 \paragraph{Conversion to function}
-This was easiest aspect, since we merely found all of the required params...
-
-the one difficulty was handling the *data[] thing
+One of our first obstacles was modifying our original parallelSort program to work for this project. The first issue was having parallelSort operate as a function. We accomplished this by removing the MPI setup and Data Import sections from parallelSort and placing them into a new Main. While doing this we encountered issues with how the data was passed using both a pointer and array notation. Because several functions within the parallelSort function would need to change both the number of rows and the data we had to pass as pointers and pointers to arrays. 
 
 
 \paragraph{Making rank 0 do work}
-Why do this: super inefficient
-
-this required some clever rearrangement of if statements in several sections of the code, ost notably, the adaptive binning section
-
-
+The second issue was our use of rank 0 as the manager in our original parallelSort program. Our implantation of parallelSort had rank 0 manage while all the other ranks contained and performed operations on the actual data. However, when utilizing a KD tree all of the ranks are needed otherwise each time the tree forked and a new communication branch was formed the process would lose a rank due to a new rank 0 being formed. To resolve this problem  we had to make several clever adjustments in the sections of the code, most notably the adapt binning section. Other sections just needed to have the iteration increment from 0 instead of 1. 
 \paragraph{Using different communicators}
 Since kdtree requires multiple comms, it was necessary that parallel sort (any many functions it contains) was given the current communicator. This was not a terribly difficult modification, but it was quite tedious since there were many functions which required alterations to their header files.
 
