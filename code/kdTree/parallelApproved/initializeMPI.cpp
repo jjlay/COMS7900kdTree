@@ -9,6 +9,8 @@
 #include <iostream>
 #include <string>
 
+using namespace std;
+
 
 //
 // Parallel includes
@@ -48,4 +50,5 @@ void initializeMPI(std::string *processorName, int *myRank, int *numNodes, int a
 	*numNodes = localNumProcs;
 	*processorName = std::string(localProcName);
 
+	cout << "00000 : Worker " << localMyRank << " of " << localNumProcs << " called " << localProcName << endl;
 }

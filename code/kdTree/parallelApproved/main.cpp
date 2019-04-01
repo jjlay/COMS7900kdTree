@@ -81,10 +81,10 @@ int main(int argc, char *argv[])
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 
 	// total number of files to read
-	const int maxFilesToProc = 25;
+	const int maxFilesToProc = 1000;
 
 	// number of lines PER FILE
-	const int maxRows = 1000;
+	const int maxRows = _MAX_ROWS_ ;
 
 	int sortInd = 1; // x = 1
 
@@ -117,6 +117,7 @@ int main(int argc, char *argv[])
 	}
 
 	MPI_Barrier(MPI_COMM_WORLD);
+
 
 	int rows = 0, cols = _ROW_WIDTH_;
 
@@ -154,16 +155,6 @@ int main(int argc, char *argv[])
 
 	buildTree( &array, &rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
 
-	sleep(5);
-
-
-	for (auto i = 0; i < rows; i++ ) {
-		cout << "11111 : Rank " << myRank << " Row " << i << " X " << array[(i*_ROW_WIDTH_) + _X_]
-			<< " Y " << array[(i*_ROW_WIDTH_) + _Y_]
-			<< " Z " << array[(i*_ROW_WIDTH_) + _Z_] << endl;
-		if (i == 0)
-			i = rows - 2;
-	}
 
 	MPI_Barrier(MPI_COMM_WORLD);
 

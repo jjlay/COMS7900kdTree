@@ -60,7 +60,7 @@ void importFiles(vector<string> files, int myRank,
 		//
 
 		const char *cstrFileName = f.c_str();
-		cout << "40000 : importFiles : Importing " << cstrFileName << endl;
+		cout << "40000 : importFiles : Worker " << myRank << " importing " << cstrFileName << endl;
 
 		// Open the file
 		FILE *inFile;
@@ -69,7 +69,7 @@ void importFiles(vector<string> files, int myRank,
 
 		if (inFile == NULL)
 		{
-			cout << "importFiles : Failed to open file: " << f << endl;
+			cout << "importFiles : Worker " << myRank << " failed to open file: " << f << endl;
 			exit(_FAIL_);
 		}
 
@@ -92,7 +92,6 @@ void importFiles(vector<string> files, int myRank,
 			(arrayIndex < arrayLimit-4) &&
 			(lines <_MAX_ROWS_))
 		{
-//			cout << myData[arrayIndex + _X_] << " " << myData[arrayIndex + _Y_] << " " << myData[arrayIndex + _Z_] << endl;
 			if (myData[arrayIndex + _X_] < minX)
 				minX = myData[arrayIndex + _X_];
 
@@ -122,10 +121,8 @@ void importFiles(vector<string> files, int myRank,
 		fclose(inFile);
 	}
 
-//	cout << "importFiles : Rank " << myRank << ", rows = " << *rows << ", minX = " << minX << ", maxX = " << maxX
-//		<< ", minY = " << minY << ", maxY = " << maxY 
-//		<< ", minZ = " << minZ << ", maxZ = " << maxZ << endl;
 }
+
 
 //
 // Method: CalculateIndex()
@@ -167,3 +164,4 @@ double CalculateIndex(string filename)
 
 	return r;
 }
+

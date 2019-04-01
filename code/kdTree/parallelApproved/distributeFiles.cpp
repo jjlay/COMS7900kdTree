@@ -52,7 +52,7 @@ void distributeFiles(vector<string> files, int numWorkers) {
 
 	cout << "20000 : distributeFiles: Sending " << files.size() << " files to " << numWorkers << " nodes" << endl;
 
-	int currentRank = 0;
+	int currentRank = 0, count = 0;
 	int mpiReturn;
 	MPI_Request request;
 
@@ -69,9 +69,8 @@ void distributeFiles(vector<string> files, int numWorkers) {
 		// working while the worker node deals with it.
 		// mpiReturn = MPI_Isend(b, mpi_Max_Filename, MPI_BYTE, currentRank,
 		//		mpi_Tag_File, MPI_COMM_WORLD, &request);
-		mpiReturn = MPI_Isend(b, f.size(), MPI_BYTE, currentRank,
+		mpiReturn = MPI_Isend(b, f.size(), MPI_CHAR, currentRank,
 				mpi_Tag_File, MPI_COMM_WORLD, &request);
-
 
 		// Loop through the worker nodes. When we reach
 		// the last node, start over with rank 1.
