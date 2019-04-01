@@ -158,16 +158,6 @@ int main(int argc, char *argv[])
 
 	MPI_Barrier(MPI_COMM_WORLD);
 
-/*
-	string dumpFile = "dump-" + to_string(myRank) + ".txt";
-	ofstream d;
-
-	d.open(dumpFile, ios::out);
-	dumpTree(tree, 0, &d, myRank);
-	d.close();
-*/
-
-	MPI_Barrier(MPI_COMM_WORLD);
 
 	////////////////
 	// searchTree //
@@ -175,10 +165,6 @@ int main(int argc, char *argv[])
 	
 	search501( myRank, path, tree);
 	
-//	double point[] = { 1.0,	0.028974942191213,     0.083491489715285,    -0.066445096022865};
-//	double point[] = { 1.0, 0.0, 0.0, 0.0 };
-//	double rad   = 0.5;
-//	found = searchTree_serial( point, rad, tree );
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 
