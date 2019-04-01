@@ -168,6 +168,8 @@ int main(int argc, char *argv[])
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 
+	cout << "99999 : Rank " << myRank << " has completed" << endl;
+
 	MPI_Finalize();
 
 	return _OKAY_;
