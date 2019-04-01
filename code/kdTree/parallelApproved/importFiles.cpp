@@ -60,7 +60,6 @@ void importFiles(vector<string> files, int myRank,
 		//
 
 		const char *cstrFileName = f.c_str();
-		cout << "40000 : importFiles : Worker " << myRank << " importing " << cstrFileName << endl;
 
 		// Open the file
 		FILE *inFile;
@@ -69,7 +68,7 @@ void importFiles(vector<string> files, int myRank,
 
 		if (inFile == NULL)
 		{
-			cout << "importFiles : Worker " << myRank << " failed to open file: " << f << endl;
+			cout << "40000 : importFiles : Worker " << myRank << " failed to open file: " << f << endl;
 			exit(_FAIL_);
 		}
 
