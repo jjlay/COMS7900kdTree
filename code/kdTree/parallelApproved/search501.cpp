@@ -40,14 +40,13 @@ using namespace std;
 //
 
 void search501(int myRank, string path, Tree *tree) {
-	cout << "Rank " << myRank << " has started search501" << endl;
 	
 	//
 	// Setup
 	//
 	
 	string filename = path + "datafile00501.txt";
-	const int maxSearchRows = _MAX_ROWS_ ;
+	const int maxSearchRows = 100;
 	
 	const int numberRadii = 3;
 	double radii[] = {0.01, 0.05, 0.10};
@@ -97,12 +96,23 @@ void search501(int myRank, string path, Tree *tree) {
 	// send
 	MPI_Reduce( foundEach, foundAll, rows*numberRadii, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD );
 	if( myRank == 0 ) {
-		cout << "POINTS FOUND:" << endl;
-		cout << radii[0] << " " << radii[1] << " " << radii[2] << endl;
+		cout << "==================" << endl
+			<< "POINTS FOUND:" << endl
+			<< " X             Y             Z            "
+			<< setw(11) << setprecision(12) << radii[0] << "   " 
+			<< setw(11) << setprecision(12) << radii[1] << "   " 
+			<< setw(11) << setprecision(12) << radii[2] << endl
+			<< "------------  ------------  ------------  ------------  ------------  ------------"
+			<< endl;
+
 		for (auto r = 0; r < rows; r++) {
-				
-			cout << foundAll[ numberRadii*r ] << " " << foundAll[ numberRadii*r + 1 ] << " " << foundAll[ numberRadii*r + 2 ] << endl;
-				
+			cout << setw(12) << setprecision(6)
+				<< searchable[r * _ROW_WIDTH_ + _X_] << "  "
+				<< searchable[r * _ROW_WIDTH_ + _Y_] << "  "
+				<< searchable[r * _ROW_WIDTH_ + _Z_] << "  "
+				<< foundAll[ numberRadii*r ] << " " 
+				<< foundAll[ numberRadii*r + 1 ] << " " 
+				<< foundAll[ numberRadii*r + 2 ] << endl;
 		}
 	}
 	

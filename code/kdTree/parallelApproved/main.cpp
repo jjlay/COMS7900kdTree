@@ -87,10 +87,10 @@ int main(int argc, char *argv[])
 
 
 	// total number of files to read
-	const int maxFilesToProc = 192;
+	const int maxFilesToProc = 128;
 
 	// number of lines PER FILE
-	const int maxRows = 100;
+	const int maxRows = 30;
 
 	int sortInd = 1; // x = 1
 
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 	if (FilenameArray.size() == 0) {
 		// OMG! Nothing to do!
 		MPI_Finalize();
-		cout << "Failed!" << endl;
+		cerr << "Failed!" << endl;
 		return _FAIL_;
 	}
 
@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
 	tree->thisComm = MPI_COMM_WORLD;
 	tree->name = "t";
 
-	cout << "70000 : Rank " << myRank << " is calling buildTree" << endl;
+	cerr << "70000 : Rank " << myRank << " is calling buildTree" << endl;
 	buildTree( &array, &rows, cols, tree, tree->thisComm, myRank, 
 		numNodes, tree->name );
 
@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
 	// searchTree //
 	////////////////
 
-	cout << "80000 : Rank " << myRank << " is calling search501" << endl;
+	cerr << "80000 : Rank " << myRank << " is calling search501" << endl;
 	
 	search501( myRank, path, tree);
 	
@@ -191,7 +191,7 @@ int main(int argc, char *argv[])
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 
-	cout << "98000 : Rank " << myRank << " has completed search501" << endl;
+	cerr << "98000 : Rank " << myRank << " has completed search501" << endl;
 
 
 	chrono::duration<double> timeToListFiles = chronoEndOfListFiles - chronoStart;
@@ -200,11 +200,11 @@ int main(int argc, char *argv[])
 	chrono::duration<double> timeToImportFiles = chronoEndOfImportFiles - chronoEndOfReceiveFiles;
 	chrono::duration<double> timeToRun = chronoEndOfImportFiles - chronoStart;
 
-	cout << "99000 : Rank " << myRank << " took " << timeToListFiles.count() << " seconds to list files" << endl;
-	cout << "99000 : Rank " << myRank << " took " << timeToDistributeFiles.count() << " seconds to distribute files" << endl;
-	cout << "99000 : Rank " << myRank << " took " << timeToReceiveFiles.count() << " seconds to receive files" << endl;
-	cout << "99000 : Rank " << myRank << " took " << timeToImportFiles.count() << " seconds to import files" << endl;
-	cout << "99000 : Rank " << myRank << " took " << timeToRun.count() << " seconds to run" << endl;
+	cerr << "99000 : Rank " << myRank << " took " << timeToListFiles.count() << " seconds to list files" << endl;
+	cerr << "99000 : Rank " << myRank << " took " << timeToDistributeFiles.count() << " seconds to distribute files" << endl;
+	cerr << "99000 : Rank " << myRank << " took " << timeToReceiveFiles.count() << " seconds to receive files" << endl;
+	cerr << "99000 : Rank " << myRank << " took " << timeToImportFiles.count() << " seconds to import files" << endl;
+	cerr << "99000 : Rank " << myRank << " took " << timeToRun.count() << " seconds to run" << endl;
 
 	MPI_Finalize();
 
