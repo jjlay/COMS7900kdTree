@@ -40,7 +40,6 @@ using namespace std;
 //
 
 void search501(int myRank, string path, Tree *tree) {
-	cout << "Rank " << myRank << " has started search501" << endl;
 	
 	//
 	// Setup
