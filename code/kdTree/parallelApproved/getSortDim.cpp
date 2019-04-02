@@ -82,9 +82,9 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 				maxGlobal[_X_] = allMaxs[r][_X_];
 		}
 		
-		cout << "Rank " << myRank
-			<< " Name " << tree->name
-			<<  " X: " << minGlobal[_X_] << " " << maxGlobal[_X_] << endl;
+		//cout << "Rank " << myRank
+		//	<< " Name " << tree->name
+		//	<<  " X: " << minGlobal[_X_] << " " << maxGlobal[_X_] << endl;
 	} else {
 		
 		transmitMinMax(xMin, xMax, comm);
@@ -110,9 +110,9 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 				maxGlobal[_Y_] = allMaxs[r][_Y_];
 		}
 		
-		cout << "Rank " << myRank 
-			<< " Name " << tree->name
-			<< " Y: " << minGlobal[_Y_] << " " << maxGlobal[_Y_] << endl;
+		//cout << "Rank " << myRank 
+		//	<< " Name " << tree->name
+		//	<< " Y: " << minGlobal[_Y_] << " " << maxGlobal[_Y_] << endl;
 	} else {
 		transmitMinMax(yMin, yMax, comm);
 	}
@@ -137,9 +137,9 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 				maxGlobal[_Z_] = allMaxs[r][_Z_];
 		}
 		
-		cout << "Rank " << myRank 
-			<< " Name " << tree->name
-			<< " Z: " << minGlobal[_Z_] << " " << maxGlobal[_Z_] << endl;
+		//cout << "Rank " << myRank 
+		//	<< " Name " << tree->name
+		//	<< " Z: " << minGlobal[_Z_] << " " << maxGlobal[_Z_] << endl;
 	} else {
 		transmitMinMax(zMin, zMax, comm);
 	}

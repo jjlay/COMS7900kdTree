@@ -47,10 +47,10 @@ void binData( double *data, double *binE, int myRank, int numWorkers, int numPoi
 	binI[0] = -1;
 	binI[numPoints-1] = numPoints-1;
 	
-	std::cout << std::endl;
-	std::cout << "Binning......" << std::endl;
-	std::cout << "binE: " << binE[0] << " " << binE[1] << " " << binE[2] << " " << binE[3] << std::endl;
-	std::cout << std::endl;
+//	std::cout << std::endl;
+//	std::cout << "Binning......" << std::endl;
+//	std::cout << "binE: " << binE[0] << " " << binE[1] << " " << binE[2] << " " << binE[3] << std::endl;
+//	std::cout << std::endl;
 	
 	// loop through movable bin edges
 	for( int i = 1; i < numWorkers; i++) {
@@ -68,19 +68,19 @@ void binData( double *data, double *binE, int myRank, int numWorkers, int numPoi
 			curr =  0;
 		}
 		
-		std::cout << "ind: " << ind << std::endl;
-		std::cout << data[ind] << " " << binE[i] << " " << data[ind+1] << std::endl;
-		std::cout << "curr:  " << curr << std::endl;
-		std::cout << std::endl;
+//		std::cout << "ind: " << ind << std::endl;
+//		std::cout << data[ind] << " " << binE[i] << " " << data[ind+1] << std::endl;
+//		std::cout << "curr:  " << curr << std::endl;
+//		std::cout << std::endl;
 		
 		if( curr != 0 )
 			ind = ind + curr * (int)ceil(dI*pow(2.0,-halves));
 		
 		while( curr != 0 ) {
 			
-			std::cout << "ind: " << ind << std::endl;
-			std::cout << data[ind] << " " << binE[i] << " " << data[ind+1] << std::endl;
-			std::cout << "curr:  " << curr << std::endl;
+//			std::cout << "ind: " << ind << std::endl;
+//			std::cout << data[ind] << " " << binE[i] << " " << data[ind+1] << std::endl;
+//			std::cout << "curr:  " << curr << std::endl;
 			
 			last = curr;
 			

@@ -52,7 +52,6 @@
 #include "swapArrayParts.h"
 #include "cleanUp.h"
 #include "parallelSort.h"
-#include "dumpTree.h"
 #include "search501.h"
 #include "searchWorker.h"
 
