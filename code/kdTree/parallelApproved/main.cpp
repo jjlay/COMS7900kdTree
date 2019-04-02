@@ -117,6 +117,8 @@ int main(int argc, char *argv[])
 
 	auto chronoEndOfDistributeFiles = chrono::system_clock::now();
 
+	MPI_Barrier(MPI_COMM_WORLD);
+
 
 	// Receive file list
 	FilenameArray = receiveFiles(myRank);

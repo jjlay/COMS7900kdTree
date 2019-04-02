@@ -93,6 +93,7 @@ void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, i
 	} 
 	else 
 	{
+/*
 		ofstream f;
 		auto newName = name + "-" + to_string(myRank) + ".csv";
 		f.open(newName, ios::out);
@@ -110,7 +111,7 @@ void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, i
 		f << tempMin << ", " << tempMax << endl;
 
 		f.close();
-
+*/
 		tree->name += "*";
 		tree->source = _Source_buildTree_serial;
 

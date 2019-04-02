@@ -50,7 +50,7 @@ using namespace std;
 
 void distributeFiles(vector<string> files, int numWorkers) {
 
-	cout << "20000 : distributeFiles: Sending " << files.size() << " files to " << numWorkers << " nodes" << endl;
+	cerr << "20000 : distributeFiles: Sending " << files.size() << " files to " << numWorkers << " nodes" << endl;
 
 	int currentRank = 0, count = 0;
 	int mpiReturn;
@@ -59,22 +59,36 @@ void distributeFiles(vector<string> files, int numWorkers) {
 	// Pointer to the char buffer to be passed to workers
 	const char *b;
 
+	auto tags = new int[numWorkers];
+
+	for (auto i = 0; i < numWorkers; i++)
+		tags[i] = 0;
+
+
 	// Loop through the list of files and send them to the
 	// workers in a round robin method.
 	for (auto f : files) {
 		// Convert the string to a char*
 		b = f.c_str();
 
+		cerr << 20000 + count << " : distributeFiles: Sending " << b 
+			<< " to rank " << currentRank << " as tag " << tags[currentRank] 
+			<<  endl;
+
 		// Send the filename asynchronously so we can keep
 		// working while the worker node deals with it.
 		// mpiReturn = MPI_Isend(b, mpi_Max_Filename, MPI_BYTE, currentRank,
 		//		mpi_Tag_File, MPI_COMM_WORLD, &request);
 		mpiReturn = MPI_Isend(b, f.size(), MPI_CHAR, currentRank,
-				mpi_Tag_File, MPI_COMM_WORLD, &request);
+				tags[currentRank], MPI_COMM_WORLD, &request);
+
+		tags[currentRank]++;
 
 		// Loop through the worker nodes. When we reach
 		// the last node, start over with rank 1.
 		currentRank++;
+		count++;
+
 		if (currentRank >= numWorkers)
 			currentRank = 0;
 	}
@@ -84,7 +98,7 @@ void distributeFiles(vector<string> files, int numWorkers) {
 
 	for (int r = 0; r < numWorkers; r++) {
 		mpiReturn = MPI_Isend(b, mpi_Max_Filename, MPI_CHAR, r,
-			mpi_Tag_File, MPI_COMM_WORLD, &request);
+			tags[r], MPI_COMM_WORLD, &request);
 	}
 }
 

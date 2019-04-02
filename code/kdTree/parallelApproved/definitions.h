@@ -73,7 +73,7 @@
 // MPI lengths
 //
 
-#define mpi_Max_Filename  100
+#define mpi_Max_Filename  200
 
 
 //

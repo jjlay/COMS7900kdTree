@@ -99,17 +99,18 @@ void search501(int myRank, string path, Tree *tree) {
 		cout << "==================" << endl
 			<< "POINTS FOUND:" << endl
 			<< " X             Y             Z            "
-			<< setw(11) << setprecision(12) << radii[0] << "   " 
-			<< setw(11) << setprecision(12) << radii[1] << "   " 
-			<< setw(11) << setprecision(12) << radii[2] << endl
+			<< setw(11) << fixed << setprecision(12) << radii[0] << "   " 
+			<< setw(11) << fixed << setprecision(12) << radii[1] << "   " 
+			<< setw(11) << fixed << setprecision(12) << radii[2] << endl
 			<< "------------  ------------  ------------  ------------  ------------  ------------"
 			<< endl;
 
 		for (auto r = 0; r < rows; r++) {
-			cout << setw(12) << setprecision(6)
+			cout << setw(12) << fixed << setprecision(6)
 				<< searchable[r * _ROW_WIDTH_ + _X_] << "  "
 				<< searchable[r * _ROW_WIDTH_ + _Y_] << "  "
 				<< searchable[r * _ROW_WIDTH_ + _Z_] << "  "
+				<< setprecision(0)
 				<< foundAll[ numberRadii*r ] << " " 
 				<< foundAll[ numberRadii*r + 1 ] << " " 
 				<< foundAll[ numberRadii*r + 2 ] << endl;
