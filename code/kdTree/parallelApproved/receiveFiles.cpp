@@ -63,17 +63,15 @@ vector<string> receiveFiles(int myRank) {
 	string strDone = "DONE!";
 
 	int Run = 1;
+	int count = 0;
 	
-	mpiReturn = MPI_Irecv(buffer, mpi_Max_Filename, MPI_CHAR,
-		Rank0, mpi_Tag_File, MPI_COMM_WORLD, &request);
-
 	while(Run) {
+		mpiReturn = MPI_Irecv(buffer, mpi_Max_Filename, MPI_CHAR,
+			Rank0, count, MPI_COMM_WORLD, &request);
+
 		// Wait until one arrives since we do
 		// not have anything else to do.
 		MPI_Wait(&request, &status);
-
-		mpiReturn = MPI_Irecv(buffer, mpi_Max_Filename, MPI_BYTE,
-			Rank0, mpi_Tag_File, MPI_COMM_WORLD, &request);
 
 		// Convert the filename to a C++ string
 		auto s = string(buffer);
@@ -87,6 +85,9 @@ vector<string> receiveFiles(int myRank) {
 			if (s.length() > 0)
 				files.push_back(s);
 		}
+
+		cerr << (30000 + myRank * 100 + count) << " : receiveFiles: Rank " << myRank << " received " << buffer << endl;
+		count++;
 	}
 
 	return files;
