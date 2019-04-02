@@ -14,6 +14,9 @@
 
 #include <unistd.h>
 #include <time.h>
+#include <chrono>
+
+
 //
 // Parallel includes
 //
@@ -80,11 +83,15 @@ int main(int argc, char *argv[])
 
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
 
+	// Begin the timing
+	auto chronoStart = chrono::system_clock::now();
+
+
 	// total number of files to read
-	const int maxFilesToProc = 1000;
+	const int maxFilesToProc = 64;
 
 	// number of lines PER FILE
-	const int maxRows = _MAX_ROWS_ ;
+	const int maxRows = 1000;
 
 	int sortInd = 1; // x = 1
 
@@ -102,12 +109,20 @@ int main(int argc, char *argv[])
 	if (myRank == 0)
 		FilenameArray = listFiles(path, maxFilesToProc);
 
+	auto chronoEndOfListFiles = chrono::system_clock::now();
+
+
 	// Distribute files to workers
 	if (myRank == 0)
 		distributeFiles( FilenameArray, numNodes );
 
+	auto chronoEndOfDistributeFiles = chrono::system_clock::now();
+
+
 	// Receive file list
 	FilenameArray = receiveFiles(myRank);
+
+	auto chronoEndOfReceiveFiles = chrono::system_clock::now();
 
 	if (FilenameArray.size() == 0) {
 		// OMG! Nothing to do!
@@ -131,6 +146,8 @@ int main(int argc, char *argv[])
 
 	importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows, arrayLimit);
 
+	auto chronoEndOfImportFiles = chrono::system_clock::now();
+
 	MPI_Request tempRequest;
 	MPI_Isend(&rows, 1, MPI_INT, Rank0, mpi_Tag_RowCount, MPI_COMM_WORLD,
 		&tempRequest);
@@ -153,8 +170,12 @@ int main(int argc, char *argv[])
 	tree->thisComm = MPI_COMM_WORLD;
 	tree->name = "t";
 
-	buildTree( &array, &rows, cols, tree, tree->thisComm, myRank, numNodes, tree->name );
+	cout << "70000 : Rank " << myRank << " is calling buildTree" << endl;
+	buildTree( &array, &rows, cols, tree, tree->thisComm, myRank, 
+		numNodes, tree->name );
 
+
+	auto chronoEndOfBuildTree = chrono::system_clock::now();
 
 	MPI_Barrier(MPI_COMM_WORLD);
 
@@ -162,15 +183,33 @@ int main(int argc, char *argv[])
 	////////////////
 	// searchTree //
 	////////////////
+
+	cout << "80000 : Rank " << myRank << " is calling search501" << endl;
 	
 	search501( myRank, path, tree);
 	
+	auto chronoEndOfSearch501 = chrono::system_clock::now();
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 
-	cout << "99999 : Rank " << myRank << " has completed" << endl;
+	cout << "98000 : Rank " << myRank << " has completed search501" << endl;
+
+
+	chrono::duration<double> timeToListFiles = chronoEndOfListFiles - chronoStart;
+	chrono::duration<double> timeToDistributeFiles = chronoEndOfDistributeFiles - chronoEndOfListFiles;
+	chrono::duration<double> timeToReceiveFiles = chronoEndOfReceiveFiles - chronoEndOfDistributeFiles;
+	chrono::duration<double> timeToImportFiles = chronoEndOfImportFiles - chronoEndOfReceiveFiles;
+	chrono::duration<double> timeToRun = chronoEndOfImportFiles - chronoStart;
+
+	cout << "99000 : Rank " << myRank << " took " << timeToListFiles.count() << " seconds to list files" << endl;
+	cout << "99000 : Rank " << myRank << " took " << timeToDistributeFiles.count() << " seconds to distribute files" << endl;
+	cout << "99000 : Rank " << myRank << " took " << timeToReceiveFiles.count() << " seconds to receive files" << endl;
+	cout << "99000 : Rank " << myRank << " took " << timeToImportFiles.count() << " seconds to import files" << endl;
+	cout << "99000 : Rank " << myRank << " took " << timeToRun.count() << " seconds to run" << endl;
 
 	MPI_Finalize();
 
 	return _OKAY_;
 }
+
+
