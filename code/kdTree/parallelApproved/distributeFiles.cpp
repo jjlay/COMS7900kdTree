@@ -83,7 +83,7 @@ void distributeFiles(vector<string> files, int numWorkers) {
 	b = "DONE!";
 
 	for (int r = 0; r < numWorkers; r++) {
-		mpiReturn = MPI_Isend(b, mpi_Max_Filename, MPI_BYTE, r,
+		mpiReturn = MPI_Isend(b, mpi_Max_Filename, MPI_CHAR, r,
 			mpi_Tag_File, MPI_COMM_WORLD, &request);
 	}
 }

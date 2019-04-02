@@ -90,7 +90,6 @@ void search501(int myRank, string path, Tree *tree) {
 			point[2] = searchable[offset + _Y_];
 			point[3] = searchable[offset + _Z_];
 			
-			
 			foundEach[ numberRadii*r + rad ] = searchTree_serial( point, radius, tree );
 		}
 	}

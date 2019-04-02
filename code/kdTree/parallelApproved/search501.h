@@ -1,6 +1,13 @@
 #pragma once
 
 //
+// Local includes
+//
+
+#include "tree.h"
+
+
+//
 // Function: search501
 //
 
