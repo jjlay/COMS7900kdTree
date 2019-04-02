@@ -71,7 +71,9 @@ void distributeFiles(vector<string> files, int numWorkers) {
 		// Convert the string to a char*
 		b = f.c_str();
 
-		cerr << 20000 + count << " : distributeFiles: Sending " << b << " to rank " << currentRank << endl;
+		cerr << 20000 + count << " : distributeFiles: Sending " << b 
+			<< " to rank " << currentRank << " as tag " << tags[currentRank] 
+			<<  endl;
 
 		// Send the filename asynchronously so we can keep
 		// working while the worker node deals with it.
