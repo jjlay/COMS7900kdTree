@@ -371,21 +371,21 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	
 	
 	// print iterations required for uniformity
-	if (myRank == 0)
-		cout << "ITERATIONS: " << iterations << endl;
+//	if (myRank == 0)
+//		cout << "ITERATIONS: " << iterations << endl;
 	
 	
 	if ((iterations >= abortCount) && (myRank == Rank0)) {
-		cout << "===========================================" << endl;
-		cout << "Aborted adaptBins at iteration " << iterations << endl;
+		cerr << "===========================================" << endl;
+		cerr << "Aborted adaptBins at iteration " << iterations << endl;
 
-		cout << "Rank " << myRank << " Bin counts are:" << endl;
-		cout << "Number of nodes " << numNodes << endl;
+		cerr << "Rank " << myRank << " Bin counts are:" << endl;
+		cerr << "Number of nodes " << numNodes << endl;
 
 		for (auto i = 0; i < numNodes; i++) {
-			cout << "binCt[" << i << "] = " << binCt[i] << ", "
+			cerr << "binCt[" << i << "] = " << binCt[i] << ", "
 				<< "binE[" << i << "] = " << binE[i] << ", ";
-			cout << endl;
+			cerr << endl;
 		}
 
 		cout << "===========================================" << endl << endl;

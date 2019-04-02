@@ -88,10 +88,10 @@ int main(int argc, char *argv[])
 
 
 	// total number of files to read
-	const int maxFilesToProc = 64;
+	const int maxFilesToProc = 192;
 
 	// number of lines PER FILE
-	const int maxRows = 1000;
+	const int maxRows = 100;
 
 	int sortInd = 1; // x = 1
 
