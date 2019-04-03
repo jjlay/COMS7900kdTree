@@ -96,8 +96,7 @@ In this paper, we will discuss how our $k$-d tree algorithm works, how we solved
 \section{Introduction}
 
 % farzi
-STATEMENT OF THE PROBLEM: talk about orthogonal recursive bisection ORB, needed to search all  data with 3 radii and 501 file centers, return table of counts
-
+The purpose of this project was to create a parallel searching program by expanding on a previous parallel sorting project. Given a set of predetermined and imported data, we were to develop an orthogonal recursive bisection ORB algorithm that would facilitate in organizing the data into a KD tree. The KD tree will include information such as, daughters, parents, spacial indexing, center, and size of node. Additionally, the process should maximize the use of MPI and having multiple computing nodes performing the work. Because we will be having multiple computing nodes with MPI and eventually carry the tree into single computing nodes, the process will required both serial and parallel tree building and searching operations. The goal is to have an extremely efficient method of searching through the data. Eventually a search using three radii and twenty million points from an existing file will be performed and that output will be saved to a file for later comparison.
 
 % farzi
 \subsection{Workflow}
