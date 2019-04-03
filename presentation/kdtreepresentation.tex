@@ -24,9 +24,7 @@
 \setbeamerfont{subsection in toc}{size=\scriptsize}
 \setbeamerfont{subsubsection in toc}{size=\scriptsize}
 
-
 \setbeamertemplate{caption}[numbered]
-
 
 % standard, good-looking theme
 \usetheme{Madrid}
@@ -35,19 +33,15 @@
 % can't make it look right, though
 % \usetheme{Darmstadt}
 
+
+
 \title[Capstone]{Parallel Orthogonal Recursive Bisection}
 
 \author{Team Metropolis:\\
-James Farzi, JJ Lay, Graham West}
-%\date{COMS Seminar}%, August 2016}
+	James Farzi, JJ Lay, Graham West}
 \date{April 10, 2019}
 
-%\institute
-%{
-%	GTA, Computational Science\\
-%	Middle Tennessee State University\\
-%	Research Advisor: John Wallin\\
-%}
+
 
 %%%%%%%%% BEGIN DOCUMENT %%%%%%%%%
 %%%%%%%%% BEGIN DOCUMENT %%%%%%%%%
@@ -98,10 +92,122 @@ James Farzi, JJ Lay, Graham West}
 \subsection{KD tree}
 
 \subsubsection{Building the tree}
-buildTree
-serial
-parallel
-getSortDim
+
+\begin{frame}
+	\frametitle{Building the tree}
+	
+	To build the tree, we use several functions which perform different aspects/sections of the task
+	
+	\begin{block}{Functions:}
+		\begin{itemize}
+			\item \texttt{buildTree}
+			\item \texttt{buildTree\_serial}
+			\item \texttt{buildTree\_parallel}
+			\item \texttt{getSortDim}
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Building the tree}
+	
+	\texttt{buildTree} checks the number of compute nodes in the current communicator and determines whether to call the parallel or serial versions of the code
+	
+	\vspace{10pt}
+	
+	\begin{algorithm}[H]
+		\begin{algorithmic}[1]
+			\STATE $q$ = Size of current communicator
+			\IF{ $q > 1$}
+				\STATE \texttt{buildTree\_parallel}($\cdots$)
+			\ELSE
+				\STATE \texttt{buildTree\_serial}($\cdots$)
+			\ENDIF
+		\end{algorithmic}
+	\caption{\texttt{buildTree}($\cdots$)}
+	\end{algorithm}
+		
+\end{frame}
+
+\begin{frame}
+	\frametitle{Building the tree}
+	
+	\texttt{buildTree\_serial} performs ORB using a single compute node
+	
+	\vspace{10pt}
+	
+	\begin{algorithm}[H]
+		\footnotesize
+		\begin{algorithmic}[1]
+			\IF{ $tree.n >1$}
+				\STATE Calculate $x,y,z$ mins, maxs, ranges, and partition center
+				\STATE Sort $data$ over $sortDim = \textrm{argmax}( x,y,z \textrm{ ranges})$
+				\STATE Split $data$: $dataL, dataR$
+				\IF{ $|dataL| > 0$ }
+					\STATE Create $tree.L$
+					\STATE \texttt{buildTree\_serial}( $dataL$, $tree.L, \cdots$ )
+				\ENDIF
+				\IF{ $|dataR| > 0$ }
+					\STATE Create $tree.R$
+					\STATE \texttt{buildTree\_serial}( $dataR$, $tree.R, \cdots$ )
+				\ENDIF
+			\ELSE
+				\STATE Store $data$ (a single point)
+			\ENDIF
+		\end{algorithmic}
+	\caption{\texttt{buildTree\_serial}($data$, $tree, \cdots$)}
+	\end{algorithm}
+		
+\end{frame}
+
+\begin{frame}
+	\frametitle{Building the tree}
+	
+	\texttt{buildTree\_parallel} performs ORB using a multiple compute nodes
+	
+	\vspace{10pt}
+	
+	\begin{algorithm}[H]
+		\footnotesize
+		\begin{algorithmic}[1]
+			\STATE Call \texttt{getSortDim}($\cdots$): calculates $x,y,z$ mins, maxs, ranges, partition center, and returns $sortDim$
+			\STATE Sort $data$ over $sortDim$ using \texttt{parallelSort}($data$, $sortDim$, $comm$, $\cdots$ )
+			\IF{ $myRank < numNodes/2$ }
+				\STATE Create $tree.L$, $commL$
+				\STATE \texttt{buildTree\_parallel}( $data$, $tree.L$, $comm, \cdots$ )
+			\ELSE
+				\STATE Create $tree.R$, $commR$
+				\STATE \texttt{buildTree\_parallel}( $data$, $tree.R$, $comm, \cdots$ )
+			\ENDIF
+		\end{algorithmic}
+		\caption{\texttt{buildTree\_parallel}($data$, $tree$, $comm, \cdots$)}
+	\end{algorithm}
+	
+	\vspace{10pt}
+	
+	It is assumed that $tree.n > 1$ will never occur in \texttt{build/tree\_parallel} since we usually deal with large amounts of data
+		
+\end{frame}
+
+\begin{frame}
+	\frametitle{Building the tree}
+	
+	\texttt{getSortDim} finds the longest axis and stores several key tree fields
+	
+	\vspace{10pt}
+	
+	\begin{algorithm}[H]
+%		\footnotesize
+		\begin{algorithmic}[1]
+			\STATE Each process gets it local $x,y,z$ min and max
+			\STATE Rank 0 receives these, determines the global $x,y,z$ min and max, determines the sortDim, and Bcast's all of these values back to the other nodes
+			\STATE The global mins/maxs, partition center, and partition radius are stored in $tree$
+			\STATE return $sortDim$
+		\end{algorithmic}
+		\caption{\texttt{getSortDim}($data$, $tree$, $comm, \cdots$)}
+	\end{algorithm}
+		
+\end{frame}
 
 
 \subsubsection{Searching the tree}

@@ -15,32 +15,42 @@
 \headcommand {\beamer@subsectionentry {0}{2}{1}{5}{\texttt {main}}}\headcommand {\beamer@subsectionpages {4}{4}}
 \headcommand {\beamer@subsectionentry {0}{2}{2}{5}{KD tree}}\headcommand {\beamer@subsectionpages {5}{4}}
 \headcommand {\beamer@subsubsectionentry {0}{2}{2}{1}{5}{Building the tree}}
-\headcommand {\beamer@subsubsectionentry {0}{2}{2}{2}{5}{Searching the tree}}
-\headcommand {\beamer@subsectionentry {0}{2}{3}{5}{Parallel sorting}}\headcommand {\beamer@subsectionpages {5}{4}}
-\headcommand {\beamer@subsubsectionentry {0}{2}{3}{1}{5}{Changes}}
-\headcommand {\beamer@subsubsectionentry {0}{2}{3}{2}{5}{\texttt {adaptBins}}}
-\headcommand {\beamer@subsectionentry {0}{2}{4}{5}{Searching the tree}}\headcommand {\beamer@subsectionpages {5}{4}}
-\headcommand {\sectionentry {3}{Validation}{5}{Validation}{0}}
-\headcommand {\beamer@sectionpages {4}{4}}
-\headcommand {\beamer@subsectionpages {5}{4}}
-\headcommand {\slideentry {3}{0}{1}{5/5}{}{0}}
+\headcommand {\slideentry {2}{2}{1}{5/5}{KD tree}{0}}
 \headcommand {\beamer@framepages {5}{5}}
-\headcommand {\beamer@subsectionentry {0}{3}{1}{7}{MATLAB visualitations}}\headcommand {\beamer@subsectionpages {5}{6}}
-\headcommand {\slideentry {3}{1}{1}{7/7}{MATLAB visualitations}{0}}
+\headcommand {\slideentry {2}{2}{2}{6/6}{KD tree}{0}}
+\headcommand {\beamer@framepages {6}{6}}
+\headcommand {\slideentry {2}{2}{3}{7/7}{KD tree}{0}}
 \headcommand {\beamer@framepages {7}{7}}
-\headcommand {\beamer@subsectionentry {0}{3}{2}{8}{Other tests}}\headcommand {\beamer@subsectionpages {7}{7}}
-\headcommand {\sectionentry {4}{Results}{8}{Results}{0}}
-\headcommand {\beamer@sectionpages {5}{7}}
-\headcommand {\beamer@subsectionpages {8}{7}}
-\headcommand {\slideentry {4}{0}{1}{8/8}{}{0}}
+\headcommand {\slideentry {2}{2}{4}{8/8}{KD tree}{0}}
 \headcommand {\beamer@framepages {8}{8}}
-\headcommand {\sectionentry {5}{Conclusions}{10}{Conclusions}{0}}
-\headcommand {\beamer@sectionpages {8}{9}}
-\headcommand {\beamer@subsectionpages {8}{9}}
-\headcommand {\slideentry {5}{0}{1}{10/10}{}{0}}
+\headcommand {\slideentry {2}{2}{5}{9/9}{KD tree}{0}}
+\headcommand {\beamer@framepages {9}{9}}
+\headcommand {\beamer@subsubsectionentry {0}{2}{2}{2}{10}{Searching the tree}}
+\headcommand {\beamer@subsectionentry {0}{2}{3}{10}{Parallel sorting}}\headcommand {\beamer@subsectionpages {5}{9}}
+\headcommand {\beamer@subsubsectionentry {0}{2}{3}{1}{10}{Changes}}
+\headcommand {\beamer@subsubsectionentry {0}{2}{3}{2}{10}{\texttt {adaptBins}}}
+\headcommand {\beamer@subsectionentry {0}{2}{4}{10}{Searching the tree}}\headcommand {\beamer@subsectionpages {10}{9}}
+\headcommand {\sectionentry {3}{Validation}{10}{Validation}{0}}
+\headcommand {\beamer@sectionpages {4}{9}}
+\headcommand {\beamer@subsectionpages {10}{9}}
+\headcommand {\slideentry {3}{0}{1}{10/10}{}{0}}
 \headcommand {\beamer@framepages {10}{10}}
-\headcommand {\beamer@partpages {1}{10}}
-\headcommand {\beamer@subsectionpages {10}{10}}
-\headcommand {\beamer@sectionpages {10}{10}}
-\headcommand {\beamer@documentpages {10}}
-\headcommand {\def \inserttotalframenumber {8}}
+\headcommand {\beamer@subsectionentry {0}{3}{1}{12}{MATLAB visualitations}}\headcommand {\beamer@subsectionpages {10}{11}}
+\headcommand {\slideentry {3}{1}{1}{12/12}{MATLAB visualitations}{0}}
+\headcommand {\beamer@framepages {12}{12}}
+\headcommand {\beamer@subsectionentry {0}{3}{2}{13}{Other tests}}\headcommand {\beamer@subsectionpages {12}{12}}
+\headcommand {\sectionentry {4}{Results}{13}{Results}{0}}
+\headcommand {\beamer@sectionpages {10}{12}}
+\headcommand {\beamer@subsectionpages {13}{12}}
+\headcommand {\slideentry {4}{0}{1}{13/13}{}{0}}
+\headcommand {\beamer@framepages {13}{13}}
+\headcommand {\sectionentry {5}{Conclusions}{15}{Conclusions}{0}}
+\headcommand {\beamer@sectionpages {13}{14}}
+\headcommand {\beamer@subsectionpages {13}{14}}
+\headcommand {\slideentry {5}{0}{1}{15/15}{}{0}}
+\headcommand {\beamer@framepages {15}{15}}
+\headcommand {\beamer@partpages {1}{15}}
+\headcommand {\beamer@subsectionpages {15}{15}}
+\headcommand {\beamer@sectionpages {15}{15}}
+\headcommand {\beamer@documentpages {15}}
+\headcommand {\def \inserttotalframenumber {13}}
