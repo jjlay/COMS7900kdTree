@@ -19,7 +19,14 @@
 \usefonttheme[onlymath]{serif}
 %\setlength{\columnsep}{5cm}
 
+% table of contents font size
+\setbeamerfont{section in toc}{size=\footnotesize}
+\setbeamerfont{subsection in toc}{size=\scriptsize}
+\setbeamerfont{subsubsection in toc}{size=\scriptsize}
+
+
 \setbeamertemplate{caption}[numbered]
+
 
 % standard, good-looking theme
 \usetheme{Madrid}
@@ -53,7 +60,7 @@ James Farzi, JJ Lay, Graham West}
 
 \begin{frame}	
 	\frametitle{Outline}
-	\tableofcontents	
+	\tableofcontents
 \end{frame}
 
 
@@ -85,6 +92,44 @@ James Farzi, JJ Lay, Graham West}
 \end{frame}
 
 
+\subsection{\texttt{main}}
+
+
+\subsection{KD tree}
+
+\subsubsection{Building the tree}
+buildTree
+serial
+parallel
+getSortDim
+
+
+\subsubsection{Searching the tree}
+serial
+501
+
+
+\subsection{Parallel sorting}
+review
+
+\subsubsection{Changes}
+conversion to function
+rank 0
+multiple communicators
+
+\subsubsection{\texttt{adaptBins}}
+old
+new
+alternate
+
+
+
+\subsection{Searching the tree}
+
+
+
+
+
 %%%%%%%%%%%%%
 %%% NEW SECTION %%%
 %%%%%%%%%%%%%
@@ -97,6 +142,26 @@ James Farzi, JJ Lay, Graham West}
 		\end{center}
 	\end{Huge}
 \end{frame}
+
+\subsection{MATLAB visualitations}
+
+\begin{frame}	
+	\frametitle{Validation}
+	
+	MATLAB Demos:
+	
+	\begin{itemize}
+		\item 2D
+		\item 3D
+	\end{itemize}
+	
+\end{frame}
+
+
+\subsection{Other tests}
+tiny/huge radii
+multiple nodes
+
 
 
 %%%%%%%%%%%%%

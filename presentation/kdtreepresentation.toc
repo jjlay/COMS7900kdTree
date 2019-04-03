@@ -1,5 +1,15 @@
 \beamer@sectionintoc {1}{Introduction}{3}{0}{1}
 \beamer@sectionintoc {2}{Implementation}{4}{0}{2}
+\beamer@subsectionintoc {2}{1}{\texttt {main}}{5}{0}{2}
+\beamer@subsectionintoc {2}{2}{KD tree}{5}{0}{2}
+\beamer@subsubsectionintoc {2}{2}{1}{Building the tree}{5}{0}{2}
+\beamer@subsubsectionintoc {2}{2}{2}{Searching the tree}{5}{0}{2}
+\beamer@subsectionintoc {2}{3}{Parallel sorting}{5}{0}{2}
+\beamer@subsubsectionintoc {2}{3}{1}{Changes}{5}{0}{2}
+\beamer@subsubsectionintoc {2}{3}{2}{\texttt {adaptBins}}{5}{0}{2}
+\beamer@subsectionintoc {2}{4}{Searching the tree}{5}{0}{2}
 \beamer@sectionintoc {3}{Validation}{5}{0}{3}
-\beamer@sectionintoc {4}{Results}{6}{0}{4}
-\beamer@sectionintoc {5}{Conclusions}{7}{0}{5}
+\beamer@subsectionintoc {3}{1}{MATLAB visualitations}{7}{0}{3}
+\beamer@subsectionintoc {3}{2}{Other tests}{8}{0}{3}
+\beamer@sectionintoc {4}{Results}{8}{0}{4}
+\beamer@sectionintoc {5}{Conclusions}{10}{0}{5}
