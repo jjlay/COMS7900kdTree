@@ -88,8 +88,47 @@
 
 \subsection{\texttt{main}}
 
+\begin{frame}
+	\frametitle{Building the tree}
+	
+	Our \texttt{main} was quite simple due to our organization of the project into many levels of functions
+	
+	\vspace{10pt}
+	
+	We also were able to use much of the basic initialization and data importing functions from the previous project
+	
+	\vspace{10pt}
+	
+	\begin{algorithm}[H]
+%		\footnotesize
+		\begin{algorithmic}[1]
+			\STATE Initialize MPI
+			\STATE Set number of files, lines per file to read
+			\STATE import the $data$
+%			\STATE MPI\_Barrier
+			\STATE Initialize $tree$
+			\STATE \texttt{buildTree}($data$, $tree$, $comm$, $\cdots$)
+%			\STATE MPI\_Barrier
+			\STATE Search the tree with \texttt{search501}( $tree$, $\cdots$)
+%			\STATE MPI\_Barrier
+			\STATE Finalize MPI
+		\end{algorithmic}
+	\caption{\texttt{buildTree}($\cdots$)}
+	\end{algorithm}
+		
+\end{frame}
+
 
 \subsection{KD tree}
+
+%%%%%%%
+%%%%%%%
+% JJ's stuff about the Tree struct and whatnot
+%%%%%%%
+%%%%%%%
+
+
+
 
 \subsubsection{Building the tree}
 
@@ -97,6 +136,8 @@
 	\frametitle{Building the tree}
 	
 	To build the tree, we use several functions which perform different aspects/sections of the task
+	
+	\vspace{10pt}
 	
 	\begin{block}{Functions:}
 		\begin{itemize}
@@ -211,26 +252,114 @@
 
 
 \subsubsection{Searching the tree}
-serial
-501
+
+\begin{frame}
+	\frametitle{Searching the tree}
+	
+	\texttt{searchTree\_serial} returns the number of points within a given radius about a given point
+	
+	\vspace{10pt}
+	
+	\begin{algorithm}[H]
+		\footnotesize
+		\begin{algorithmic}[1]
+			\STATE $found = 0$
+			\STATE $d = \sqrt{ \sum_{i=1}^{3} (point[i] - tree.c[i])^2}$
+			\IF{ $d \le rad + tree.rad$ }
+				\IF{ $tree.L = NULL$ \&\& $tree.R = NULL$ }
+					\STATE return 1
+				\ELSE
+					\IF{ $tree.L$ != $NULL$ }
+						\STATE $found$ += \texttt{searchTree\_serial}($tree.L$, $rad$, $point$)
+					\ENDIF
+					\IF{ $tree.R$ != $NULL$ }
+						\STATE $found$ += \texttt{searchTree\_serial}($tree.R$, $rad$, $point$)
+					\ENDIF
+				\ENDIF
+			\ENDIF
+		\end{algorithmic}
+		\caption{\texttt{searchTree\_serial}($tree$, $rad$, $point$)}
+	\end{algorithm}
+		
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Searching the tree}
+	
+	\texttt{search501} reads the 501-st data file and loops through the points contained within (as well as the three given radii), calling \texttt{searchTree\_serial} for each
+	
+	\vspace{10pt}
+	
+	\begin{algorithm}[H]
+%		\footnotesize
+		\begin{algorithmic}[1]
+			\STATE 
+		\end{algorithmic}
+		\caption{\texttt{search501}($tree$, $path$, $\cdots$)}
+	\end{algorithm}
+		
+\end{frame}
 
 
 \subsection{Parallel sorting}
-review
+
 
 \subsubsection{Changes}
-conversion to function
+
+\begin{frame}
+	\frametitle{Parallel sorting}
+	
+	We had to make several significant alterations to our \texttt{parallelSort} program in order to integrate it into our KD tree project
+	
+	\vspace{10pt}
+	
+	\begin{block}{Changes:}
+		\begin{itemize}
+			\item Make rank 0 do work
+			\item Conversion to function
+			\item better \texttt{adaptBins}
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Parallel sorting}
+	
+	\begin{block}{Making rank 0 do work:}
+		\begin{itemize}
+			\item Initially, rank 0 was just a master node which coordinated the other worker nodes
+			\item this technique is very inefficient for parallel ORB since it requires us to switch to serial mode sooner
+			\item The solution involved 1) cleverly altering a large number of if statements in the code and 2) changing how certain types of sends/recvs were handled
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Building the tree}
+	
+	Here is how \texttt{parallelSort} is structured now that it is a function
+	
+	\vspace{10pt}
+	
+	\begin{algorithm}[H]
+%		\footnotesize
+		\begin{algorithmic}[1]
+			\STATE 
+		\end{algorithmic}
+		\caption{\texttt{parallelSort}($data$, $rows$, $myRank$, $sortDim$, $comm, \cdots$)}
+	\end{algorithm}
+		
+\end{frame}
+
+
 rank 0
 multiple communicators
 
 \subsubsection{\texttt{adaptBins}}
 old
 new
-alternate
-
-
-
-\subsection{Searching the tree}
+alternating
 
 
 
