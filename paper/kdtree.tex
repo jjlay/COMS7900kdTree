@@ -178,6 +178,7 @@ we used C++ with C MPI calls, mpirun, qsub/qlogin, valgrind
 \subsection{\texttt{main}}
 Our \texttt{main} program is divided into three main phases (each of which is comprised of multiple functions): data import, tree building, and tree searching. The data import phase collects all of the relevant filenames of the data files, reads them, and places them into a single 1D array. The tree building phase begins by initializing an empty Tree struct (see below for explanation of the struct) which is then passed into the \texttt{buildTree} function which alters the struct's contents. The entire tree can then be navigated by using the tree's left, right, and parent fields. The final tree searching phase takes the completed tree struct as an argument along with a search sphere. The number of points within the search sphere is calculated for each
 
+There are four variables which govern the performance of the KD tree and the size of the problem. First are the number of data files to read and the number of lines to read per file. These values are set in the beginning of \texttt{main} and they have a maximum value of 500 and 20,000,000, respectively. Third, is the number of compute nodes. In general, increasing this number should speed up execution of the program. Its value is set in the command line when running the program and its value must be smaller than the number of files. Last, is the number of lines to read from the 501-st data file. These are the centers of the search spheres. The value is set in \texttt{search501}.
 
 
 % import: gets the list of files and imports their data into an array
@@ -481,7 +482,7 @@ During our development of the code we wanted a way to verify the process was bei
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{images/squares.png}
-\caption{Example varied KD tree encapsulations}
+\caption{Example of KD tree partitions}
 \end{figure}
 
 \subsubsection{2D animation of tree building}
@@ -528,37 +529,39 @@ During the testing process we also varied the searching parameter radius in two 
 %%%%%%%%%%%%%
 \section{Conclusions}
 % everyone
+This project was an excellent test for managing MPI in the context of large amounts of data and long run times. It also provided an opportunity to work as a well-functioning team and develop a synergistic group dynamic. We were able to overcome significant setbacks. Below is a summary of different aspects of our performance, including some problems which we struggled with as well as our successes and possible future work.
 
+\begin{mdframed}[backgroundcolor=red!20]
+	Problems:
+	\begin{itemize}
+		\item \texttt{parallelSort} conversions
+		\item memory leaks
+		\item multiple communicators (comm)
+		\item \texttt{adaptBins} convergence problems
+		\item debug print statement clutter
+		\item array out of bounds issues
+		\item inconsistent usage pointer-to-pointer calls for *data[] and *rows (due to \texttt{swapArrayParts})
+		\item no planning for function arguments and return values (constant editing of h-files)
+		\item testing was difficult due to cluster overloading
+	\end{itemize}
+\end{mdframed}
 
-\subsection{Challenges}
+\begin{mdframed}[backgroundcolor=green!20]
+	Successes:
+	\begin{itemize}
+		\item few merge conflicts and fast debugging through extreme coding and Git branches
+		\item visualizing output through MATLAB
+		\item efficient delegation of tasks
+	\end{itemize}
+\end{mdframed}
 
-
-Bad
-\begin{itemize}
-	\item parallelSort conversions
-	\item memory leaks
-	\item multiple communicators (comm)
-	\item adaptBins not converging
-	\item cout clutter debug
-	\item out of bounds issues
-	\item *data[], *rows
-	\item didn't plan ahead what should be passed into functions, required constant editing of h files
-\end{itemize}
-
-Good
-\begin{itemize}
-	\item few merge conflicts
-	\item fast debugging through extreme coding
-	\item visualizing output (validation)
-	\item efficient delegation that avoided merge conflicts
-\end{itemize}
-
-\subsection{Future Work}
-
-\begin{itemize}
-	\item cloud
-	\item use this code for personal research
-\end{itemize}
+\begin{mdframed}[backgroundcolor=blue!20]
+	Future work:
+	\begin{itemize}
+		\item cloud computing
+		\item use of coding techniques for personal research
+	\end{itemize}
+\end{mdframed}
 
 
 
