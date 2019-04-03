@@ -479,23 +479,20 @@ We discovered that this adaptation technique performs very will in initial steps
 \subsection{Two MATLAB demos}
 During our development of the code we wanted a way to verify the process was being performed accurately. Therefore, after the parallel side of the KD tree was complete we had our C++ code output the min and maxes of the X, Y, and Z columns and save those outputs to a file. We then wrote MATLAB code that would read in those files and plot a box that encapsulated the three values. This figure represents the boundaries of 25 nodes for a sample of data. As can be seen from this image, each of the bounding boxes vary in limiting size, however all the boxes contain a relatively equal number of points. That number can be verified through our parallel sorting operations. 
 
+\begin{figure}
+\includegraphics[width=0.9\textwidth]{images/squares.png}
+\caption{Example varied KD tree encapsulations}
+\end{figure}
+
 \subsubsection{2D animation of tree building}
 When prototyping the code in MATLAB, we generated animated visualizations of the construction of a 2D tree. Due to the format, we cannot include the animation within this paper, but it shall be included in the presentation.
 
 
 \subsubsection{3D tree partitions from different orientations}
-Another testing method we performed during our development was validation through variation of input parameters. We held constant the number of data points read, the searching point and search radius, but varied the number of nodes that were used in the process. Then we had each node output the number of data points within their tree that fell within the search point and radius. Although the number of points per tree would vary depending upon the number of nodes used, the sum of all those points would remain constant. From this test we confirmed that the search tree was working as intended. During this test we also varied the searching parameter radius in two ways. First, we made the search radius very large and as expected we encapsulated all points. Second, we reduced the search radius and the search point so that it should only include a single location and our results were perfect. 
-
+Another testing method we performed during our development was validation through variation of input parameters. We held constant the number of data points read, the searching point and search radius, but varied the number of nodes that were used in the process. Then we had each node output the number of data points within their tree that fell within the search point and radius. Although the number of points per tree would vary depending upon the number of nodes used, the sum of all those points would remain constant. From this test we confirmed that the search tree was working as intended. 
 
 \subsection{Other}
-able to get same counts for different number of nodes
-
-tiny radius about a point in the file
-
-huge radius which got ALL points
-
-
-
+During this test we also varied the searching parameter radius in two ways. First, we made the search radius very large and as expected we encapsulated all points. Second, we reduced the search radius and the search point so that it should only include a single location and our results were perfect. 
 
 %%%%%%%%%
 %
