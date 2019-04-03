@@ -426,14 +426,14 @@ We had to adjust our parallel sorting algorithm a great extend to integrate it i
 % GW, farzi
 
 \paragraph{Conversion to function}
-One of our first obstacles was modifying our original parallelSort program to work for this project. The first issue was having parallelSort operate as a function. We accomplished this by removing the MPI setup and Data Import sections from parallelSort and placing them into a new Main. While doing this we encountered issues with how the data was passed using both a pointer and array notation. Because several functions within the parallelSort function would need to change both the number of rows and the data we had to pass as pointers and pointers to arrays. 
+One of our first obstacles was modifying our original \texttt{parallelSort}  program to work for this project. The first issue was having \texttt{parallelSort} operate as a function. We accomplished this by removing the MPI setup and Data Import sections from \texttt{parallelSort} and placing them into a new Main. While doing this we encountered issues with how the data was passed using both a pointer and array notation. Because several functions within the \texttt{parallelSort} function would need to change both the number of rows and the data we had to pass as pointers and pointers to arrays. 
 
 
 \paragraph{Making rank 0 do work}
-The second issue was our use of rank 0 as the manager in our original parallelSort program. Our implantation of parallelSort had rank 0 manage while all the other ranks contained and performed operations on the actual data. However, when utilizing a KD tree all of the ranks are needed otherwise each time the tree forked and a new communication branch was formed the process would lose a rank due to a new rank 0 being formed. To resolve this problem  we had to make several clever adjustments in the sections of the code, most notably the adapt binning section. Other sections just needed to have the iteration increment from 0 instead of 1.
+The second issue was our use of rank 0 which as the manager in our original \texttt{parallelSort} program. Our implantation of \texttt{parallelSort} had rank 0 manage while all the other ranks were compute nodes which contained and performed operations on the actual data. However, when utilizing a KD tree all of the ranks are needed as compute nodes otherwise each time the tree forked and a new communication branch was formed the process would lose a rank due to a new rank 0 being formed. To resolve this problem we had to make several clever adjustments in the sections of the code, most notably the adapt binning section. Other sections just needed to have the iteration increment from 0 instead of 1.
 
 \paragraph{Using different communicators}
-Since kdtree requires multiple comms, it was necessary that parallel sort (any many functions it contains) was given the current communicator. This was not a terribly difficult modification, but it was quite tedious since there were many functions which required alterations to their header files.
+Since kdtree requires multiple comms, it was necessary that \texttt{parallelSort} (any many functions it contains) was given the current communicator. This was not a terribly difficult modification, but it was quite tedious since there were many functions which required alterations to their header files.
 
 
 \subsubsection{\texttt{adaptBins}}
