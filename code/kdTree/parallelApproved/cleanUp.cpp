@@ -79,21 +79,16 @@ void cleanUp(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, int numr
 			tempArray[tempArrayCounter] = myArray[j*4+l];
 			tempArrayCounter ++; 
 		}
-	} 
+	}
+
+	free(*pmyArray);
+	*pmyArray = NULL; 
 	*pmyArray = tempArray;
+	tempArray = NULL;
+
 	rowPTR[0]=reserveThisMuchSpace/4;
+
+	free(myBinI);
 return;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
