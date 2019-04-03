@@ -134,14 +134,21 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
                         tempArray[fill2] = receiveThis[fill2-rowPTR[0]*4];
                 }
            //     cout << "rank: " << myRank << " filled my array with new data " << endl;
-                free(*pmyArray);
-                *pmyArray = tempArray;
+                free(pmyArray[0]);
+                pmyArray[0] = tempArray;
              //   cout << "Row 1 Rank: " << myRank << " received: loc-" << tempArray[0] << " :x- " << tempArray[1] << " :y- " << tempArray[2] << " :z- " << tempArray[3]<< endl;
 
                 rowPTR[0]= rowPTR[0]+ myAmountToReceive/4;
+
+		free(receiveThis);
         }
       //  cout << "rank: " << myRank << " is at the bottom of swap of from " << fromWho<< " to: " << toWho  << endl;
 
+
+	free(myBinI);
+	free(yourBinI);
+	free(storedBinIend);
+	free(storedBinIstart);
 
 return;
 }
