@@ -134,14 +134,28 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
                         tempArray[fill2] = receiveThis[fill2-rowPTR[0]*4];
                 }
            //     cout << "rank: " << myRank << " filled my array with new data " << endl;
-                free(*pmyArray);
+                //free(pmyArray[0]);
+
+		// The standard swap function causes a whole new set of issues!
+		// std::swap(*pmyArray, tempArray);
+		free((void *) *pmyArray);
+		*pmyArray = NULL;
                 *pmyArray = tempArray;
+		tempArray = NULL;
+
              //   cout << "Row 1 Rank: " << myRank << " received: loc-" << tempArray[0] << " :x- " << tempArray[1] << " :y- " << tempArray[2] << " :z- " << tempArray[3]<< endl;
 
                 rowPTR[0]= rowPTR[0]+ myAmountToReceive/4;
+
+		free(receiveThis);
         }
       //  cout << "rank: " << myRank << " is at the bottom of swap of from " << fromWho<< " to: " << toWho  << endl;
 
+
+	free(myBinI);
+	free(yourBinI);
+	free(storedBinIend);
+	free(storedBinIstart);
 
 return;
 }

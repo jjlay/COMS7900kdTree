@@ -87,10 +87,10 @@ int main(int argc, char *argv[])
 
 
 	// total number of files to read
-	const int maxFilesToProc = 64;
+	const int maxFilesToProc = 128;
 
 	// number of lines PER FILE
-	const int maxRows = 30;
+	const int maxRows = 300000;
 
 	int sortInd = 1; // x = 1
 
@@ -200,7 +200,7 @@ int main(int argc, char *argv[])
 	chrono::duration<double> timeToDistributeFiles = chronoEndOfDistributeFiles - chronoEndOfListFiles;
 	chrono::duration<double> timeToReceiveFiles = chronoEndOfReceiveFiles - chronoEndOfDistributeFiles;
 	chrono::duration<double> timeToImportFiles = chronoEndOfImportFiles - chronoEndOfReceiveFiles;
-	chrono::duration<double> timeToRun = chronoEndOfImportFiles - chronoStart;
+	chrono::duration<double> timeToRun = chronoEndOfSearch501 - chronoStart;
 
 	cerr << "99000 : Rank " << myRank << " took " << timeToListFiles.count() << " seconds to list files" << endl;
 	cerr << "99000 : Rank " << myRank << " took " << timeToDistributeFiles.count() << " seconds to distribute files" << endl;
