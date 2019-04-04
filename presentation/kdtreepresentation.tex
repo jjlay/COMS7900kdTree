@@ -317,6 +317,7 @@
 	\begin{block}{Changes:}
 		\begin{itemize}
 			\item Make rank 0 do work
+			\item Use specified communicator
 			\item Conversion to function
 			\item better \texttt{adaptBins}
 		\end{itemize}
@@ -329,8 +330,19 @@
 	\begin{block}{Making rank 0 do work:}
 		\begin{itemize}
 			\item Initially, rank 0 was just a master node which coordinated the other worker nodes
-			\item this technique is very inefficient for parallel ORB since it requires us to switch to serial mode sooner
+			\item This technique is very inefficient for parallel ORB since it requires us to switch to serial mode sooner
 			\item The solution involved 1) cleverly altering a large number of if statements in the code and 2) changing how certain types of sends/recvs were handled
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Parallel sorting}
+	
+	\begin{block}{Using a specified communicator:}
+		\begin{itemize}
+			\item Initially, \texttt{parallelSort} and all of its associated functions used MPI_COMM_WORLD
+			\item 
 		\end{itemize}
 	\end{block}
 \end{frame}
@@ -347,11 +359,15 @@
 		\begin{algorithmic}[1]
 			\STATE Locally sort $data$ on each compute node using a qsort
 			\STATE Determine the global min/max of the $sortDim$
-			\STATE Create linearly spaced bins over range
-			\STATE Bin the $data$ 
+			\STATE Create linearly spaced bin edges over range on rank 0 and Bcast
+			\STATE Bin the $data$ on each compute node and accumulate on rank 0
+			\STATE Calculate $uniformity$
 			\WHILE{ $uniformity < threshold$ \&\& $iterations < M$ }
-				\STATE 
+				\STATE Adapt the bin edges on rank 0 and Bcast
+				\STATE Bin the $data$ on each compute node and accumulate on rank 0
+				\STATE Calculate $uniformity$
 			\ENDWHILE
+			\STATE Swap $data$ between compute nodes and do data cleanup
 		\end{algorithmic}
 		\caption{\texttt{parallelSort}($data$, $rows$, $myRank$, $sortDim$, $comm, \cdots$)}
 	\end{algorithm}
