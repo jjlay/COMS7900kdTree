@@ -138,7 +138,7 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
 
 		// The standard swap function causes a whole new set of issues!
 		// std::swap(*pmyArray, tempArray);
-		free(*pmyArray);
+		free((void *) *pmyArray);
 		*pmyArray = NULL;
                 *pmyArray = tempArray;
 		tempArray = NULL;
