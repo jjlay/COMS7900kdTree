@@ -113,7 +113,7 @@
 %			\STATE MPI\_Barrier
 			\STATE Finalize MPI
 		\end{algorithmic}
-	\caption{\texttt{buildTree}($\cdots$)}
+	\caption{\texttt{main}($\cdots$)}
 	\end{algorithm}
 		
 \end{frame}
@@ -345,7 +345,13 @@
 	\begin{algorithm}[H]
 %		\footnotesize
 		\begin{algorithmic}[1]
-			\STATE 
+			\STATE Locally sort $data$ on each compute node using a qsort
+			\STATE Determine the global min/max of the $sortDim$
+			\STATE Create linearly spaced bins over range
+			\STATE Bin the $data$ 
+			\WHILE{ $uniformity < threshold$ \&\& $iterations < M$ }
+				\STATE 
+			\ENDWHILE
 		\end{algorithmic}
 		\caption{\texttt{parallelSort}($data$, $rows$, $myRank$, $sortDim$, $comm, \cdots$)}
 	\end{algorithm}
