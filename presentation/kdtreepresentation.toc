@@ -6,9 +6,9 @@
 \beamer@subsubsectionintoc {2}{2}{2}{Searching the tree}{11}{0}{2}
 \beamer@subsectionintoc {2}{3}{Parallel sorting}{13}{0}{2}
 \beamer@subsubsectionintoc {2}{3}{1}{Changes}{13}{0}{2}
-\beamer@subsubsectionintoc {2}{3}{2}{\texttt {adaptBins}}{16}{0}{2}
-\beamer@sectionintoc {3}{Validation}{16}{0}{3}
-\beamer@subsectionintoc {3}{1}{MATLAB visualitations}{18}{0}{3}
-\beamer@subsectionintoc {3}{2}{Other tests}{19}{0}{3}
-\beamer@sectionintoc {4}{Results}{19}{0}{4}
-\beamer@sectionintoc {5}{Conclusions}{21}{0}{5}
+\beamer@subsubsectionintoc {2}{3}{2}{\texttt {adaptBins}}{17}{0}{2}
+\beamer@sectionintoc {3}{Validation}{20}{0}{3}
+\beamer@subsectionintoc {3}{1}{MATLAB visualitations}{21}{0}{3}
+\beamer@subsectionintoc {3}{2}{Other tests}{22}{0}{3}
+\beamer@sectionintoc {4}{Results}{23}{0}{4}
+\beamer@sectionintoc {5}{Conclusions}{24}{0}{5}

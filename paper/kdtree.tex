@@ -450,8 +450,8 @@ Although our original adaptive binning scheme performed well, we wanted somethin
 where $C$ are the bin counts, $E$ are the bin edges, and $\alpha < 0.5$. This method will occasionally devolve into oscillatory behavior and not converge to the correct value. To combat this in the $k$-d tree project, we added a scale factor $S$ which decreases over time:
 \begin{equation}
 	\begin{split}
-		S & = 1 - (1 - 0.1) (1 - \textrm{exp}(-0.03 m) \\
-		E^{m+1}_i & = E^m_i + \alpha S \Delta C \Delta E
+		S(m) & = 1 - (1 - 0.1) (1 - \textrm{exp}(-0.03 m) \\
+		E^{m+1}_i & = E^m_i + \alpha S(m) \Delta C \Delta E
 	\end{split}
 \end{equation}
 
@@ -461,7 +461,7 @@ Since this method is local, it converges slowly at bin edges far away from high-
 \end{equation}
 where $i'$ is the maximum index such that $\hat C(E_{i'}) < (i+1) \dfrac{D}{N}$ (note that $i'$ and $i$ are distinct integers). The right equality implies that we should solve for the value of $x$ such that it holds. This $x$ value will be the new $i$-th bin edge, $E^{m+1}_i$. Therefore,
 \begin{equation}
-		E^{m+1}_i = E^m_{i'} + \bigg( (i+1) \dfrac{D}{N} - C(E^m_{i'}) \bigg) (E^m_{{i'}+1} - E^m_{i'}) / C^m_{i'}
+		E^{m+1}_i = E^m_{i'} + \Big( (i+1) \dfrac{D}{N} - C(E^m_{i'}) \Big) (E^m_{{i'}+1} - E^m_{i'}) / C^m_{i'}
 \end{equation}
 
 We discovered that this adaptation technique performs very will in initial steps of adaptation, but is prone to oscillations near clusters of points. Now, since each of the two methods perform better and worse in different contexts, are solution was to simply alternate between at each step. This solved all of our convergence issues in testing. (Note that we still use the same binary search-based binning technique and stopping criterion from the previous project.)
