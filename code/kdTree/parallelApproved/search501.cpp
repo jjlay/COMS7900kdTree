@@ -46,8 +46,7 @@ void search501(int myRank, string path, Tree *tree) {
 	//
 	
 	string filename = path + "datafile00501.txt";
-	const int maxSearchRows = 30000;
-	
+	const int maxSearchRows = 1000 ;
 	const int numberRadii = 3;
 	double radii[] = {0.01, 0.05, 0.10};
 	

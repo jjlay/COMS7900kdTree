@@ -456,10 +456,6 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	// Swap Data Between Nodes  //
 	//                          //
 	//////////////////////////////
-
-//	MPI_Barrier( comm );
-
-//        cout << "\n **********At Swap Arrays ******* with rank : " << myRank  << endl;
         int F_rows = int(numLines);
         int F_cols = 4;
         int toWho;
@@ -468,20 +464,13 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
                for( int toWho = 0; toWho< numNodes; toWho++){
                         if(toWho!=fromWho){
                                 if(myRank ==toWho || myRank ==fromWho){
-//                                        cout << "Rank " << myRank << " towho: " << toWho << " is entering swap parts with  " << fromWho << endl;
                                         swapArrayParts( &array, &rows, &F_cols, myRank, numNodes, binI_2D[fromWho], fromWho, toWho, comm );
-//                                        cout << "^^^^^^^^^Rank " << myRank << " towho: " << toWho << " exited swap parts with  " << fromWho << endl;
                                 }
-                //      sleep(5);
-
                         }
                 }
         	MPI_Barrier(comm);
         }
-
         MPI_Barrier( comm );
-
-//	cout << "rank: " << myRank << " has made it to cleanup !!!!!!!!!!!!!!!!!!!!!!!!! " << endl;
         // Cleanup elements from same node
         for(int clean = 0; clean< numNodes; clean++){
 		if(myRank == clean){
