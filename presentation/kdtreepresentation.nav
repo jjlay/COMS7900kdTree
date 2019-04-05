@@ -40,28 +40,38 @@
 \headcommand {\beamer@framepages {14}{14}}
 \headcommand {\slideentry {2}{3}{3}{15/15}{Parallel sorting}{0}}
 \headcommand {\beamer@framepages {15}{15}}
-\headcommand {\beamer@subsubsectionentry {0}{2}{3}{2}{16}{\texttt {adaptBins}}}
-\headcommand {\sectionentry {3}{Validation}{16}{Validation}{0}}
-\headcommand {\beamer@sectionpages {4}{15}}
-\headcommand {\beamer@subsectionpages {13}{15}}
-\headcommand {\slideentry {3}{0}{1}{16/16}{}{0}}
+\headcommand {\slideentry {2}{3}{4}{16/16}{Parallel sorting}{0}}
 \headcommand {\beamer@framepages {16}{16}}
-\headcommand {\beamer@subsectionentry {0}{3}{1}{18}{MATLAB visualitations}}\headcommand {\beamer@subsectionpages {16}{17}}
-\headcommand {\slideentry {3}{1}{1}{18/18}{MATLAB visualitations}{0}}
+\headcommand {\beamer@subsubsectionentry {0}{2}{3}{2}{17}{\texttt {adaptBins}}}
+\headcommand {\slideentry {2}{3}{5}{17/17}{Parallel sorting}{0}}
+\headcommand {\beamer@framepages {17}{17}}
+\headcommand {\slideentry {2}{3}{6}{18/18}{Parallel sorting}{0}}
 \headcommand {\beamer@framepages {18}{18}}
-\headcommand {\beamer@subsectionentry {0}{3}{2}{19}{Other tests}}\headcommand {\beamer@subsectionpages {18}{18}}
-\headcommand {\sectionentry {4}{Results}{19}{Results}{0}}
-\headcommand {\beamer@sectionpages {16}{18}}
-\headcommand {\beamer@subsectionpages {19}{18}}
-\headcommand {\slideentry {4}{0}{1}{19/19}{}{0}}
+\headcommand {\slideentry {2}{3}{7}{19/19}{Parallel sorting}{0}}
 \headcommand {\beamer@framepages {19}{19}}
-\headcommand {\sectionentry {5}{Conclusions}{21}{Conclusions}{0}}
-\headcommand {\beamer@sectionpages {19}{20}}
-\headcommand {\beamer@subsectionpages {19}{20}}
-\headcommand {\slideentry {5}{0}{1}{21/21}{}{0}}
+\headcommand {\sectionentry {3}{Validation}{20}{Validation}{0}}
+\headcommand {\beamer@sectionpages {4}{19}}
+\headcommand {\beamer@subsectionpages {13}{19}}
+\headcommand {\slideentry {3}{0}{1}{20/20}{}{0}}
+\headcommand {\beamer@framepages {20}{20}}
+\headcommand {\beamer@subsectionentry {0}{3}{1}{21}{MATLAB visualitations}}\headcommand {\beamer@subsectionpages {20}{20}}
+\headcommand {\slideentry {3}{1}{1}{21/21}{MATLAB visualitations}{0}}
 \headcommand {\beamer@framepages {21}{21}}
-\headcommand {\beamer@partpages {1}{21}}
-\headcommand {\beamer@subsectionpages {21}{21}}
-\headcommand {\beamer@sectionpages {21}{21}}
-\headcommand {\beamer@documentpages {21}}
-\headcommand {\def \inserttotalframenumber {19}}
+\headcommand {\beamer@subsectionentry {0}{3}{2}{22}{Other tests}}\headcommand {\beamer@subsectionpages {21}{21}}
+\headcommand {\slideentry {3}{2}{1}{22/22}{Other tests}{0}}
+\headcommand {\beamer@framepages {22}{22}}
+\headcommand {\sectionentry {4}{Results}{23}{Results}{0}}
+\headcommand {\beamer@sectionpages {20}{22}}
+\headcommand {\beamer@subsectionpages {22}{22}}
+\headcommand {\slideentry {4}{0}{1}{23/23}{}{0}}
+\headcommand {\beamer@framepages {23}{23}}
+\headcommand {\sectionentry {5}{Conclusions}{24}{Conclusions}{0}}
+\headcommand {\beamer@sectionpages {23}{23}}
+\headcommand {\beamer@subsectionpages {23}{23}}
+\headcommand {\slideentry {5}{0}{1}{24/24}{}{0}}
+\headcommand {\beamer@framepages {24}{24}}
+\headcommand {\beamer@partpages {1}{24}}
+\headcommand {\beamer@subsectionpages {24}{24}}
+\headcommand {\beamer@sectionpages {24}{24}}
+\headcommand {\beamer@documentpages {24}}
+\headcommand {\def \inserttotalframenumber {24}}

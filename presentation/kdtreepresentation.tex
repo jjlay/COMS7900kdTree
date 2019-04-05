@@ -113,7 +113,7 @@
 %			\STATE MPI\_Barrier
 			\STATE Finalize MPI
 		\end{algorithmic}
-	\caption{\texttt{buildTree}($\cdots$)}
+	\caption{\texttt{main}($\cdots$)}
 	\end{algorithm}
 		
 \end{frame}
@@ -283,7 +283,7 @@
 		
 \end{frame}
 
-
+% JJ
 \begin{frame}
 	\frametitle{Searching the tree}
 	
@@ -317,6 +317,7 @@
 	\begin{block}{Changes:}
 		\begin{itemize}
 			\item Make rank 0 do work
+			\item Use specified communicator
 			\item Conversion to function
 			\item better \texttt{adaptBins}
 		\end{itemize}
@@ -329,8 +330,20 @@
 	\begin{block}{Making rank 0 do work:}
 		\begin{itemize}
 			\item Initially, rank 0 was just a master node which coordinated the other worker nodes
-			\item this technique is very inefficient for parallel ORB since it requires us to switch to serial mode sooner
+			\item This technique is very inefficient for parallel ORB since it requires us to switch to serial mode sooner
 			\item The solution involved 1) cleverly altering a large number of if statements in the code and 2) changing how certain types of sends/recvs were handled
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Parallel sorting}
+	
+	\begin{block}{Using a specified communicator:}
+		\begin{itemize}
+			\item Initially, \texttt{parallelSort} and all of its associated functions used MPI\_COMM\_WORLD (hard-coded)
+			\item To use a specified communicator $comm$, it must be passed as an argument into any function that uses it
+			\item This required a simple but tedious process of editing
 		\end{itemize}
 	\end{block}
 \end{frame}
@@ -345,7 +358,17 @@
 	\begin{algorithm}[H]
 %		\footnotesize
 		\begin{algorithmic}[1]
-			\STATE 
+			\STATE Locally sort $data$ on each compute node using a qsort
+			\STATE Determine the global min/max of the $sortDim$
+			\STATE Create linearly spaced bin edges over range on rank 0 and Bcast
+			\STATE Bin the $data$ on each compute node and accumulate on rank 0
+			\STATE Calculate $uniformity$
+			\WHILE{ $uniformity < threshold$ \&\& $iterations < M$ }
+				\STATE Adapt the bin edges on rank 0 and Bcast
+				\STATE Bin the $data$ on each compute node and accumulate on rank 0
+				\STATE Calculate $uniformity$
+			\ENDWHILE
+			\STATE Swap $data$ between compute nodes and do data cleanup
 		\end{algorithmic}
 		\caption{\texttt{parallelSort}($data$, $rows$, $myRank$, $sortDim$, $comm, \cdots$)}
 	\end{algorithm}
@@ -353,14 +376,74 @@
 \end{frame}
 
 
-rank 0
-multiple communicators
-
 \subsubsection{\texttt{adaptBins}}
-old
-new
-alternating
 
+\begin{frame}
+	\frametitle{Parallel sorting}
+	
+	We also wished to modify our original \texttt{adaptBins} function
+	
+%	\vspace{5pt}
+	
+	\begin{block}{Old \texttt{adaptBins}:}
+		\begin{itemize}
+			\item Local method
+			\item Based on the normalized gradient of the bin counts
+			\item Scaled so that bin edges remain properly ordered
+			\item \textbf{New:} Scaled to decrease of time to avoid oscillations
+			\item \textbf{Pros:} able to handle nonlinearities in distribution
+			\item \textbf{Cons:} edges from from dense regions are slow to converge
+		\end{itemize}
+	\end{block}
+	
+	\vspace{-5pt}
+	
+	\begin{equation}
+		\begin{split}
+			\Delta C & = 2.0 ( C^{m}_{i+1} - C^{m}_i ) / ( C^{m}_{i+1} + C^{m}_i ) \\
+			\Delta E & = E^m_{i+1} - E^m_i \\
+			S(m) & = 1 - (1 - 0.1) (1 - \textrm{exp}(-0.03 m) \\
+			E^{m+1}_i & = E^m_i + 0.475 \big( S(m) \Delta C \Delta E \big)
+		\end{split}
+	\end{equation}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Parallel sorting}
+	
+	We also wished to modify our original \texttt{adaptBins} function
+	
+%	\vspace{5pt}
+	
+	\begin{block}{New \texttt{adaptBins}:}
+		\begin{itemize}
+			\item Global method
+			\item Based on the integrated, linearly interpolated, cumulative distribution
+			\item Bin edges placed where linear interpolation would assume uniformity
+			\item \textbf{Pros:} fast initial convergence in approximately linear regions
+			\item \textbf{Cons:} oscillates near dense regions
+		\end{itemize}
+	\end{block}
+	
+	\vspace{-5pt}
+	
+	\begin{equation}
+		\hat C(x) = \hat C(E^m_{i'}) + C^m_{i'} \dfrac{x - E^m_{i'}}{E^m_{{i'}+1} - E^m_{i'}} = (i+1) \dfrac{D}{N}
+	\end{equation}
+	
+	\begin{equation}
+		E^{m+1}_i = E^m_{i'} + \Big( (i+1) \dfrac{D}{N} - C(E^m_{i'}) \Big) (E^m_{{i'}+1} - E^m_{i'}) / C^m_{i'}
+	\end{equation}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Parallel sorting}
+	
+	Since both methods' pros and cons are disjoint, alternating between them gives a method which can outperform either individually
+	
+\end{frame}
 
 
 
@@ -383,19 +466,31 @@ alternating
 \begin{frame}	
 	\frametitle{Validation}
 	
-	MATLAB Demos:
-	
-	\begin{itemize}
-		\item 2D
-		\item 3D
-	\end{itemize}
+	\begin{block}{MATLAB Demos:}
+		\begin{itemize}
+			\item 2D animation of MATLAB prototype
+			\item 3D visualization at the end of the parallel phase of teh C++ implementation
+		\end{itemize}
+	\end{block}
 	
 \end{frame}
 
 
 \subsection{Other tests}
-tiny/huge radii
-multiple nodes
+
+\begin{frame}	
+	\frametitle{Validation}
+	
+	\begin{block}{Other validation methods:}
+		\begin{itemize}
+			\item Set search sphere center on a data point, use tiny radius, find 1 point
+			\item Set an arbitrary search sphere point, increase radius, points found increases monotonically
+			\item \texttt{dumpTree} writes each compute node's tree to a file for analysis
+		\end{itemize}
+	\end{block}
+	
+\end{frame}
+
 
 
 
