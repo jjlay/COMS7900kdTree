@@ -81,6 +81,7 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
                         myBinI[mi] = binIPTR[mi];
                 }
                 MPI_Isend(myBinI, (maxRank+1), MPI_INT, toWho,999, comm, &request);
+		MPI_Wait( &request, &status );
         }
         if(myRank ==toWho){
                 MPI_Recv(yourBinI, (maxRank+1), MPI_INT, fromWho , 999, comm, &status);
@@ -93,6 +94,7 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
                 myAmountToSend = 4*(myBinI[toWho+1]-myBinI[toWho]);
                 mySendStartingPoint = 4*(myBinI[toWho]);
                 MPI_Isend(&myArray[mySendStartingPoint], myAmountToSend, MPI_DOUBLE, toWho, 888,  comm, &request);
+		MPI_Wait( &request, &status );
 	}
         if(myRank == toWho){
                 myAmountToReceive = 4*(myEndRow-myStartRow);
@@ -109,7 +111,8 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
                 }
 //		cout << "My rank free pmyArray : " << myRank << endl;
 		//free(pmyArray);
-		*pmyArray = (double*) malloc(((rowPTR[0]*4)+(myAmountToReceive))*sizeof(double));
+//		*pmyArray = (double*) malloc(((rowPTR[0]*4)+(myAmountToReceive))*sizeof(double));
+		*pmyArray = (double*) realloc( *pmyArray, ((rowPTR[0]*4)+(myAmountToReceive))*sizeof(double));
 //		cout << "my rank reallock pmyArray : " << myRank << endl;
 		for(int fill3 = 0; fill3<(rowPTR[0]*4)+myAmountToReceive; fill3++){
 			*(*pmyArray+fill3) = tempArray[fill3];			

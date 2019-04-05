@@ -143,7 +143,12 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	// Adapt Bin Sizes  //
 	//                  //
 	//////////////////////
-
+	
+	int worldRank = -1;
+	MPI_Comm_rank( MPI_COMM_WORLD, &worldRank );
+	
+	int a = worldRank;
+	
 	// same across all nodes
 	double *binE = new double[numNodes+1];
 	// different across all nodes, master is sum of others
@@ -392,6 +397,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	}		
 
 	MPI_Barrier(comm);
+	int b = worldRank;
 
 // multiline start	
 	// Broadcast binI_2D to workers
@@ -449,6 +455,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 */
 	
 	MPI_Barrier( comm );
+	int c = worldRank;
 
 
 	//////////////////////////////
@@ -461,16 +468,24 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
         int toWho;
         int fromWho;
         for( fromWho = 0; fromWho < numNodes; fromWho++ ){
-               for( int toWho = 0; toWho< numNodes; toWho++){
+                for( toWho = 0; toWho< numNodes; toWho++){
+	       // 	cout <<  fromWho << " " << toWho << endl;
                         if(toWho!=fromWho){
                                 if(myRank ==toWho || myRank ==fromWho){
                                         swapArrayParts( &array, &rows, &F_cols, myRank, numNodes, binI_2D[fromWho], fromWho, toWho, comm );
                                 }
                         }
+        	//	cout << fromWho << " " << toWho << endl;
                 }
-        	MPI_Barrier(comm);
+        //	MPI_Barrier(comm);
         }
+	
         MPI_Barrier( comm );
+	int d = worldRank;
+	
+	cout << worldRank << " finished swap" << endl;
+	
+	
         // Cleanup elements from same node
         for(int clean = 0; clean< numNodes; clean++){
 		if(myRank == clean){
@@ -479,6 +494,9 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
         }
 
 	MPI_Barrier(comm);
+	int e = worldRank;
+	
+	cout << worldRank << " finished cleanup" << endl;
 
 	// Final sort
 	// LL_sort(array, rows, cols, sortInd);
@@ -504,6 +522,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	*rowsPTR  = rows;
 	*colsPTR  = cols;
 	*tmpArray = array;
+	int f = worldRank;
 }
 
 
