@@ -192,6 +192,55 @@ The application was developed in a mixture of C and C++ on a Linux cluster. The 
 
 The C interface to MPI was selected for its familiarity and general support. While there are object-oriented C++ libraries such as \texttt{Boost.MPI} the authors elected to use the C version as they had experience with that environment and time to learn a new library was a limiting factor. Another concern was the installation of alternative libraries beyond Open MPI 2.1.1.
 
+Debugging was performed using the tools \texttt{gdb} and \texttt{valgrind}. \texttt{gdb} was used primarily while developing the serial code for building the tree to identify the source of segmentation faults. \texttt{valgrind} was instrumental in locating memory leaks and illegal memory references during the parallel development. Code was executed with the command:
+
+\begin{lstlisting}{language=bash}
+mpirun -np 4 valgrind ./main > dump.txt 2> dump2.txt
+\end{lstlisting}
+
+
+One major challenge during the debugging process was that output was not displayed in chronological order making it difficult to understand the flow of the code. A solution we implemented was to print a numeric identifier during the execution at the beginning of each line. Each section of code was assigned a five digit numeric value, and the \texttt{mpi} rank was printed along with this. 
+
+\begin{mdframed}[backgroundcolor=blue!20]
+	\setlength\itemsep{0.1pt}
+	\setlength\parskip{0.1pt}
+	\begin{verbatim}
+39300 : receiveFiles: Rank 93 received /home/hal2a/localstorage/public/
+                              coms7900-data/datafile00122.txt as tag 0
+39301 : receiveFiles: Rank 93 received DONE! as tag 1
+35400 : receiveFiles: Rank 54 received /home/hal2a/localstorage/public/
+                              coms7900-data/datafile00157.txt as tag 0
+35401 : receiveFiles: Rank 54 received /home/hal2a/localstorage/public/
+                              coms7900-data/datafile00023.txt as tag 1
+35402 : receiveFiles: Rank 54 received DONE! as tag 2
+30000 : receiveFiles: Rank 0 received /home/hal2a/localstorage/public/
+                              coms7900-data/datafile00407.txt as tag 0
+39901 : receiveFiles: Rank 99 received DONE! as tag 1
+30001 : receiveFiles: Rank 0 received /home/hal2a/localstorage/public/
+                             coms7900-data/datafile00361.txt as tag 1
+30002 : receiveFiles: Rank 0 received DONE! as tag 2
+30900 : receiveFiles: Rank 9 received /home/hal2a/localstorage/public/
+                             coms7900-data/datafile00020.txt as tag 0
+30901 : receiveFiles: Rank 9 received /home/hal2a/localstorage/public/
+                             coms7900-data/datafile00046.txt as tag 1
+30902 : receiveFiles: Rank 9 received DONE! as tag 2
+45700 : receiveFiles: Rank 157 received /home/hal2a/localstorage/public/
+                               coms7900-data/datafile00086.txt as tag 0
+45701 : receiveFiles: Rank 157 received DONE! as tag 1
+70000 : Rank 11 is calling buildTree
+70000 : Rank 70000 : Rank 125 is calling buildTree
+70000 : Rank 131 is calling buildTree	
+    \end{verbatim}
+\end{mdframed}
+
+The output was then sorted using:
+
+\begin{lstlisting}{language=bash}
+cat dump.txt | sort | less
+\end{lstlisting}
+
+
+Code was executed using both interactively by logging into a compute node using \texttt{qlogin} and as a batch job using \texttt{qsub}.
 
 %%%%%%%%%
 %
@@ -312,31 +361,36 @@ Each node in the tree is assigned a unique identifier determined by its position
 
 The \texttt{struct} variables used during the initial division of the tree among the nodes and their purpose are:
 
-\begin{description}
-    \item[\texttt{i}]{The dimension that was split by the MPI communicator.}
-    \item[\texttt{source}]{During the parallel phase, this value is set to \texttt{\_Source\_buildTree\_parallel}.}
-    \item[\texttt{parentComm}]{The parent MPI communicator that created this node. The root node stores a value of \texttt{MPI\_COMM\_SELF} in lieu of a null.}
-    \item[\texttt{leftComm}]{The MPI communicator of the \textit{left} child tree for the current node.}
-    \item[\texttt{rightComm}]{The MPI communicator of the \textit{right} child tree for the current node.}
-    \item[\texttt{thisComm}]{The MPI communicator of the current compute node.}
-    \item[\texttt{name}]{The unique name of the tree node.}
-    \item[\texttt{x1}]{The minimum value of \textit{x} stored in this subtree.}
-    \item[\texttt{x2}]{The maximum value of \textit{x} stored in this subtree.}
-    \item[\texttt{y1}]{The minimum value of \textit{y} stored in this subtree.}
-    \item[\texttt{y2}]{The maximum value of \textit{y} stored in this subtree.}
-    \item[\texttt{z1}]{The minimum value of \textit{z} stored in this subtree.}
-    \item[\texttt{z2}]{The maximum value of \textit{z} stored in this subtree.}
-    \item[\texttt{depth}]{The depth within the tree of the current node. The top node has a depth of zero.}
-    \item[\texttt{n}]{The number of points contained within the subtree where the current node is the root.}
-    \item[\texttt{c[4]}]{The center of the subtree. Index for the array is described in section \ref{sec:constants}.}
-    \item[\texttt{radius}]{The distance from the center of the subtree to the furthest point.}
-\end{description}
+\begin{tabular}{l l}
+\texttt{i} & The dimension that was split by the MPI communicator.  \\
+\texttt{source} & During the parallel phase, this value is set to  \\
+& \texttt{\_Source\_buildTree\_parallel}.  \\
+\texttt{parentComm} & The parent MPI communicator that created this node. The\\
+&  root node stores a value of \texttt{MPI\_COMM\_SELF} in lieu of a null. \\
+\texttt{leftComm} & The MPI communicator of the \textit{left} child tree for the current node.  \\
+\texttt{rightComm} & The MPI communicator of the \textit{right} child tree for the current node.  \\
+\texttt{thisComm} & The MPI communicator of the current compute node.  \\
+\texttt{name} & The unique name of the tree node. \\
+\texttt{x1} & The minimum value of \textit{x} stored in this subtree.  \\
+\texttt{x2} & The maximum value of \textit{x} stored in this subtree.  \\
+\texttt{y1} & The minimum value of \textit{y} stored in this subtree.  \\
+\texttt{y2} & The maximum value of \textit{y} stored in this subtree.  \\
+\texttt{z1} & The minimum value of \textit{z} stored in this subtree.  \\
+\texttt{z2} & The maximum value of \textit{z} stored in this subtree.  \\
+\texttt{depth} & The depth within the tree of the current node. The top node has a \\
+& depth of zero.  \\
+\texttt{n} & The number of points contained within the subtree where the current \\
+& node is the root.  \\
+\texttt{c[4]} & The center of the subtree. Index for the array is described in section \ref{sec:constants}. \\
+\texttt{radius} & The distance from the center of the subtree to the furthest point.  \\
+\end{tabular}
 
-\begin{figure}
-\includegraphics[width=0.9\textwidth]{images/communicators.png}
-\caption{Example of parallel variables using eight nodes}
-\end{figure}
-
+\begin{center}
+   \begin{figure}[h!]
+      \includegraphics[width=0.9\textwidth]{images/communicators.png}
+      \caption{Example of parallel variables using eight nodes}
+   \end{figure}
+\end{center}
 
 %%%%%%%%%
 %
@@ -346,24 +400,27 @@ The \texttt{struct} variables used during the initial division of the tree among
 
 \subsubsection{Serial variables}
 
-\begin{description}
-    \item[\texttt{p}]{Pointer to the parent of the current node. This value is \texttt{null} for the top node.}
-    \item[\texttt{l}]{Pointer to the \textit{left} child of the current node. This value is \texttt{null} for the data point.}
-    \item[\texttt{r}]{Pointer to the \textit{right} child of the current node. This value is \texttt{null} for the data point.}
-    \item[\texttt{i}]{The dimension that was split during the local tree construction.}
-    \item[\texttt{source}]{During the serial phase, this value is set to \texttt{\_Source\_buildTree\_serial}.}
-    \item[\texttt{name}]{The unique name of the node.}
-    \item[\texttt{x1}]{The minimum value of \textit{x} stored in this subtree.}
-    \item[\texttt{x2}]{The maximum value of \textit{x} stored in this subtree.}
-    \item[\texttt{y1}]{The minimum value of \textit{y} stored in this subtree.}
-    \item[\texttt{y2}]{The maximum value of \textit{y} stored in this subtree.}
-    \item[\texttt{z1}]{The minimum value of \textit{z} stored in this subtree.}
-    \item[\texttt{z2}]{The maximum value of \textit{z} stored in this subtree.}
-    \item[\texttt{depth}]{The depth within the tree of the current node. The top node has a depth of zero.}
-    \item[\texttt{n}]{The number of points contained within the subtree where the current node is the root.}
-    \item[\texttt{c[4]}]{The center of the subtree. Index for the array is described in section \ref{sec:constants}.}
-    \item[\texttt{radius}]{The distance from the center of the subtree to the furthest point.}
-\end{description}
+The \texttt{struct} variables used during the final division of the local serial tree on the compute nodes and their purpose are:
+
+\begin{tabular}{l l}
+\texttt{p} & Pointer to the parent of the current node. This value is \texttt{null} for the top node. \\
+\texttt{l} & Pointer to the \textit{left} child of the current node. This value is \texttt{null} for the data point. \\
+\texttt{r} & Pointer to the \textit{right} child of the current node. This value is \texttt{null} for the data point. \\
+\texttt{i} & The dimension that was split during the local tree construction. \\
+\texttt{source} & During the serial phase, this value is set to \texttt{\_Source\_buildTree\_serial}. \\
+\texttt{name} & The unique name of the node. \\
+\texttt{x1} & The minimum value of \textit{x} stored in this subtree. \\
+\texttt{x2} & The maximum value of \textit{x} stored in this subtree. \\
+\texttt{y1} & The minimum value of \textit{y} stored in this subtree. \\
+\texttt{y2} & The maximum value of \textit{y} stored in this subtree. \\
+\texttt{z1} & The minimum value of \textit{z} stored in this subtree. \\
+\texttt{z2} & The maximum value of \textit{z} stored in this subtree. \\
+\texttt{depth} & The depth within the tree of the current node. The top node has a depth of zero. \\
+\texttt{n} & The number of points contained within the subtree where the current node \\
+& is the root. \\
+\texttt{c[4]} & The center of the subtree. Index for the array is described in section \ref{sec:constants}. \\
+\texttt{radius} & The distance from the center of the subtree to the furthest point. \\
+\end{tabular}
 
 
 %%%%%%%%%
@@ -374,17 +431,19 @@ The \texttt{struct} variables used during the initial division of the tree among
 
 \subsubsection{Data point variables}
 
-\begin{description}
-    \item[\texttt{p}]{Pointer to the parent of the current node.}
-    \item[\texttt{l}]{Pointer to the \textit{left} child of the current node. This value is \texttt{null} for the data point.}
-    \item[\texttt{r}]{Pointer to the \textit{right} child of the current node. This value is \texttt{null} for the data point.}
-    \item[\texttt{source}]{During the serial phase, this value is set to \texttt{\_Source\_buildTree\_serial}.}
-    \item[\texttt{name}]{The unique name of the node.}
-    \item[\texttt{depth}]{The depth within the tree of the current node. The top node has a depth of zero.}
-    \item[\texttt{n}]{The number of points contained within the subtree where the current node is the root.}
-    \item[\texttt{d[4]}]{The data point.}
-    \item[\texttt{index}]{The row index of the data point as read from the source file.}
-\end{description}
+The \texttt{struct} variables used for storing the data point within the tree and their purpose are:
+
+\begin{tabular}{l l}
+ \texttt{p} & Pointer to the parent of the current node.  \\
+ \texttt{l} & Pointer to the \textit{left} child of the current node. This value is \texttt{null} for the data point.  \\
+ \texttt{r} & Pointer to the \textit{right} child of the current node. This value is \texttt{null} for the data point.  \\
+ \texttt{source} & During the serial phase, this value is set to \texttt{\_Source\_buildTree\_serial}.  \\
+ \texttt{name} & The unique name of the node.  \\
+ \texttt{depth} & The depth within the tree of the current node. The top node has a depth of zero.  \\
+ \texttt{n} & The number of points contained within the subtree where the current node is the root.  \\
+ \texttt{d[4]} & The data point.  \\
+ \texttt{index} & The row index of the data point as read from the source file.  \\
+ \end{tabular}
 
 
 %%%%%%%%%
@@ -400,6 +459,12 @@ The \texttt{struct} variables used during the initial division of the tree among
 % farzi, just add the listing
 This function gets the number of compute nodes $q$ available in the current communicator and determines which function to run. If $q>1$, then we can still do a parallel sort with 2 compute nodes, so \texttt{buildTree\_parallel} is entered. If $q=1$, then \texttt{buildTree\_serial} is entered.
 
+
+%%%%%%%%%
+%
+% Function: buildTree_serial
+%
+%%%%%%%%%
 
 \paragraph{\texttt{buildTree\_serial}}
 This was the first function written after our initial prototyping phase was completed. It essentially performs a serial version of ORB which can be executed on a single compute node.
@@ -433,6 +498,11 @@ This function is called by all ranks and returns an integer which equals the num
 \end{equation}
 We used the squared version of the formula to avoid computing the square root, thus saving time. If this check returns false, then there are no data points within the search sphere contained in that partition and the function exits. If true, then another check is performed to check if the left or right child tree are NULL. If they are both NULL, then by our definition of the tree, we have found a point that is a leaf of the tree, thus we increment the count and exit the function. Otherwise, we recursively call the function again using the correct child tree.
 
+%%%%%%%%%
+%
+% Function: search501
+%
+%%%%%%%%%
 
 \paragraph{\texttt{search501}}
 %
