@@ -169,11 +169,35 @@ Note that we distinguish between \textbf{tree} nodes and \textbf{compute} nodes 
 %%%%%%%%%
 
 \section{Implementation}
+%
 % JJ
+%
+\textcolor{red}{Here we discuss our implementation of the code}
 
-Here we discuss our implementation of the code
+\textcolor{red}{we used C++ with C MPI calls, mpirun, qsub/qlogin, valgrind}
 
-we used C++ with C MPI calls, mpirun, qsub/qlogin, valgrind
+\begin{center}
+\includegraphics[width=0.95\textwidth]{images/flow.png}
+\end{center}
+
+%%%%%%%%%
+%
+% Subsection: Development
+%
+%%%%%%%%%
+
+\subsection{Development}
+
+The application was developed in a mixture of C and C++ on a Linux cluster. The compiler for the project was \texttt{g++} version 4.8.5-28 with the switch \texttt{-std=c++11} in order to utilize features introduced with that standard. The three most commonly used C++11 standards were placeholder type specifiers (i.e., \texttt{auto}), range based \texttt{for} loops, and the \texttt{nullptr} constant.
+
+The C interface to MPI was selected for its familiarity and general support. While there are object-oriented C++ libraries such as \texttt{Boost.MPI} the authors elected to use the C version as they had experience with that environment and time to learn a new library was a limiting factor. Another concern was the installation of alternative libraries beyond Open MPI 2.1.1.
+
+
+%%%%%%%%%
+%
+% Subsection: main
+%
+%%%%%%%%%
 
 \subsection{\texttt{main}}
 Our \texttt{main} program is divided into three main phases (each of which is comprised of multiple functions): data import, tree building, and tree searching. The data import phase collects all of the relevant filenames of the data files, reads them, and places them into a single 1D array. The tree building phase begins by initializing an empty Tree struct (see below for explanation of the struct) which is then passed into the \texttt{buildTree} function which alters the struct's contents. The entire tree can then be navigated by using the tree's left, right, and parent fields. The final tree searching phase takes the completed tree struct as an argument along with a search sphere. The number of points within the search sphere is calculated for each
