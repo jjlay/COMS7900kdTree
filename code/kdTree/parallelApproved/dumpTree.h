@@ -17,4 +17,3 @@
 //
 
 void dumpTree(Tree *t, int depth, ofstream *output, int rank);
-
