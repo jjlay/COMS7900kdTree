@@ -48,7 +48,6 @@ struct Node{
 
 void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, int numranks, int *binIPTR, int fromWho, int toWho, MPI_Comm comm){
 
-        //cout << "Rank: " << fromWho << " is in swap array"<< endl;
 	if (toWho == fromWho)
 		return;
 
@@ -70,18 +69,19 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
         int myAmountToReceive;
         int myAmountToSend;
         int mySendStartingPoint;
-        double *myArray = *pmyArray;
-	
-
-//        cout << "myRank: " << myRank << " rank to who " << toWho << " is in swap array"<< endl;
+        double *myArray;
+	myArray = (double*)malloc((rowPTR[0]*4)*sizeof(double));
+//	cout << "MY RANK swap " << myRank << endl;
+	for(int fill0 =0; fill0< rowPTR[0]*4  ;fill0++){
+		myArray[fill0] = *(*pmyArray+fill0);
+	}
+//	cout << endl;
 	if(fromWho == myRank) {
-//        	cout << "myRank: " << myRank << endl;
                 for(int mi =0; mi<maxRank+1; mi++){
                         myBinI[mi] = binIPTR[mi];
-//			cout << myBinI[mi] << endl;
                 }
                 MPI_Isend(myBinI, (maxRank+1), MPI_INT, toWho,999, comm, &request);
-//                cout << "Rank: " << myRank << " has sent ibin to: " << toWho << endl;
+		MPI_Wait( &request, &status );
         }
         if(myRank ==toWho){
                 MPI_Recv(yourBinI, (maxRank+1), MPI_INT, fromWho , 999, comm, &status);
@@ -89,73 +89,50 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
                 myEndRow = yourBinI[myrank+1];
                 storedBinIstart[fromWho+1] = myStartRow;
                 storedBinIend[fromWho+1] = myEndRow;
- //               sleep(myRank);
-//                cout << "Rank: " << myRank<< " has received binI from: " << fromWho << endl;
-         //       for (int itest = 0; itest< maxRank+1; itest++){
-          //              cout << yourBinI[itest] << " " ;
-           //     }
-            //    cout << endl;
         }
-
         if(myRank == fromWho){
                 myAmountToSend = 4*(myBinI[toWho+1]-myBinI[toWho]);
-
-		if (myAmountToSend < 0) {
-			cout << "Error! Amount to send is negative!" << endl
-				<< "Rank " << myRank << endl
-				<< "toWho " << toWho << " fromWho " << fromWho << endl
-				<< "myBinI[" << toWho+1 << "] = " << myBinI[toWho+1] << endl
-				<< "myBinI[" << toWho << "] = " << myBinI[toWho] << endl;
-			MPI_Abort(comm, _FAIL_);
-		}
-
                 mySendStartingPoint = 4*(myBinI[toWho]);
-//		cout << "Rank " << myRank << " is sending " << myAmountToSend << " to " << toWho << endl;
                 MPI_Isend(&myArray[mySendStartingPoint], myAmountToSend, MPI_DOUBLE, toWho, 888,  comm, &request);
-              //  cout << "Rank: " << myRank << " has sent the array to: " << toWho << " of size " << myAmountToSend << endl;
-                //cout << "Last Rank: " << myRank << " received: loc-" << myArray[4*999] << " :x- " << myArray[4*999+1] << " :y- " << myArray[4*999+2] << " :z- " <<myArray[999*4+3]<< endl;
-        }
+		MPI_Wait( &request, &status );
+	}
         if(myRank == toWho){
                 myAmountToReceive = 4*(myEndRow-myStartRow);
-             //   cout << "Rank: " << myRank << " is attempting to get: " << myAmountToReceive << endl;
                 double *receiveThis;
                 receiveThis = (double*) malloc((myAmountToReceive)*sizeof(double));
                 MPI_Recv(receiveThis, myAmountToReceive, MPI_DOUBLE, fromWho, 888 , comm,&status);
-            //    cout << "Rank: " << myRank << " has received the array from " << fromWho << endl;
                 double *tempArray;
                 tempArray = (double*) malloc(((rowPTR[0]*4)+(myAmountToReceive))*sizeof(double));
-           //     cout << "Rank: " << myRank << " after malloc in array receive " << fromWho << endl;
                 for(int fill = 0; fill< (rowPTR[0]*4);fill++){
-//                        cout << "FILL: " << fill <<  " rowPTR[0]*4: " << rowPTR[0]*4 << " lenth of temp: "<< ((rowPTR[0]*4)+(myAmountToReceive)) << " myamounttoreceive: " << myAmountToReceive << endl;
                         tempArray[fill] = myArray[fill];
                 }
-            //    cout << "Rank: " << myRank << " filled my array " << fromWho << endl;
                 for(int fill2 = (rowPTR[0]*4); fill2 < (rowPTR[0]*4)+myAmountToReceive; fill2++){
                         tempArray[fill2] = receiveThis[fill2-rowPTR[0]*4];
                 }
-           //     cout << "rank: " << myRank << " filled my array with new data " << endl;
-                //free(pmyArray[0]);
-
-		// The standard swap function causes a whole new set of issues!
-		// std::swap(*pmyArray, tempArray);
-		free((void *) *pmyArray);
-		*pmyArray = NULL;
-                *pmyArray = tempArray;
-		tempArray = NULL;
-
-             //   cout << "Row 1 Rank: " << myRank << " received: loc-" << tempArray[0] << " :x- " << tempArray[1] << " :y- " << tempArray[2] << " :z- " << tempArray[3]<< endl;
-
+//		cout << "My rank free pmyArray : " << myRank << endl;
+		//free(pmyArray);
+//		*pmyArray = (double*) malloc(((rowPTR[0]*4)+(myAmountToReceive))*sizeof(double));
+		*pmyArray = (double*) realloc( *pmyArray, ((rowPTR[0]*4)+(myAmountToReceive))*sizeof(double));
+//		cout << "my rank reallock pmyArray : " << myRank << endl;
+		for(int fill3 = 0; fill3<(rowPTR[0]*4)+myAmountToReceive; fill3++){
+			*(*pmyArray+fill3) = tempArray[fill3];			
+		}
+		free(tempArray);
                 rowPTR[0]= rowPTR[0]+ myAmountToReceive/4;
-
 		free(receiveThis);
         }
-      //  cout << "rank: " << myRank << " is at the bottom of swap of from " << fromWho<< " to: " << toWho  << endl;
-
-
+	free(myArray);
 	free(myBinI);
 	free(yourBinI);
 	free(storedBinIend);
 	free(storedBinIstart);
+//sleep(myRank);
+//	cout << "MY rank : " << myRank << endl;
+//	for(int fill4 = 0; fill4<(rowPTR[0]*4); fill4++){
+//		cout << *(*pmyArray+fill4) << " " ;
+//	}
+//	cout << endl;
+//sleep(999999999);
 
 return;
 }

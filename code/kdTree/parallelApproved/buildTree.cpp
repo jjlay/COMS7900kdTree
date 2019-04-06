@@ -37,6 +37,7 @@ void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, i
 
 	int key = 50000 + (tree->depth) * 100;
 
+//	cout << tree->depth << endl;
 
 	if( q > 1 ) {
 /*
