@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 	// number of lines PER FILE
 	const int maxRows = 1000000;
 
-	int sortInd = 1; // x = 1
+  int sortInd = 1; // x = 1
 
 	//////////////////
 	// Data Import  //
