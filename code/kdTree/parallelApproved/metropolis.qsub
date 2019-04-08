@@ -2,7 +2,7 @@
 
 ## 
 #$ -N MetropolisKdTree
-#$ -pe mpi 64
+#$ -pe mpi 128
 #$ -q amd8.q
 #$ -cwd
 #$ -l h_rt=20:00:00

@@ -81,18 +81,22 @@ int main(int argc, char *argv[])
 	int myRank = 0, numNodes = 0;
 
 	initializeMPI(&processorName, &myRank, &numNodes, argc, argv);
-
+	cout << "00000 : main : Rank " << myRank << " on " << processorName << ", Total nodes " << numNodes << endl;
+	
 	// Begin the timing
 	auto chronoStart = chrono::system_clock::now();
 
 
 	// total number of files to read
-	const int maxFilesToProc = 250;
+	const int maxFilesToProc = 100;
 
 	// number of lines PER FILE
-	const int maxRows = 1000000;
+	const int maxRows = 10000000;
 
-  int sortInd = 1; // x = 1
+	cout << "00000 : main : " << maxFilesToProc << " files with " << maxRows << " rows each" << endl;
+
+
+  	int sortInd = 1; // x = 1
 
 	//////////////////
 	// Data Import  //
