@@ -88,10 +88,10 @@ int main(int argc, char *argv[])
 
 
 	// total number of files to read
-	const int maxFilesToProc = 100;
+	const int maxFilesToProc = 10;
 
 	// number of lines PER FILE
-	const int maxRows = 10000000;
+	const int maxRows = 1000;
 
 	cout << "00000 : main : " << maxFilesToProc << " files with " << maxRows << " rows each" << endl;
 
@@ -189,6 +189,7 @@ int main(int argc, char *argv[])
 	// searchTree //
 	////////////////
 
+	/*
 	cerr << "80000 : Rank " << myRank << " is calling search501" << endl;
 	
 	search501( myRank, path, tree);
@@ -211,7 +212,8 @@ int main(int argc, char *argv[])
 	cerr << "99000 : Rank " << myRank << " took " << timeToReceiveFiles.count() << " seconds to receive files" << endl;
 	cerr << "99000 : Rank " << myRank << " took " << timeToImportFiles.count() << " seconds to import files" << endl;
 	cerr << "99000 : Rank " << myRank << " took " << timeToRun.count() << " seconds to run" << endl;
-
+	*/
+	
 	MPI_Finalize();
 
 	return _OKAY_;

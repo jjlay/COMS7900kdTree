@@ -312,6 +312,50 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	// Swap Data Between Nodes  //
 	//                          //
 	//////////////////////////////
+	
+	int **start = new int*[numNodes]; // [worker][bin]
+	for( int i = 0; i < numNodes; i++ ) {
+		start[i] = new int[numNodes];
+	}
+	
+	int newRows = 0;
+	for( int i = 0; i < numNodes; i++ )
+	{
+		newRows += binI_2D[i][myRank+1] - binI_2D[i][myRank];
+		start[i][0] = 0;
+		
+		for( int j = 0; j < numNodes; j++ )
+		{
+			start[i][j+1] = binI_2D[j][i+1] - binI_2D[j][i] + start[i][j];
+		}
+	}
+	
+	if( myRank == 0 ) {
+		for( int i = 0; i < numNodes; i++ )
+		{
+			for( int j = 0; j < numNodes+1; j++ )
+			{
+				cout << binI_2D[i][j] << " ";
+			}
+			cout << endl;
+		}
+		cout << endl;
+		for( int i = 0; i < numNodes; i++ )
+		{
+			for( int j = 0; j < numNodes; j++ )
+			{
+				cout << start[i][j] << " ";
+			}
+			cout << endl;
+		}
+		cout << endl;
+	}
+//	cout << newRows << endl;
+	
+	
+	double *newArray = (double*) malloc( newRows*4*sizeof(double) );
+	
+	/*
         int F_rows = int(numLines);
         int F_cols = 4;
         int toWho;
@@ -320,34 +364,29 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
                 for( toWho = 0; toWho< numNodes; toWho++){
                         if(toWho!=fromWho){
                                 if(myRank ==toWho || myRank ==fromWho){
-                                        swapArrayParts( &array, &rows, &F_cols, myRank, numNodes, binI_2D[fromWho], fromWho, toWho, comm );
+                                        newSwap( &array, &newArray, &rows, &newRows, &F_cols, myRank, numNodes, binI_2D[fromWho], fromWho, toWho, comm );
                                 }
                         }
                 }
         //	MPI_Barrier(comm);
         }
 	
-        MPI_Barrier( comm );
-	int d = worldRank;
-	
-	
-        // Cleanup elements from same node
-        for(int clean = 0; clean< numNodes; clean++){
-		if(myRank == clean){
-             		cleanUp(&array, &rows, &F_cols, clean, numNodes, binI_2D[myRank]);   
-		}
-        }
-
 	MPI_Barrier(comm);
-	int e = worldRank;
 	
 //	cout << worldRank << " finished cleanup" << endl;
-
-	// commented out for speed, unecessary in kdTree
+	
+	for( int clean = 0; clean< numNodes; clean++){
+		if(myRank == clean){
+			cleanUp(&array, &rows, &F_cols, clean, numNodes, binI_2D[myRank]);
+		}
+	}
+	*/
+	
+	MPI_Barrier(comm);
 //	sortData(array, cols, rows, sortInd);
 	
         // Export results
-
+	
 	*rowsPTR  = rows;
 	*colsPTR  = cols;
 	*tmpArray = array;
