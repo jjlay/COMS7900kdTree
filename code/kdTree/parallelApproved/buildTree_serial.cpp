@@ -152,7 +152,7 @@ void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 		tree->r = new Tree;
 
 		tree->l->name = tree->name + "l";
-		tree->r->name = tree->name + "l";
+		tree->r->name = tree->name + "r";
 
 		// Set the children's parent
 		tree->l->p = tree;

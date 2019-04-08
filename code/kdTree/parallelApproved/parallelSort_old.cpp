@@ -582,17 +582,7 @@ int main(int argc, char *argv[])
 	MPI_Barrier(MPI_COMM_WORLD);
         cout << "\n **********At Swap Arrays ******* with rank : " << myRank  << endl;
 if (myRank!=0){
-//	sleep(myRank);
-//	cout << "Rank " << myRank << " array " << endl;
-//	for(int iii =0 ; iii< maxRows ; iii++){
-//		cout << "Row: " << iii << " : " ;
-//		for(int kkk =0; kkk <4; kkk++){
-//			cout << array[4*iii+kkk] << " : " ;
-//		}
-//		cout << endl;
-//	}
 }
-  //      sleep(2);
         int F_rows = int(numLines);
         int F_cols = 4;
         int toWho;
@@ -605,22 +595,13 @@ if (myRank!=0){
                                         swapArrayParts( &array, &maxRows, &F_cols, myRank, numNodes, binI_2D[fromWho-1], fromWho, toWho );
                                         cout << "^^^^^^^^^Rank " << myRank << " towho: " << toWho << " exited swap parts with  " << fromWho << endl;
                                 }
-                //      sleep(5);
 
                         }
                 }
- //               if(myRank == fromWho){
- //                       cout << "Rank: " << fromWho << " has sent all its data " << endl;
- //               }
-//		cout << "#######################################################\n##########################\nRank: " << myRank << " Has a new row length of : " << maxRows << endl;
-                //sleep(1);
         	MPI_Barrier(MPI_COMM_WORLD);
         }
         MPI_Barrier(MPI_COMM_WORLD);
- //       cout << "**************Rank: "<< myRank<< " has exited the swap loops"  << endl;
 
-//	sleep(5);
-//	sleep(myRank);
 
 // multiline start
 if(myRank !=0){
@@ -635,7 +616,6 @@ if(myRank !=0){
 }
 // multiline end
 
-//	sleep(5);
 	cout << "rank: " << myRank << " has made it to cleanup !!!!!!!!!!!!!!!!!!!!!!!!! " << endl;
         MPI_Barrier(MPI_COMM_WORLD);
                 // Cleanup elements from same node
@@ -653,7 +633,6 @@ if(myRank !=0){
 		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 		<< "to swap data" << std::endl;
 #endif
-//	sleep(myRank);
 
 // multiline end
 if(myRank !=0){
@@ -670,9 +649,7 @@ if(myRank !=0){
 }
 // multiline end
 
-//	sleep(5);
 	cout << "Rank: " << myRank << " has made it through clean up *******************" << endl;
-//	sleep(999999);
                 // Final sort
 
                 // Export results
@@ -693,7 +670,6 @@ if(myRank !=0){
 	
 	MPI_Barrier(MPI_COMM_WORLD);
 
-//	exportResults(array, rows, cols, numWorkers, myRank, myMin, myMax);
 
 #ifdef _TIMING_	
 	auto timeEnd = std::chrono::system_clock::now();
