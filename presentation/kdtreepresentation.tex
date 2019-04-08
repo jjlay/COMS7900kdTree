@@ -391,8 +391,8 @@
 			\item Based on the normalized gradient of the bin counts
 			\item Scaled so that bin edges remain properly ordered
 			\item \textbf{New:} Scaled to decrease of time to avoid oscillations
-			\item \textbf{Pros:} able to handle nonlinearities in distribution
-			\item \textbf{Cons:} edges from from dense regions are slow to converge
+			\item \textbf{Pros:} able to handle nonlinearities in distribution, good at fine-tuning
+			\item \textbf{Cons:} edges from from dense regions are slow to converge, slower with more nodes
 		\end{itemize}
 	\end{block}
 	
@@ -421,8 +421,8 @@
 			\item Global method
 			\item Based on the integrated, linearly interpolated, cumulative distribution
 			\item Bin edges placed where linear interpolation would assume uniformity
-			\item \textbf{Pros:} fast initial convergence in approximately linear regions
-			\item \textbf{Cons:} oscillates near dense regions
+			\item \textbf{Pros:} fast initial convergence in approximately linear regions, same speed with more nodes
+			\item \textbf{Cons:} can oscillate near dense regions
 		\end{itemize}
 	\end{block}
 	
@@ -442,6 +442,17 @@
 	\frametitle{Parallel sorting}
 	
 	Since both methods' pros and cons are disjoint, alternating between them gives a method which can outperform either individually
+	
+	\begin{block}{Demos:}
+
+		\begin{itemize}
+			\item thin dense distribution at boundary, nBins = 2, 3, 10
+			\item wide distribution in center, nBins = 2, 3, 10
+			\item 
+		\end{itemize}
+
+	\end{block}
+	
 	
 \end{frame}
 
@@ -485,7 +496,7 @@
 		\begin{itemize}
 			\item Set search sphere center on a data point, use tiny radius, find 1 point
 			\item Set an arbitrary search sphere point, increase radius, points found increases monotonically
-			\item \texttt{dumpTree} writes each compute node's tree to a file for analysis
+			\item \texttt{dumpTree} writes 	 each compute node's tree to a file for analysis
 		\end{itemize}
 	\end{block}
 	
