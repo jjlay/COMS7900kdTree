@@ -88,10 +88,10 @@ int main(int argc, char *argv[])
 
 
 	// total number of files to read
-	const int maxFilesToProc = 100;
+	const int maxFilesToProc = 50;
 
 	// number of lines PER FILE
-	const int maxRows = 10000000;
+	const int maxRows = 1990000;
 
 	cout << "00000 : main : " << maxFilesToProc << " files with " << maxRows << " rows each" << endl;
 
