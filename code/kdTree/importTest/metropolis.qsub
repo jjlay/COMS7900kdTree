@@ -1,0 +1,10 @@
+#!/bin/bash
+#$ -N importTest
+#$ -pe mpi 12
+#$ -q amd8.q
+#$ -cwd
+#$ -l h_rt=90:00:00
+#$ -l vf=32G
+
+mpirun -np $NSLOTS $HOME/COMS7900kdTree/code/kdTree/importTest/importTest
+
