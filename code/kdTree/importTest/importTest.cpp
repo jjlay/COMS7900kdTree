@@ -36,33 +36,6 @@
 #include "distributeFiles.h"
 #include "receiveFiles.h"
 #include "importFiles.h"
-#include "getLinearBins.h"
-#include "adaptBins.h"
-#include "testUniformity.h"
-#include "receiveMinMax.h"
-#include "binData.h"
-#include "transmitMinMax.h"
-#include "transmitBinEdges.h"
-#include "receiveBinCounts.h"
-#include "transmitUniformity.h"
-#include "receiveBinIndices.h"
-#include "exportResults.h"
-#include "min.h"
-#include "max.h"
-#include "swapArrayParts.h"
-#include "cleanUp.h"
-#include "parallelSort.h"
-#include "search501.h"
-#include "searchWorker.h"
-
-// buildTree
-#include "tree.h"
-#include "buildTree.h"
-#include "searchTree.h"
-#include "searchTree_serial.h"
-#include "searchTree_parallel.h"
-
-
 
 using namespace std;
 
@@ -88,10 +61,10 @@ int main(int argc, char *argv[])
 
 
 	// total number of files to read
-	const int maxFilesToProc = 500;
+	const int maxFilesToProc = 501;
 
 	// number of lines PER FILE
-	const int maxRows = 1000000;
+	const int maxRows = 20000000;
 
 	cout << "00000 : main : " << maxFilesToProc << " files with " << maxRows << " rows each" << endl;
 
@@ -143,7 +116,14 @@ int main(int argc, char *argv[])
 
 	// Read data files in
 	unsigned long int arrayLimit = (FilenameArray.size() * maxRows * cols + 8);
+
+	cerr << "00000 : main : Rank " << myRank << " : Allocating " << arrayLimit << " bytes or "
+		<< arrayLimit / 1024 /1024 /1024 << " GB" << endl;
+
 	double *array = new double[arrayLimit];
+
+	cerr << "00000 : main : Rank " << myRank << " : Finished allocation" << endl;
+
 
 	// void importFiles(vector<string> files, int myRank,
 	// 	double *myData, int *rows, int *cols, int maxRows,
@@ -159,58 +139,9 @@ int main(int argc, char *argv[])
 
 	MPI_Barrier(MPI_COMM_WORLD);
 
+	chrono::duration<double> runtime = chronoEndOfImportFiles - chronoStart;
 
-	///////////////
-	// buildTree //
-	///////////////
-
-	// initialize tree
-	Tree *tree = new struct Tree;
-	tree->p = nullptr;
-	tree->depth = 0;
-	tree->n     = rows;
-	tree->parentComm = MPI_COMM_SELF;
-	tree->leftComm = MPI_COMM_SELF;
-	tree->rightComm = MPI_COMM_SELF;
-	tree->thisComm = MPI_COMM_WORLD;
-	tree->name = "t";
-
-	cerr << "70000 : Rank " << myRank << " is calling buildTree" << endl;
-	buildTree( &array, &rows, cols, tree, tree->thisComm, myRank, 
-		numNodes, tree->name );
-
-
-	auto chronoEndOfBuildTree = chrono::system_clock::now();
-
-	MPI_Barrier(MPI_COMM_WORLD);
-
-
-	////////////////
-	// searchTree //
-	////////////////
-
-	cerr << "80000 : Rank " << myRank << " is calling search501" << endl;
-	
-	search501( myRank, path, tree);
-	
-	auto chronoEndOfSearch501 = chrono::system_clock::now();
-	
-	MPI_Barrier(MPI_COMM_WORLD);
-
-	cerr << "98000 : Rank " << myRank << " has completed search501" << endl;
-
-
-	chrono::duration<double> timeToListFiles = chronoEndOfListFiles - chronoStart;
-	chrono::duration<double> timeToDistributeFiles = chronoEndOfDistributeFiles - chronoEndOfListFiles;
-	chrono::duration<double> timeToReceiveFiles = chronoEndOfReceiveFiles - chronoEndOfDistributeFiles;
-	chrono::duration<double> timeToImportFiles = chronoEndOfImportFiles - chronoEndOfReceiveFiles;
-	chrono::duration<double> timeToRun = chronoEndOfSearch501 - chronoStart;
-
-	cerr << "99000 : Rank " << myRank << " took " << timeToListFiles.count() << " seconds to list files" << endl;
-	cerr << "99000 : Rank " << myRank << " took " << timeToDistributeFiles.count() << " seconds to distribute files" << endl;
-	cerr << "99000 : Rank " << myRank << " took " << timeToReceiveFiles.count() << " seconds to receive files" << endl;
-	cerr << "99000 : Rank " << myRank << " took " << timeToImportFiles.count() << " seconds to import files" << endl;
-	cerr << "99000 : Rank " << myRank << " took " << timeToRun.count() << " seconds to run" << endl;
+	cerr << "999999 : main : Rank " << myRank << " runtime " << runtime.count() << " seconds" << endl;
 
 	MPI_Finalize();
 
