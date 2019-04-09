@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 
 
 	// total number of files to read
-	const int maxFilesToProc = 50;
+	const int maxFilesToProc = 500;
 
 	// number of lines PER FILE
 	const int maxRows = 1990000;
