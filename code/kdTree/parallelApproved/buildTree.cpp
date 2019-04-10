@@ -64,7 +64,6 @@ void buildTree(float *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, in
 	//		<< " parallel named " << tree->name  << " q = " << q << " called by " << tree->name
 	//		<< endl;
 		float *array = data[0];
-		tree->source = _Source_buildTree_parallel;
 		buildTree_parallel( &array, rows, cols, tree, comm, currentRank, q );
 		*data = array;
 
@@ -114,7 +113,6 @@ void buildTree(float *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, in
 		f.close();
 */
 		tree->name += "*";
-		tree->source = _Source_buildTree_serial;
 
 	//	cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank
 	//		<< " serial named " << tree->name  << " q = " << q << " called by " << tree->name

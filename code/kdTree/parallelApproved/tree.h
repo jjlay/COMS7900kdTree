@@ -25,8 +25,6 @@ struct Tree {
 	Tree *p;  // Parent
 	Tree *l;  // Left child
 	Tree *r;  // Right child
-	int i;    // Sort index
-	int source; // Which buildTree created it
 
 	MPI_Comm parentComm, leftComm, rightComm, thisComm;
 
@@ -40,12 +38,10 @@ struct Tree {
 	float z2;  // Max z
 
 	int depth;
-	int n;      // Number of points
 
 	float c[4];  // Center of this tree
 	float radius;
 
 	float d[4];  // Data point
-	float index;  // File row index
 }
 ;

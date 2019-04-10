@@ -168,7 +168,6 @@ int main(int argc, char *argv[])
 	Tree *tree = new struct Tree;
 	tree->p = nullptr;
 	tree->depth = 0;
-	tree->n     = rows;
 	tree->parentComm = MPI_COMM_SELF;
 	tree->leftComm = MPI_COMM_SELF;
 	tree->rightComm = MPI_COMM_SELF;
