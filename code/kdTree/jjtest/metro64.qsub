@@ -1,0 +1,11 @@
+#!/bin/bash
+
+## 
+#$ -N MetropolisKdTree64
+#$ -pe mpi 64
+#$ -q amd4.q
+#$ -cwd
+#$ -l h_rt=20:00:00
+
+mpirun -np $NSLOTS $HOME/COMS7900kdTree/code/kdTree/parallelApproved/main
+
