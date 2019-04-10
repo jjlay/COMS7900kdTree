@@ -37,6 +37,6 @@
 // Function: binDAta
 //
 
-void binData( double *data, double *binE, int myRank, int numWorkers, int numPoints, int *binI, int *binC);
+void binData( float *data, float *binE, int myRank, int numWorkers, int numPoints, int *binI, int *binC);
 
 

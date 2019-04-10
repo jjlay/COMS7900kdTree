@@ -43,7 +43,7 @@ using namespace std;
 // Function: main
 //
 
-int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int numNodes, MPI_Comm comm )
+int getSortDim( float *data, int rows, int cols, Tree *tree, int myRank, int numNodes, MPI_Comm comm )
 {
 //	cout << "Rank " << myRank
 //		<< " Name " << tree->name
@@ -60,10 +60,10 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 	auto zMin = min( data, rows, cols, _Z_ );
 	auto zMax = max( data, rows, cols, _Z_ );
 	
-	auto allMins   = new double[numNodes][_ROW_WIDTH_];
-	auto allMaxs   = new double[numNodes][_ROW_WIDTH_];
-	auto minGlobal = new double[_ROW_WIDTH_];
-	auto maxGlobal = new double[_ROW_WIDTH_];
+	auto allMins   = new float[numNodes][_ROW_WIDTH_];
+	auto allMaxs   = new float[numNodes][_ROW_WIDTH_];
+	auto minGlobal = new float[_ROW_WIDTH_];
+	auto maxGlobal = new float[_ROW_WIDTH_];
 	
 	// x min/max
 	if( myRank == 0 ) {
@@ -152,7 +152,7 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 		auto rangeY = maxGlobal[_Y_] - minGlobal[_Y_];
 		auto rangeZ = maxGlobal[_Z_] - minGlobal[_Z_];
 		
-		double test = 0;
+		float test = 0;
 		
 		if( rangeX > test ) {
 			sortDim = _X_;
@@ -168,8 +168,8 @@ int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int nu
 	}
 	
 	// bcast mins'maxs for tree storage
-	MPI_Bcast( minGlobal, 4, MPI_DOUBLE, 0, tree->thisComm );
-	MPI_Bcast( maxGlobal, 4, MPI_DOUBLE, 0, tree->thisComm );
+	MPI_Bcast( minGlobal, 4, MPI_FLOAT, 0, tree->thisComm );
+	MPI_Bcast( maxGlobal, 4, MPI_FLOAT, 0, tree->thisComm );
 	
 	tree->x1 = minGlobal[_X_];
 	tree->x2 = maxGlobal[_X_];

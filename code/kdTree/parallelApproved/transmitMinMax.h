@@ -13,7 +13,7 @@
 // Returns:
 //   Nothing
 
-void transmitMinMax( double min, double max, MPI_Comm comm );
+void transmitMinMax( float min, float max, MPI_Comm comm );
 
 
 

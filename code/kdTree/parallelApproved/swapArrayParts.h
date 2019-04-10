@@ -32,7 +32,7 @@
 //Function: swapArrayParts
 //
 
-void swapArrayParts(double *myArray[], int *rowPTR, int *colPTR, int myrank, int numranks, int *binIPTR, int fromWho, int toWho, MPI_Comm comm);
+void swapArrayParts(float *myArray[], int *rowPTR, int *colPTR, int myrank, int numranks, int *binIPTR, int fromWho, int toWho, MPI_Comm comm);
 
 
 

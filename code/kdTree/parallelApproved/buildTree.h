@@ -20,6 +20,6 @@ using namespace std;
 // Function: buildTree
 //
 
-void buildTree( double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes, string name );
+void buildTree( float *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes, string name );
 
 

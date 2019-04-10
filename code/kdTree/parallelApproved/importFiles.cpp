@@ -33,7 +33,7 @@ using namespace std;
 // Prototypes
 //
 
-double CalculateIndex(string filename);
+float CalculateIndex(string filename);
 
 
 
@@ -42,7 +42,7 @@ double CalculateIndex(string filename);
 //
 
 void importFiles(vector<string> files, int myRank,
-	double *myData, int *rows, int *cols, 
+	float *myData, int *rows, int *cols, 
 	int maxRowsPerFile, unsigned long int arrayLimit) {
 
 	*cols = _ROW_WIDTH_;
@@ -51,7 +51,7 @@ void importFiles(vector<string> files, int myRank,
 	*rows = 0;
 		
 	// Debug
-	double minX = 9999, maxX = -9999, minY = 9999, maxY = -9999, minZ = 9999, maxZ = -9999;
+	float minX = 9999, maxX = -9999, minY = 9999, maxY = -9999, minZ = 9999, maxZ = -9999;
 
 	// loop through files to read
 	for (auto f : files) {
@@ -85,12 +85,15 @@ void importFiles(vector<string> files, int myRank,
 		// calculate the index based on the filename
 		//
 
-		while ((fscanf(inFile, "%s %lf %lf %lf\n", tempString, &myData[arrayIndex + _X_], 
+		while ((fscanf(inFile, "%s %f %f %f\n", tempString, &myData[arrayIndex + _X_], 
 			&myData[arrayIndex + _Y_], &myData[arrayIndex + _Z_]) != EOF) &&
 			(lines < maxRowsPerFile) &&
 			(arrayIndex < arrayLimit-4) &&
 			(lines <_MAX_ROWS_))
 		{
+			
+		//	cout << myData[arrayIndex + _X_] << " " << myData[arrayIndex + _Y_] << " " << myData[arrayIndex + _Z_] << endl;;
+			
 			if (myData[arrayIndex + _X_] < minX)
 				minX = myData[arrayIndex + _X_];
 
@@ -138,7 +141,7 @@ void importFiles(vector<string> files, int myRank,
 // calculates the starting index of the first row in the file.
 //
 
-double CalculateIndex(string filename)
+float CalculateIndex(string filename)
 {
 	const string prefix = "datafile";
 	const string suffix = ".txt";
@@ -159,7 +162,7 @@ double CalculateIndex(string filename)
 	auto n = stod(s) - 1;
 
 	// Figure out the starting index
-	double r = static_cast<double>(_MAX_ROWS_) * n;
+	float r = static_cast<float>(_MAX_ROWS_) * n;
 
 	return r;
 }

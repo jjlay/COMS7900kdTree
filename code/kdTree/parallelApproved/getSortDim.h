@@ -40,6 +40,6 @@ using namespace std;
 // Function: main
 //
 
-int getSortDim( double *data, int rows, int cols, Tree *tree, int myRank, int numNodes, MPI_Comm comm );
+int getSortDim( float *data, int rows, int cols, Tree *tree, int myRank, int numNodes, MPI_Comm comm );
 
 

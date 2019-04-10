@@ -18,22 +18,22 @@ using namespace std;
 // Function: testUniformity
 //
 
-int testUniformity( int *binC, int numWorkers, double thresh, double *uniformity ) {
+int testUniformity( int *binC, int numWorkers, float thresh, float *uniformity ) {
 	// binC = bin counts
 	
 	int isUniform; 	// final returned value
-	double test;
-	double avgPts = (double) binC[0];
-	double maxPts = (double) binC[0];
-	double minPts = (double) binC[0];
+	float test;
+	float avgPts = (float) binC[0];
+	float maxPts = (float) binC[0];
+	float minPts = (float) binC[0];
 	
 	for( int i = 1; i < numWorkers; i++ ) {
-		avgPts = avgPts + (double) binC[i];
+		avgPts = avgPts + (float) binC[i];
 		if( binC[i] > maxPts) {
-			maxPts = (double) binC[i];
+			maxPts = (float) binC[i];
 		}
 		if( binC[i] < minPts) {
-			minPts = (double) binC[i];
+			minPts = (float) binC[i];
 		}
 
 	}

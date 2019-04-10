@@ -22,7 +22,7 @@ using namespace std;
 // Function: buildTree
 //
 
-void buildTree_parallel(double *data, int rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes ) {
+void buildTree_parallel(float *data, int rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes ) {
 	
 	// tree.n = total number of data points
 	

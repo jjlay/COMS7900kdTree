@@ -11,4 +11,4 @@
 // Function: searchTreeJJ
 //
 
-int searchTreeLocal(Tree *tree, double searchCenter[4], double radius, int depth);
+int searchTreeLocal(Tree *tree, float searchCenter[4], float radius, int depth);

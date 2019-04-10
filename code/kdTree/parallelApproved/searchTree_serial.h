@@ -11,6 +11,6 @@
 // Function: buildTree
 //
 
-int searchTree_serial(double *point, double rad, Tree *tree);
+int searchTree_serial(float *point, float rad, Tree *tree);
 
 

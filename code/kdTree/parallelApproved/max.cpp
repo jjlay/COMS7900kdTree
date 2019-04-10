@@ -18,8 +18,8 @@
 using namespace std;
 
 // ****May need to make a limit for start and end point for the search for min max****
-double max(double myArray[], int rows, int cols, int maxThisColumn){
-	double myMax = myArray[maxThisColumn];
+float max(float myArray[], int rows, int cols, int maxThisColumn){
+	float myMax = myArray[maxThisColumn];
 	//int foundRow = 0;
 	//cout << "Inside find max before searching "<< rows << endl;
 	//for (int myMax_i =0; myMax_i < rows-1 ; myMax_i++){

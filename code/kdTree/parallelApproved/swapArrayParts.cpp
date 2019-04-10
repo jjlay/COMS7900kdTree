@@ -39,14 +39,14 @@
 using namespace std;
 
 struct Node{
-	double ll_location;
-	double ll_x;
-	double ll_y;
-	double ll_z;
+	float ll_location;
+	float ll_x;
+	float ll_y;
+	float ll_z;
 	struct Node *next;
 };
 
-void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, int numranks, int *binIPTR, int fromWho, int toWho, MPI_Comm comm){
+void swapArrayParts(float *pmyArray[], int *rowPTR , int *colPTR, int myrank, int numranks, int *binIPTR, int fromWho, int toWho, MPI_Comm comm){
 
 	if (toWho == fromWho)
 		return;
@@ -69,8 +69,8 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
         int myAmountToReceive;
         int myAmountToSend;
         int mySendStartingPoint;
-        double *myArray;
-	myArray = (double*)malloc((rowPTR[0]*4)*sizeof(double));
+        float *myArray;
+	myArray = (float*)malloc((rowPTR[0]*4)*sizeof(float));
 //	cout << "MY RANK swap " << myRank << endl;
 	for(int fill0 =0; fill0< rowPTR[0]*4  ;fill0++){
 		myArray[fill0] = *(*pmyArray+fill0);
@@ -93,16 +93,16 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
         if(myRank == fromWho){
                 myAmountToSend = 4*(myBinI[toWho+1]-myBinI[toWho]);
                 mySendStartingPoint = 4*(myBinI[toWho]);
-                MPI_Isend(&myArray[mySendStartingPoint], myAmountToSend, MPI_DOUBLE, toWho, 888,  comm, &request);
+                MPI_Isend(&myArray[mySendStartingPoint], myAmountToSend, MPI_FLOAT, toWho, 888,  comm, &request);
 		MPI_Wait( &request, &status );
 	}
         if(myRank == toWho){
                 myAmountToReceive = 4*(myEndRow-myStartRow);
-                double *receiveThis;
-                receiveThis = (double*) malloc((myAmountToReceive)*sizeof(double));
-                MPI_Recv(receiveThis, myAmountToReceive, MPI_DOUBLE, fromWho, 888 , comm,&status);
-                double *tempArray;
-                tempArray = (double*) malloc(((rowPTR[0]*4)+(myAmountToReceive))*sizeof(double));
+                float *receiveThis;
+                receiveThis = (float*) malloc((myAmountToReceive)*sizeof(float));
+                MPI_Recv(receiveThis, myAmountToReceive, MPI_FLOAT, fromWho, 888 , comm,&status);
+                float *tempArray;
+                tempArray = (float*) malloc(((rowPTR[0]*4)+(myAmountToReceive))*sizeof(float));
                 for(int fill = 0; fill< (rowPTR[0]*4);fill++){
                         tempArray[fill] = myArray[fill];
                 }
@@ -111,8 +111,8 @@ void swapArrayParts(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, i
                 }
 //		cout << "My rank free pmyArray : " << myRank << endl;
 		//free(pmyArray);
-//		*pmyArray = (double*) malloc(((rowPTR[0]*4)+(myAmountToReceive))*sizeof(double));
-		*pmyArray = (double*) realloc( *pmyArray, ((rowPTR[0]*4)+(myAmountToReceive))*sizeof(double));
+//		*pmyArray = (float*) malloc(((rowPTR[0]*4)+(myAmountToReceive))*sizeof(float));
+		*pmyArray = (float*) realloc( *pmyArray, ((rowPTR[0]*4)+(myAmountToReceive))*sizeof(float));
 //		cout << "my rank reallock pmyArray : " << myRank << endl;
 		for(int fill3 = 0; fill3<(rowPTR[0]*4)+myAmountToReceive; fill3++){
 			*(*pmyArray+fill3) = tempArray[fill3];			

@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 	int avgPtsPerWorker = numLines / numWorkers;
 
 
-	// set cout to print doubles' full length
+	// set cout to print floats' full length
 //	std::cout.precision(17);
 	
 /*	
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
 
 #ifdef _TIMING_
 	auto timeBeginFilenameDistribute = std::chrono::system_clock::now();
-	chrono::duration<double> timeElapsedSeconds = timeBeginFilenameDistribute - timeStart;
+	chrono::duration<float> timeElapsedSeconds = timeBeginFilenameDistribute - timeStart;
 	cout << "TIMING : Rank " << std::fixed << std::setprecision(0) << myRank << " took "
 		<< std::setprecision(2) << timeElapsedSeconds.count() << " seconds "
 		<< " to initialize MPI" << endl;
@@ -155,15 +155,15 @@ int main(int argc, char *argv[])
 #endif
 	
 	int sortInd = _X_;
-	double myMin = 0.0;
-	double myMax = 0.0;
-	double *array;
+	float myMin = 0.0;
+	float myMax = 0.0;
+	float *array;
 	int rows = 0, cols = 0;
 
 	if (myRank != 0) {
 	        // Read data files in
 	
-	        array = new double[FilenameArray.size() * maxRows * _ROW_WIDTH_]; //JJL
+	        array = new float[FilenameArray.size() * maxRows * _ROW_WIDTH_]; //JJL
 	
 	        importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows);
 	
@@ -221,9 +221,9 @@ int main(int argc, char *argv[])
 	auto timeBeginMinMax = std::chrono::system_clock::now();
 #endif
 
-	auto allMins = new double[numNodes];
-	auto allMaxs = new double[numNodes];
-	double minGlobal, maxGlobal;
+	auto allMins = new float[numNodes];
+	auto allMaxs = new float[numNodes];
+	float minGlobal, maxGlobal;
 
 	if (myRank == 0) {
 		// Receive minimums and maximums
@@ -271,7 +271,7 @@ int main(int argc, char *argv[])
 	//////////////////////
 
 	// same across all nodes
-	double *binE = new double[numWorkers+1];
+	float *binE = new float[numWorkers+1];
 	// different across all nodes, master is sum of others
 	int *binC = new int[numWorkers];
 	
@@ -289,8 +289,8 @@ int main(int argc, char *argv[])
 		
 
 	// uniformity threshold
-	double thresh = 0.101;
-	double uniformity;
+	float thresh = 0.101;
+	float uniformity;
 	// Change to 0 when the functions are written
 	int isUniform[1];
 	isUniform[0] = 1;
@@ -341,7 +341,7 @@ int main(int argc, char *argv[])
 		transmitUniformity( isUniform, numWorkers);
 	} else {
 		// Receive initial bin edges
-		result = MPI_Recv( binE, numWorkers+1, MPI_DOUBLE, 0,
+		result = MPI_Recv( binE, numWorkers+1, MPI_FLOAT, 0,
 			mpi_Tag_BinEdges, MPI_COMM_WORLD, &status );
 		
 		binI_1D[0] = 0;
@@ -448,7 +448,7 @@ int main(int argc, char *argv[])
 		}
 		else {
 			// Receive current bin edges
-			result = MPI_Recv( binE, numWorkers+1, MPI_DOUBLE, 0,
+			result = MPI_Recv( binE, numWorkers+1, MPI_FLOAT, 0,
 				mpi_Tag_BinEdges, MPI_COMM_WORLD, &status );
 			
 		//	binI_1D[0] = 0;
@@ -516,7 +516,7 @@ int main(int argc, char *argv[])
 // multiline start	
 	// Broadcast binI_2D to workers
 	for( int i = 0; i < numWorkers; i++ ) {
-		result = MPI_Bcast( binI_2D[i], numWorkers+1, MPI_DOUBLE, 0,
+		result = MPI_Bcast( binI_2D[i], numWorkers+1, MPI_FLOAT, 0,
 			MPI_COMM_WORLD );
 	}
 // multiline end

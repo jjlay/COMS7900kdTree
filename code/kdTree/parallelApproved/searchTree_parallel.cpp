@@ -31,7 +31,7 @@ using namespace std;
 // Function: buildTree
 //
 
-void searchTree_parallel( double *point, double rad, double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes ) {
+void searchTree_parallel( float *point, float rad, float *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes ) {
 
 	MPI_Status mpiStatusResult;
 	int mpiReturnValue;

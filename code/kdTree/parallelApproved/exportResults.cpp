@@ -27,7 +27,7 @@
 // Function: exportResults
 //
 
-void exportResults(int myRank, double min, double max) {
+void exportResults(int myRank, float min, float max) {
 
 	// Display results
 	std::cout << "Rank " << std::fixed << std::setprecision(0) << myRank
