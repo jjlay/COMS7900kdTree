@@ -12,3 +12,6 @@
 \beamer@subsectionintoc {3}{2}{Other tests}{22}{0}{3}
 \beamer@sectionintoc {4}{Results}{23}{0}{4}
 \beamer@sectionintoc {5}{Conclusions}{24}{0}{5}
+\beamer@subsectionintoc {5}{1}{Challenges}{25}{0}{5}
+\beamer@subsectionintoc {5}{2}{Successes}{26}{0}{5}
+\beamer@subsectionintoc {5}{3}{Future Work}{27}{0}{5}
