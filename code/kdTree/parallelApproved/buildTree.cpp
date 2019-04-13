@@ -28,7 +28,7 @@ using namespace std;
 // Function: buildTree
 //
 
-void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes, string name ) {
+void buildTree(float *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes, string name ) {
 
 	int q = 0, currentRank = 0, rootRank;
 	MPI_Comm_size( comm, &q );
@@ -63,8 +63,7 @@ void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, i
 	//	cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank
 	//		<< " parallel named " << tree->name  << " q = " << q << " called by " << tree->name
 	//		<< endl;
-		double *array = data[0];
-		tree->source = _Source_buildTree_parallel;
+		float *array = data[0];
 		buildTree_parallel( &array, rows, cols, tree, comm, currentRank, q );
 		*data = array;
 
@@ -114,7 +113,6 @@ void buildTree(double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, i
 		f.close();
 */
 		tree->name += "*";
-		tree->source = _Source_buildTree_serial;
 
 	//	cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank
 	//		<< " serial named " << tree->name  << " q = " << q << " called by " << tree->name

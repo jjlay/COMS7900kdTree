@@ -1,4 +1,4 @@
 #pragma once
 
-void sortData(double *data, int numCols, int numRows, int dimension);
+void sortData(float *data, int numCols, int numRows, int dimension);
 

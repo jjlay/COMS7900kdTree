@@ -30,7 +30,7 @@
 //
 //    numWorkers - number of workers
 
-void transmitBinEdges(double *binE, int numWorkers, MPI_Comm comm) {
+void transmitBinEdges(float *binE, int numWorkers, MPI_Comm comm) {
 
 	int result;
 	
@@ -38,7 +38,7 @@ void transmitBinEdges(double *binE, int numWorkers, MPI_Comm comm) {
 	
 	for( int i = 1; i < numWorkers; i++ ) {
 		
-		result = MPI_Send(binE, numWorkers+1, MPI_DOUBLE, i,
+		result = MPI_Send(binE, numWorkers+1, MPI_FLOAT, i,
 			mpi_Tag_BinEdges, comm );
 		
 	}

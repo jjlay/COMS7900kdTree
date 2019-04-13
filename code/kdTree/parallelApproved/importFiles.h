@@ -36,6 +36,6 @@ using namespace std;
 //
 
 void importFiles(vector<string> files, int myRank,
-	double *myData, int *rows, int *cols, 
+	float *myData, int *rows, int *cols, 
 	int maxRowsPerFile, unsigned long int arrayLimit);
 

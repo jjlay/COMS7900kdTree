@@ -23,7 +23,7 @@ using namespace std;
 // Function: buildTree
 //
 
-void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
+void buildTree_serial(float *data, int *rows, int cols, Tree *tree) {
 
 	// function tree = buildTree( data, tree )
 	//
@@ -32,8 +32,6 @@ void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 	//     % get length
 	//     [ nPts, nDim ] = size( data );
 	//     tree(1).n = nPts;
-
-	tree->n = *rows;
 
 	if (*rows > 1) {
 		//     tree(1).c = [ 0.5*( min(data(:,1)) + max(data(:,1)) ), 0.5*( min(data(:,2)) + max(data(:,2)) )];
@@ -130,8 +128,6 @@ void buildTree_serial(double *data, int *rows, int cols, Tree *tree) {
 
 		//
 		//         tree(1).i = sortInd;
-
-		tree->i = sortInd;
 
 		//         tree(1).v = 0.5*( dataSort(half,sortInd) + dataSort(half+1,sortInd) );
 		//

@@ -14,6 +14,6 @@
 // Returns:
 //   Nothing
 
-void receiveMinMax(int sourceRank, double *min, double *max, MPI_Comm comm);
+void receiveMinMax(int sourceRank, float *min, float *max, MPI_Comm comm);
 
 

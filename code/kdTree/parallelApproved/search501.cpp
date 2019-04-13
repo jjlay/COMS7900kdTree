@@ -46,9 +46,9 @@ void search501(int myRank, string path, Tree *tree) {
 	//
 	
 	string filename = path + "datafile00501.txt";
-	const int maxSearchRows = 1000 ;
+	const int maxSearchRows = 30000;
 	const int numberRadii = 3;
-	double radii[] = {0.01, 0.05, 0.10};
+	float radii[] = {0.01, 0.05, 0.10};
 	
 	//
 	// Import the list of points to search
@@ -57,20 +57,20 @@ void search501(int myRank, string path, Tree *tree) {
 	vector<string> listOfFiles;
 	listOfFiles.push_back(filename);
 	
-	auto searchable = new double[_MAX_ROWS_ * _ROW_WIDTH_];
+	auto searchable = new float[_MAX_ROWS_ * _ROW_WIDTH_];
 	unsigned long int maxArraySize = _MAX_ROWS_ * _ROW_WIDTH_;
 	
 	int rows = 0, cols = _ROW_WIDTH_;
 	importFiles(listOfFiles, myRank, searchable, &rows, &cols, maxSearchRows,
 	  maxArraySize);
 	
-	auto buffer = new double[_SEARCH_WIDTH_]();
+	auto buffer = new float[_SEARCH_WIDTH_]();
 	buffer[_SIGNAL_] = mpi_Signal_Run;
 	const int messageSize = _SEARCH_WIDTH_;
 	
-	double point[4];
+	float point[4];
 	unsigned long int offset;
-	double radius;
+	float radius;
 	
 	int *foundEach;
 	int *foundAll;

@@ -17,7 +17,7 @@
 // Function: searchTreeJJ
 //
 
-int searchTreeLocal(Tree *tree, double searchCenter[4], double radius, int depth) {
+int searchTreeLocal(Tree *tree, float searchCenter[4], float radius, int depth) {
 	//
 	// function [ found ] = searchTree( tree, c0, rad )
 	//
@@ -49,7 +49,7 @@ int searchTreeLocal(Tree *tree, double searchCenter[4], double radius, int depth
 
 	int found = 0;
 
-	double distance = sqrt(pow(searchCenter[_X_] - tree->c[_X_], 2.0) +
+	float distance = sqrt(pow(searchCenter[_X_] - tree->c[_X_], 2.0) +
 				pow(searchCenter[_Y_] - tree->c[_Y_], 2.0) +
 				pow(searchCenter[_Z_] - tree->c[_Z_], 2.0));
 

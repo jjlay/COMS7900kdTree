@@ -4,5 +4,5 @@
 // Function: exportResults
 //
 
-void exportResults(int myRank, double min, double max);
+void exportResults(int myRank, float min, float max);
 

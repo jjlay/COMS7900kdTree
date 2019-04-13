@@ -40,13 +40,13 @@
 //
 using namespace std;
 
-void cleanUp(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, int numranks, int *binIPTR){
+void cleanUp(float *pmyArray[], int *rowPTR , int *colPTR, int myrank, int numranks, int *binIPTR){
 	MPI_Request request;
 	MPI_Status status;
 	int maxRank = numranks;
 	int myRank = myrank;
-	double *myArray = *pmyArray;
-	double *tempArray;
+	float *myArray = *pmyArray;
+	float *tempArray;
 //Fix bini ???
 	int *myBinI;	
 
@@ -64,7 +64,7 @@ void cleanUp(double *pmyArray[], int *rowPTR , int *colPTR, int myrank, int numr
 //	cout <<"Rank: " << myRank << " :  right above the problem" << endl;
 	int reserveThisMuchSpace =  (4*((myBinI[myRank+1]-myBinI[myRank])+rowPTR[0]-myBinI[maxRank])); 
 //	cout << "Rank: " << myRank << " : " << reserveThisMuchSpace << endl;
-	tempArray = (double*)malloc((reserveThisMuchSpace)*sizeof(double));
+	tempArray = (float*)malloc((reserveThisMuchSpace)*sizeof(float));
 	int tempArrayCounter =0;
 //	cout << "rank: " << myRank << " Inside clean up with binI "<< endl;
 	for (int j = myBinI[myRank]; j< myBinI[myRank+1]; j++){

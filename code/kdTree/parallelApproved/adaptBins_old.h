@@ -10,6 +10,6 @@
 // Function: adaptBins
 //
 
-void adaptBins_old( double *binE, int *binC, int NumWorkers, int step );
+void adaptBins_old( float *binE, int *binC, int NumWorkers, int step );
 	
 

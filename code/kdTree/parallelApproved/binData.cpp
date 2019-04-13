@@ -25,7 +25,7 @@
 // returns binC, updates binI
 //
 
-void binData( double *data, double *binE, int myRank, int sortInd, 
+void binData( float *data, float *binE, int myRank, int sortInd, 
 	int numWorkers, int numPoints, int *binI, int *binC) {
 	// binE: bin edges, binI: bin edge indices, binC: bin counts
 	// sortInd: which column to sort by

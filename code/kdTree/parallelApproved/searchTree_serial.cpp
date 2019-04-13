@@ -23,14 +23,14 @@ using namespace std;
 // Function: buildTree
 //
 
-int searchTree_serial(double *point, double rad, Tree *tree) {
+int searchTree_serial(float *point, float rad, Tree *tree) {
 	
 	int myRank;
 	MPI_Comm_rank( MPI_COMM_WORLD, &myRank);
 	
 	int found = 0;
 
-	double distance2 = pow(point[_X_] - tree->c[_X_], 2.0) +
+	float distance2 = pow(point[_X_] - tree->c[_X_], 2.0) +
 			   pow(point[_Y_] - tree->c[_Y_], 2.0) +
 			   pow(point[_Z_] - tree->c[_Z_], 2.0);
 

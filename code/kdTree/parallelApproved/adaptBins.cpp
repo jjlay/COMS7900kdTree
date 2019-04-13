@@ -36,12 +36,12 @@ using namespace std;
 // Function: importFiles
 //
 
-void adaptBins( double *binE, int *binC, int numWorkers, int numLines, double avgPtsPerWorker ) {
+void adaptBins( float *binE, int *binC, int numWorkers, int numLines, float avgPtsPerWorker ) {
 	// binE = bin edges, binC = bin counts
 	
-	double *binE2   = new double[numWorkers+1];    // the new bin edges, copy to binE
-	double *binCum  = new double[numWorkers+1];    // cumulative binC
-//	double *totals  = new double[numWorkers-1];    //
+	float *binE2   = new float[numWorkers+1];    // the new bin edges, copy to binE
+	float *binCum  = new float[numWorkers+1];    // cumulative binC
+//	float *totals  = new float[numWorkers-1];    //
 //	int    *indices = new int[numWorkers-1];    // bin index in which the new edges lie	
 	int     ind;
 	

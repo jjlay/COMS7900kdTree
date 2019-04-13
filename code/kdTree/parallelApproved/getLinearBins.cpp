@@ -15,10 +15,10 @@
 // Function: getLinearBins
 //
 
-void getLinearBins( double *binE, int numWorkers, int myRank,
-	double minGlobal, double maxGlobal ) {
+void getLinearBins( float *binE, int numWorkers, int myRank,
+	float minGlobal, float maxGlobal ) {
 	
-	double width = (maxGlobal - minGlobal);
+	float width = (maxGlobal - minGlobal);
 	
 	for( int i = 0; i < numWorkers+1; i++ ) {
 		

@@ -12,5 +12,5 @@
 // Function: main
 //
 
-void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rows, int *cols, int sortInd, MPI_Comm comm );
+void parallelSort( int myRank, int numNodes, float *tmpArray[], int *rows, int *cols, int sortInd, MPI_Comm comm );
 

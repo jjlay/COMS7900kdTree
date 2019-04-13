@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 
 
 	// total number of files to read
-	const int maxFilesToProc = 500;
+	const int maxFilesToProc = 150;
 
 	// number of lines PER FILE
 	const int maxRows = 1000000;
@@ -143,10 +143,10 @@ int main(int argc, char *argv[])
 
 	// Read data files in
 	unsigned long int arrayLimit = (FilenameArray.size() * maxRows * cols + 8);
-	double *array = new double[arrayLimit];
+	float *array = new float[arrayLimit];
 
 	// void importFiles(vector<string> files, int myRank,
-	// 	double *myData, int *rows, int *cols, int maxRows,
+	// 	float *myData, int *rows, int *cols, int maxRows,
 	// 	int maxRowsPerFile, unsigned long int arrayLimit)
 
 	importFiles(FilenameArray, myRank, array, &rows, &cols, maxRows, arrayLimit);
@@ -168,7 +168,6 @@ int main(int argc, char *argv[])
 	Tree *tree = new struct Tree;
 	tree->p = nullptr;
 	tree->depth = 0;
-	tree->n     = rows;
 	tree->parentComm = MPI_COMM_SELF;
 	tree->leftComm = MPI_COMM_SELF;
 	tree->rightComm = MPI_COMM_SELF;
@@ -200,11 +199,11 @@ int main(int argc, char *argv[])
 	cerr << "98000 : Rank " << myRank << " has completed search501" << endl;
 
 
-	chrono::duration<double> timeToListFiles = chronoEndOfListFiles - chronoStart;
-	chrono::duration<double> timeToDistributeFiles = chronoEndOfDistributeFiles - chronoEndOfListFiles;
-	chrono::duration<double> timeToReceiveFiles = chronoEndOfReceiveFiles - chronoEndOfDistributeFiles;
-	chrono::duration<double> timeToImportFiles = chronoEndOfImportFiles - chronoEndOfReceiveFiles;
-	chrono::duration<double> timeToRun = chronoEndOfSearch501 - chronoStart;
+	chrono::duration<float> timeToListFiles = chronoEndOfListFiles - chronoStart;
+	chrono::duration<float> timeToDistributeFiles = chronoEndOfDistributeFiles - chronoEndOfListFiles;
+	chrono::duration<float> timeToReceiveFiles = chronoEndOfReceiveFiles - chronoEndOfDistributeFiles;
+	chrono::duration<float> timeToImportFiles = chronoEndOfImportFiles - chronoEndOfReceiveFiles;
+	chrono::duration<float> timeToRun = chronoEndOfSearch501 - chronoStart;
 
 	cerr << "99000 : Rank " << myRank << " took " << timeToListFiles.count() << " seconds to list files" << endl;
 	cerr << "99000 : Rank " << myRank << " took " << timeToDistributeFiles.count() << " seconds to distribute files" << endl;

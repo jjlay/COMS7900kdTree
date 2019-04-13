@@ -9,7 +9,7 @@
 // Function: getLinearBins
 //
 
-void getLinearBins( double *binE, int numNodes, int myRank,
-	double minGlobal, double maxGlobal );
+void getLinearBins( float *binE, int numNodes, int myRank,
+	float minGlobal, float maxGlobal );
 
 

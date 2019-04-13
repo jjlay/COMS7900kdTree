@@ -29,14 +29,14 @@
 // Returns:
 //   Nothing
 
-void transmitMinMax( double min, double max, MPI_Comm comm ) {
+void transmitMinMax( float min, float max, MPI_Comm comm ) {
 
-	auto minMax = new double[2];
+	auto minMax = new float[2];
 
 	minMax[_MIN_] = min;
 	minMax[_MAX_] = max;
 
-	int result = MPI_Send(minMax, 2, MPI_DOUBLE, Rank0,
+	int result = MPI_Send(minMax, 2, MPI_FLOAT, Rank0,
 		mpi_Tag_SendMinMax, comm);
 }
 

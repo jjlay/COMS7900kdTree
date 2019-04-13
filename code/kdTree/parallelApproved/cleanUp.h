@@ -30,4 +30,4 @@
 //Function: cleanUp 
 //
 
-void cleanUp(double *myArray[], int *rowPTR, int *colPTR, int myrank, int numranks, int *binIPTR);
+void cleanUp(float *myArray[], int *rowPTR, int *colPTR, int myrank, int numranks, int *binIPTR);

@@ -31,7 +31,7 @@ using namespace std;
 // Function: buildTree
 //
 
-void buildTree_parallel( double *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes ) {
+void buildTree_parallel( float *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, int myRank, int numNodes ) {
 
 	MPI_Status mpiStatusResult;
 	int mpiReturnValue;
@@ -55,7 +55,7 @@ void buildTree_parallel( double *data[], int *rows, int cols, Tree *tree, MPI_Co
 //	cout << "sortdim " << sortDim << endl;
 	
 	// parallelSort
-	double *array = data[0];
+	float *array = data[0];
 
 //	cout << "before " << myRank << endl;
 	parallelSort( myRank, numNodes, &array, rows, &cols, sortDim, comm );

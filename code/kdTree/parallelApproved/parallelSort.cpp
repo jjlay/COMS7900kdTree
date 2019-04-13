@@ -58,13 +58,13 @@ using namespace std;
 // Function: main
 //
 
-void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, int *colsPTR, int sortInd, MPI_Comm comm )
+void parallelSort( int myRank, int numNodes, float *tmpArray[], int *rowsPTR, int *colsPTR, int sortInd, MPI_Comm comm )
 {
 	int rows = *rowsPTR;
 	int cols = *colsPTR;
-	double *array = tmpArray[0];
-	double myMin = 0.0;
-	double myMax = 0.0;
+	float *array = tmpArray[0];
+	float myMin = 0.0;
+	float myMax = 0.0;
 	//number of lines TOTAL
 	unsigned int numLines;
 	
@@ -92,9 +92,9 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	
 	MPI_Barrier(comm);
 
-	auto allMins = new double[numNodes];
-	auto allMaxs = new double[numNodes];
-	double minGlobal, maxGlobal;
+	auto allMins = new float[numNodes];
+	auto allMaxs = new float[numNodes];
+	float minGlobal, maxGlobal;
 	
 	// Send minimums and maximums
 	myMin = min(array, rows, cols, sortInd );
@@ -132,7 +132,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	int a = worldRank;
 	
 	// same across all nodes
-	double *binE = new double[numNodes+1];
+	float *binE = new float[numNodes+1];
 	// different across all nodes, master is sum of others
 	int *binC  = new int[numNodes];
 	int *binCt = new int[numNodes];
@@ -151,8 +151,8 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 	MPI_Request request;
 
 	// uniformity threshold
-	double thresh = 0.101;
-	double uniformity;
+	float thresh = 0.101;
+	float uniformity;
 	// Change to 0 when the functions are written
 	int isUniform[1];
 	isUniform[0] = -1;
@@ -164,7 +164,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 		transmitBinEdges( binE, numNodes, comm );
 	} else {
 		// Receive initial bin edges
-		result = MPI_Recv( binE, numNodes+1, MPI_DOUBLE, 0,
+		result = MPI_Recv( binE, numNodes+1, MPI_FLOAT, 0,
 			mpi_Tag_BinEdges, comm, &status );
 	}
 	
@@ -228,7 +228,7 @@ void parallelSort( int myRank, int numNodes, double *tmpArray[], int *rowsPTR, i
 			transmitBinEdges( binE, numNodes, comm );
 		} else {
 			// Receive initial bin edges
-			result = MPI_Recv( binE, numNodes+1, MPI_DOUBLE, 0,
+			result = MPI_Recv( binE, numNodes+1, MPI_FLOAT, 0,
 				mpi_Tag_BinEdges, comm, &status );
 		}
 		
