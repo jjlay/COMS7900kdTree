@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 	const int maxFilesToProc = 500;
 
 	// number of lines PER FILE
-	const int maxRows = 10000;
+	const int maxRows = 100;
 
 	cout << "00000 : main : " << maxFilesToProc << " files with " << maxRows << " rows each" << endl;
 
@@ -171,11 +171,10 @@ int main(int argc, char *argv[])
 	tree->leftComm = MPI_COMM_SELF;
 	tree->rightComm = MPI_COMM_SELF;
 	tree->thisComm = MPI_COMM_WORLD;
-	tree->name = "t";
 
 	cerr << "70000 : Rank " << myRank << " is calling buildTree" << endl;
 	buildTree( &array, &rows, cols, tree, tree->thisComm, myRank, 
-		numNodes, tree->name );
+		numNodes, "");
 
 
 	auto chronoEndOfBuildTree = chrono::system_clock::now();

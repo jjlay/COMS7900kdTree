@@ -139,9 +139,6 @@ void buildTree_serial(float *data, int *rows, int cols, Tree *tree) {
 		tree->l = new Tree;
 		tree->r = new Tree;
 
-		tree->l->name = tree->name + "l";
-		tree->r->name = tree->name + "r";
-
 		// Set the children's parent
 		tree->l->p = tree;
 		tree->r->p = tree;
@@ -151,21 +148,6 @@ void buildTree_serial(float *data, int *rows, int cols, Tree *tree) {
 	}
 	else
 	{
-		//     else
-		//         tree(1).d  = data;
-		//         tree(1).c  = data;
-		//         tree(1).x1 = data(1);
-		//         tree(1).x2 = data(1);
-		//         tree(1).y1 = data(2);
-		//         tree(1).y2 = data(2);
-		//         disp("Branch complete")
-		//     end
-		//
-		// end
-		//
-
-		tree->name += "!";
-
 		tree->d[_INDEX_] = data[_INDEX_];
 		tree->d[_X_] = data[_X_];
 		tree->d[_Y_] = data[_Y_];
