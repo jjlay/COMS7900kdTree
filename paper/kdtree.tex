@@ -2,6 +2,7 @@
 
 \usepackage[a4paper,margin=1.15in,footskip=0.25in]{geometry}
 
+\usepackage{hyperref}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{textpos}
@@ -342,7 +343,7 @@ Another change was moving from \texttt{double} data types to \texttt{float} in o
 
 During the parallel construction phase, nodes are separated into different MPI communicators as shown in Figure~\ref{fig:communicators}. The four \texttt{MPI\_Comm} variables store the references to the parent, child, and current communicators. The value \texttt{MPI\_COMM\_SELF} is used as a ``null'' value for these pointers to indicate no communicators exist in the given direction.
 
-Once the nodes became members of a communicator containing only itself, \texttt{buildTree} constructed the local serial tree using the same structure.
+Once the nodes became members of a communicator containing only itself, \texttt{buildTree} constructed the local serial tree using the same structure but using the \texttt{Tree} pointers rather than the \texttt{MPI\_Comm} variables.
 
 
 %%%%%%%%%
@@ -692,6 +693,32 @@ The following recommendations could improve the course when offered next:
     \item Assign a job queue to each team with dedicated nodes for each to eliminate resource conflicts between teams.
     \item 
 \end{itemize}
+
+
+%%%%%%%%%%%%%%%
+%
+% Links
+%
+%%%%%%%%%%%%%%%
+
+\subsection{Links}
+
+\begin{verbatim}
+* k-d tree repo
+  https://github.com/jjlay/COMS7900kdTree
+
+* Production source
+  https://github.com/jjlay/COMS7900kdTree/tree/master/code/kdTree/parallelApproved
+
+* Paper
+  https://github.com/jjlay/COMS7900kdTree/tree/master/paper
+
+* Presentation
+  https://github.com/jjlay/COMS7900kdTree/tree/master/presentation
+  
+* ParallelSort
+  https://github.com/jjlay/COMS7900kdTree/tree/master/code/parallelSort
+\end{verbatim}
 
 
 %%%%%%%%%%%%%
