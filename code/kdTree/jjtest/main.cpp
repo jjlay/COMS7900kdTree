@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 	const int maxFilesToProc = 500;
 
 	// number of lines PER FILE
-	const int maxRows = 4000000;
+	const int maxRows = 10000;
 
 	cout << "00000 : main : " << maxFilesToProc << " files with " << maxRows << " rows each" << endl;
 
@@ -202,13 +202,17 @@ int main(int argc, char *argv[])
 	chrono::duration<float> timeToDistributeFiles = chronoEndOfDistributeFiles - chronoEndOfListFiles;
 	chrono::duration<float> timeToReceiveFiles = chronoEndOfReceiveFiles - chronoEndOfDistributeFiles;
 	chrono::duration<float> timeToImportFiles = chronoEndOfImportFiles - chronoEndOfReceiveFiles;
+	chrono::duration<float> timeToBuildTree = chronoEndOfBuildTree - chronoEndOfImportFiles;
+	chrono::duration<float> timeToSearch = chronoEndOfSearch501 - chronoEndOfBuildTree;
 	chrono::duration<float> timeToRun = chronoEndOfSearch501 - chronoStart;
 
-	cerr << "99000 : Rank " << myRank << " took " << timeToListFiles.count() << " seconds to list files" << endl;
-	cerr << "99000 : Rank " << myRank << " took " << timeToDistributeFiles.count() << " seconds to distribute files" << endl;
-	cerr << "99000 : Rank " << myRank << " took " << timeToReceiveFiles.count() << " seconds to receive files" << endl;
-	cerr << "99000 : Rank " << myRank << " took " << timeToImportFiles.count() << " seconds to import files" << endl;
-	cerr << "99000 : Rank " << myRank << " took " << timeToRun.count() << " seconds to run" << endl;
+	cerr << "99900 : Rank " << myRank << " took " << timeToListFiles.count() << " seconds to list files" << endl;
+	cerr << "99900 : Rank " << myRank << " took " << timeToDistributeFiles.count() << " seconds to distribute files" << endl;
+	cerr << "99900 : Rank " << myRank << " took " << timeToReceiveFiles.count() << " seconds to receive files" << endl;
+	cerr << "99900 : Rank " << myRank << " took " << timeToImportFiles.count() << " seconds to import files" << endl;
+	cerr << "99900 : Rank " << myRank << " took " << timeToBuildTree.count() << " seconds to build tree" << endl;
+	cerr << "99900 : Rank " << myRank << " took " << timeToSearch.count() << " seconds to search" << endl;
+	cerr << "99900 : Rank " << myRank << " took " << timeToRun.count() << " seconds to run" << endl;
 
 	MPI_Finalize();
 
