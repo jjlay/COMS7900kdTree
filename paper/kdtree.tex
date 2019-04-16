@@ -240,7 +240,7 @@ cat dump.txt | sort | less
 \end{lstlisting}
 
 
-Code was executed using both interactively by logging into a compute node using \texttt{qlogin} and as a batch job using \texttt{qsub}.
+Code was executed using both interactively by logging into a compute node using \texttt{qlogin} and as a batch job using \texttt{qsub}. Short runs of a few minutes were performed interactively when failures occurred quickly or to test a new section of code on smaller data sets. Longer runs that needed more than eight nodes were submitted to the Sun Grid Engine batch system.  
 
 %%%%%%%%%
 %
@@ -272,7 +272,7 @@ There are four variables which govern the performance of the KD tree and the siz
 % JJ, talk about the Tree struct and what all fields it has
 %
 
-The design of the k-d tree required storing information for organizing the parallel distribution of the data and the data held locally on the node. Rather than create two different type of structures, the code utilized a single C \texttt{struct} which is defined as:
+The design of the k-d tree required storing information for organizing the parallel distribution of the data and the data held locally on the node. Rather than create two different type of structures, the code utilized a single C \texttt{struct} which originally was defined as:
 
 \lstset{language=C++, keepspaces=true}
 \begin{lstlisting}
@@ -312,6 +312,38 @@ struct Tree {
 	double index;  // File row index from source data
 }
 \end{lstlisting}
+
+Unfortunately, this structure proved to be too bloated when attempting to import all 10 billion rows of data as well as the 20 million rows of search rows. The simplified tree structure is:
+
+\lstset{language=C++, keepspaces=true}
+\begin{lstlisting}
+struct Tree {
+	Tree *p;  // Parent
+	Tree *l;  // Left child
+	Tree *r;  // Right child
+
+	MPI_Comm parentComm, leftComm, rightComm, thisComm;
+
+	float x1;  // Min x
+	float x2;  // Max x
+	float y1;  // Min y
+	float y2;  // Max y
+	float z1;  // Min z
+	float z2;  // Max z
+
+	float c[4];  // Center of this tree
+	float radius;
+
+	float d[4];  // Data point
+}
+\end{lstlisting}
+
+Another change was moving from \texttt{double} data types to \texttt{float} in order to conserve memory.
+
+During the parallel construction phase, nodes are separated into different MPI communicators as shown in Figure~\ref{fig:communicators}. The four \texttt{MPI\_Comm} variables store the references to the parent, child, and current communicators. The value \texttt{MPI\_COMM\_SELF} is used as a ``null'' value for these pointers to indicate no communicators exist in the given direction.
+
+Once the nodes became members of a communicator containing only itself, \texttt{buildTree} constructed the local serial tree using the same structure.
+
 
 %%%%%%%%%
 %
@@ -389,6 +421,7 @@ The \texttt{struct} variables used during the initial division of the tree among
    \begin{figure}[h!]
       \includegraphics[width=0.9\textwidth]{images/communicators.png}
       \caption{Example of parallel variables using eight nodes}
+      \label{fig:communicators}
    \end{figure}
 \end{center}
 
@@ -645,9 +678,20 @@ This project was an excellent test for managing MPI in the context of large amou
 	\end{itemize}
 \end{mdframed}
 
+%%%%%%%%%%%%%%%
+%
+% Recommendations
+%
+%%%%%%%%%%%%%%%
 
+\subsection{Recommendations}
 
+The following recommendations could improve the course when offered next:
 
+\begin{itemize}
+    \item Assign a job queue to each team with dedicated nodes for each to eliminate resource conflicts between teams.
+    \item 
+\end{itemize}
 
 
 %%%%%%%%%%%%%
