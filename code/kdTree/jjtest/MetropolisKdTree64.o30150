@@ -1,0 +1,403 @@
+00000 : main : Rank 31 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 37 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 13 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 16 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 17 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 18 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 42 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 44 on compute-2-0.local, Total nodes 200
+00000 : main : Rank 2 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 3 on compute-2-0.local, Total nodes 200
+00000 : main : Rank 20 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 21 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 25 on compute-2-0.local, Total nodes 200
+00000 : main : Rank 38 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 41 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 43 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 0 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 1 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 4 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 5 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 6 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 7 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 8 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 9 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 10 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 11 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 12 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 14 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 15 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 19 on compute-2-0.local, Total nodes 200
+00000 : main : Rank 22 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 23 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 24 on compute-2-0.local, Total nodes 200
+00000 : main : Rank 26 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 27 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 28 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 29 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 30 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 32 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 33 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 34 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 36 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 39 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 40 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 45 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 46 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 47 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 94 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 148 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 35 on compute-2-0.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 95 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 177 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 113 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 58 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 103 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 179 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 59 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 105 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 184 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 107 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 185 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 61 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 108 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 169 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 190 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 64 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 109 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 192 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 117 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 67 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 80 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 171 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 193 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 119 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 73 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 81 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 174 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 194 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 120 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 74 on compute-0-5.local, Total nodes 200
+00000 : main : Rank 82 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 144 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 195 on compute-0-3.local, Total nodes 200
+00000 : main : Rank 121 on compute-0-14.local, Total nodes 200
+00000 : main : Rank 76 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 83 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 145 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 196 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 123 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 77 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 84 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 146 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 199 on compute-0-3.local, Total nodes 200
+00000 : main : Rank 126 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 78 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : 500 files with 4000000 rows each
+00000 : main : 500 files with 4000000 rows each
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 85 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 147 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 176 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 129 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 79 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 86 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 149 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 178 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 130 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 48 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 87 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 150 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 180 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 132 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 49 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 88 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 151 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 181 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 137 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 50 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 89 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 152 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 182 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 141 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 51 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 90 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 153 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 183 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 142 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 52 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 91 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 154 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 186 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 112 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 53 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 92 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 157 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 187 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 114 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 54 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 93 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 158 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 188 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 115 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 55 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 96 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 160 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 189 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 116 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 56 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 97 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 161 on compute-0-8.local, Total nodes 200
+00000 : main : Rank 191 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 118 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 57 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 98 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 162 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 122 on compute-0-14.local, Total nodes 200
+00000 : main : Rank 60 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 99 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 163 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 197 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 124 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 62 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 100 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 165 on compute-0-8.local, Total nodes 200
+00000 : main : Rank 198 on compute-0-3.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 125 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 63 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 101 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 166 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 127 on compute-0-14.local, Total nodes 200
+00000 : main : Rank 65 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 102 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 167 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 128 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 66 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 104 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 168 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 131 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 68 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 106 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 170 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 133 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 69 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 110 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 172 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 134 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 70 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 111 on compute-0-12.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 173 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 135 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 71 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 175 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 136 on compute-0-14.local, Total nodes 200
+00000 : main : Rank 72 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 155 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 138 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 75 on compute-0-5.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 156 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 139 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 159 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 140 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 164 on compute-0-8.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : Rank 143 on compute-0-14.local, Total nodes 200
+00000 : main : 500 files with 4000000 rows each
+00000 : main : 500 files with 4000000 rows each
+00000 : main : 500 files with 4000000 rows each
+00000 : main : 500 files with 4000000 rows each
+00000 : main : 500 files with 4000000 rows each
+00000 : main : 500 files with 4000000 rows each
+00000 : main : 500 files with 4000000 rows each
+00000 : main : 500 files with 4000000 rows each
+--------------------------------------------------------------------------
+mpirun noticed that process rank 181 with PID 127627 on node compute-0-3 exited on signal 9 (Killed).
+--------------------------------------------------------------------------
