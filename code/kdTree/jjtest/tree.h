@@ -28,7 +28,7 @@ struct Tree {
 
 	MPI_Comm parentComm, leftComm, rightComm, thisComm;
 
-	string name;
+	//string name;
 
 	float x1;  // Min x
 	float x2;  // Max x

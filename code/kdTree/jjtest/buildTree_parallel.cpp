@@ -68,7 +68,6 @@ void buildTree_parallel( float *data[], int *rows, int cols, Tree *tree, MPI_Com
 	if (myRank < numLeftNodes) {
 	// split left
 		tree->l = new Tree;
-		tree->l->name = tree->name + "l";
 		tree->r = nullptr;
 		tree->rightComm = MPI_COMM_SELF;
 		color = mpi_Color_Left;
@@ -87,11 +86,10 @@ void buildTree_parallel( float *data[], int *rows, int cols, Tree *tree, MPI_Com
 		tree->l->leftComm = MPI_COMM_SELF;
 		tree->l->rightComm = MPI_COMM_SELF;
 
-		buildTree(data, rows, cols, tree->l, tree->l->thisComm, newRank, numLeftNodes, tree->l->name);
+		buildTree(data, rows, cols, tree->l, tree->l->thisComm, newRank, numLeftNodes, "");
 	} else {
 	//split right
 		tree->r = new Tree;
-		tree->r->name = tree->name + "r";
 		tree->l = nullptr;
 		tree->leftComm = MPI_COMM_SELF;
 
@@ -111,7 +109,7 @@ void buildTree_parallel( float *data[], int *rows, int cols, Tree *tree, MPI_Com
 		tree->r->leftComm = MPI_COMM_SELF;
 		tree->r->rightComm = MPI_COMM_SELF;
 
-		buildTree(data, rows, cols, tree->r, tree->r->thisComm, newRank, numRightNodes, tree->r->name);
+		buildTree(data, rows, cols, tree->r, tree->r->thisComm, newRank, numRightNodes, "");
 	}
 }
 

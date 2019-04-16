@@ -37,63 +37,13 @@ void buildTree(float *data[], int *rows, int cols, Tree *tree, MPI_Comm comm, in
 
 	int key = 50000;
 
-//	cout << tree->depth << endl;
-
 	if( q > 1 ) {
-/*
-		ofstream f;
-		auto newName = name + "-" + to_string(myRank) + ".csv";
-		f.open(newName, ios::out);
-
-		auto tempMin = min(data[0], *rows, cols, _X_);
-		auto tempMax = max(data[0], *rows, cols, _X_);
-		f << tempMin << ", " << tempMax << endl;
-
-		tempMin = min(data[0], *rows, cols, _Y_);
-		tempMax = max(data[0], *rows, cols, _Y_);
-		f << tempMin << ", " << tempMax << endl;
-
-		tempMin = min(data[0], *rows, cols, _Z_);
-		tempMax = max(data[0], *rows, cols, _Z_);
-		f << tempMin << ", " << tempMax << endl;
-
-		f.close();
-*/
-
-	//	cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank
-	//		<< " parallel named " << tree->name  << " q = " << q << " called by " << tree->name
-	//		<< endl;
 		float *array = data[0];
 		buildTree_parallel( &array, rows, cols, tree, comm, currentRank, q );
 		*data = array;
-
-/*
-		ofstream f;
-		auto newName = name + "-" + to_string(myRank) + ".csv";
-		f.open(newName, ios::out);
-
-		auto tempMin = min(data[0], *rows, cols, _X_);
-		auto tempMax = max(data[0], *rows, cols, _X_);
-		f << tempMin << ", " << tempMax << endl;
-
-		tempMin = min(data[0], *rows, cols, _Y_);
-		tempMax = max(data[0], *rows, cols, _Y_);
-		f << tempMin << ", " << tempMax << endl;
-
-		tempMin = min(data[0], *rows, cols, _Z_);
-		tempMax = max(data[0], *rows, cols, _Z_);
-		f << tempMin << ", " << tempMax << endl;
-
-		f.close();
-*/
-
-	//	cout << key << " : " << __FUNCTION__ << " : Depth " << tree->depth << " Rank " << currentRank 
-	//		<< " parallel named " << tree->name  << " q = " << q << " called by " << tree->name
-	//		<< endl;
 	} 
 	else 
 	{
-		tree->name += "*";
 		buildTree_serial( *data, rows, cols, tree);
 	}
 
