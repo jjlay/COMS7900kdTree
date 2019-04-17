@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[usernames,dvipsnames]{beamer}
 
 \usepackage[utf8]{inputenc}
 \usepackage{epstopdf}
@@ -11,10 +11,29 @@
 \usepackage{algorithmic}
 \usepackage[linesnumbered,ruled]{algorithm2e}
 \usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
 %\usepackage{lipsum}
 %\usepackage{dblfloatfix}
 %\usepackage{multicol}
 %\usepackage[ruled]{algorithm2e}
+
+\lstset{%frame=tb,
+language=C++,
+aboveskip=3mm,
+belowskip=3mm,
+showstringspaces=false,
+columns=flexible,
+basicstyle={\small\ttfamily},
+numbers=none,
+numberstyle=\tiny\color{gray},
+keywordstyle=\color{blue},
+commentstyle=\color{dkgreen},
+stringstyle=\color{mauve},
+breaklines=true,
+breakatwhitespace=true,
+tabsize=3
+}
 
 \usefonttheme[onlymath]{serif}
 %\setlength{\columnsep}{5cm}
@@ -35,12 +54,13 @@
 
 
 
-\title[Capstone]{Parallel Orthogonal Recursive Bisection}
+\title[Capstone]{Parallel Orthogonal Recursive Bisection (ORB)}
 
-\author{Team Metropolis:\\
-	James Farzi, JJ Lay, Graham West}
-\date{April 10, 2019}
+%\author{Team Metropolis:\\ James Farzi, JJ Lay, Graham West}
+%\date{April 19, 2019}
+\date{}
 
+%\titlegraphic{\includegraphics[width=0.9\textwidth]{images/DailyPlanet}}
 
 
 %%%%%%%%% BEGIN DOCUMENT %%%%%%%%%
@@ -50,7 +70,28 @@
 \begin{document}
 
 % get title page 
-\frame{\titlepage}
+\begin{frame}
+	\titlepage
+	
+	\vspace{-65pt}
+		
+	\minipage{0.5\textwidth}
+		\centering
+		\textbf{\textcolor{red}{Team} \textcolor{Goldenrod}{Metro}\textcolor{blue}{polis:}} \\
+		James Farzi, JJ Lay, Graham West \\
+		\vspace{10pt}
+		April 19, 2019 \\
+		\vspace{10pt}
+		COMS 7900, Capstone \\
+%		\vspace{10pt}
+		\includegraphics[scale = 0.1]{images/PosterPlot_Ackley_Chain_good_00}
+	\endminipage\hfill %%%%%%%%%%%%%%%%%%%
+	\minipage{0.5\textwidth}
+		\centering
+		\includegraphics[scale = 0.18]{images/DailyPlanet}
+	\endminipage\hfill
+	
+\end{frame}
 
 \begin{frame}	
 	\frametitle{Outline}
@@ -61,6 +102,16 @@
 %%%%%%%%%%%%%
 %%% NEW SECTION %%%
 %%%%%%%%%%%%%
+\section{Introduction}
+
+\begin{frame}	
+	\begin{Huge}
+		\begin{center}
+			Introduction
+		\end{center}
+	\end{Huge}
+\end{frame}
+
 \begin{frame}	
     \frametitle{Introduction}
     	
@@ -71,17 +122,52 @@
     	\begin{block}{Objectives:}
     		\begin{itemize}
     			\item Given set of data
-    			\item Develop orthogonal recursive bisection ORB algorithm
-    			\item Utilize a KD tree to organize data based upon largest dimension at the time of a split
-    			\item KD tree data spread across nodes
+    			\item Develop parallel orthogonal recursive bisection (ORB) algorithm
+    			\item Utilize a $k$-d tree to organize data
     			\item Maximize use of MPI using multiple nodes
-    			\item Require both Serial and Parallel build and search operations
-    			\item Search the KD data with a point and 3 radii
-    			\item Print search results 
+    			\item Require both serial/parallel build/search operations
+    			\item Search the $k$-d data with a list of points and 3 radii
     		\end{itemize}
     	\end{block}
 \end{frame}
-% farzi
+
+\begin{frame}	
+    \frametitle{Introduction}
+    	\begin{block}{Workflow:}
+    		\begin{itemize}
+			\setlength\itemsep{0.5pt}
+   			\item Prototyping: implementation based on Graham's MATLAB code
+   			\item Extreme coding is FUN...and powerful
+    			\item Used C++ w/ C MPI calls
+    			\item Using Git effectively:
+    				\begin{itemize}
+					\setlength\itemsep{0.5pt}
+    					\item Master and sub branches
+    					\item Reduced merge conflicts
+				\end{itemize}
+    			\item Execution:
+    				\begin{itemize}
+					\setlength\itemsep{0.5pt}
+    					\item \texttt{qlogin}
+    					\item \texttt{qsub}
+				\end{itemize}
+    			\item Debugging:
+    				\begin{itemize}
+					\setlength\itemsep{0.5pt}
+    					\item \texttt{valgrind}
+    					\item \texttt{gdb}
+				\end{itemize}
+   			\item Output sorting:
+    				\begin{itemize}
+					\setlength\itemsep{0.5pt}
+    					\item \texttt{sleep(myRank)}
+    					\item Prepend a numeric key on \texttt{cout}'s
+				\end{itemize}
+    		\end{itemize}
+    	\end{block}
+\end{frame}
+
+
 
 
 %%%%%%%%%%%%%
@@ -97,13 +183,10 @@
 	\end{Huge}
 \end{frame}
 
-
 \subsection{\texttt{main}}
 
-% JJ
-
 \begin{frame}
-	\frametitle{Building the tree}
+	\frametitle{\texttt{main}}
 	
 	Our \texttt{main} was quite simple due to our organization of the project into many levels of functions
 	
@@ -132,17 +215,87 @@
 		
 \end{frame}
 
+\subsection{Importing Data}
 
-\subsection{KD tree}
+\begin{frame}
+	\frametitle{Importing Data}
+	
+    	\begin{block}{Importing the data:}
+	    	
+    		\texttt{listFiles}($\cdots$)
+    		\begin{itemize}
+    			\item Fetches a list of data filenames using OS calls (random order)
+    		\end{itemize}
+    		
+    		\texttt{distributeFiles}($\cdots$), \texttt{receiveFiles}($\cdots$)
+    		\begin{itemize}
+    			\item Isend/Recv the list of filenames
+    			\item Round robin distribution of files
+    		\end{itemize}
+    		
+    		\texttt{importFiles}($\cdots$)
+    		\begin{itemize}
+    			\item Reads the received filenames
+    			\item Read a set nFiles and nLinesPerFile
+    			\item Returns a 1D array of length 4 $\times$ nFiles $\times$ nLinesPerFile
+    			\item nFiles $\ge$ nNodes
+    		\end{itemize}
+    	\end{block}
+		
+\end{frame}
 
-%%%%%%%
-%%%%%%%
-% JJ's stuff about the Tree struct and whatnot
-%%%%%%%
-%%%%%%%
+\subsection{Tree Structure}
 
+\begin{frame}[fragile]
+	\frametitle{Tree Structure}
+	
+    	\begin{block}{Old tree struct:}
+    		\begin{itemize}
+    			\item Contained extra debugging fields
+    			\item Contained completely unused fields
+    			\item Originally used doubles
+    			\item tree naming
+    		\end{itemize}
+    	\end{block}
+    
+\begin{texttt}
+struct Tree \{
+	Tree *p;  // Parent
+	Tree *l;  // Left child
+	Tree *r;  // Right child
 
+	MPI\_Comm parentComm, leftComm, rightComm, thisComm;
 
+	float x1;  // Min x
+	float x2;  // Max x
+	float y1;  // Min y
+	float y2;  // Max y
+	float z1;  // Min z
+	float z2;  // Max z
+
+	float c[4];  // Center of this tree
+	float radius;
+
+	float d[4];  // Data point
+\}
+\end{texttt}
+
+		
+\end{frame}
+
+\begin{frame}
+	\frametitle{C Constants}
+	
+    	\begin{block}{\texttt{definitions.h}:}
+	    	A header file containing numerous pre-process identifiers (\texttt{\#define}):
+    		\begin{itemize}
+    			\item \texttt{\_INDEX\_, \_X\_, \_Y\_, \_Z\_}
+    			\item Count limits (adapt bins max iterations, max nLinesPerFile, etc.)
+    			\item MPI tags (bin edge, bin count, uniformity, etc.)
+    		\end{itemize}
+    	\end{block}
+		
+\end{frame}
 
 \subsubsection{Building the tree}
 
@@ -166,6 +319,17 @@
 \begin{frame}
 	\frametitle{Building the tree}
 	
+   \begin{figure}[h!]
+   	\centering
+      \includegraphics[width=0.9\textwidth]{images/communicators.png}
+      \caption{Example of parallel variables using eight nodes}
+      \label{fig:communicators}
+   \end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Building the tree}
+	
 	\texttt{buildTree} checks the number of compute nodes in the current communicator and determines whether to call the parallel or serial versions of the code
 	
 	\vspace{10pt}
@@ -174,13 +338,42 @@
 		\begin{algorithmic}[1]
 			\STATE $q$ = Size of current communicator
 			\IF{ $q > 1$}
-				\STATE \texttt{buildTree\_parallel}($\cdots$)
+				\STATE \texttt{buildTree\_parallel}($data$, $tree$, $comm, \cdots$)
 			\ELSE
-				\STATE \texttt{buildTree\_serial}($\cdots$)
+				\STATE \texttt{buildTree\_serial}($data$, $tree$, $\cdots$)
 			\ENDIF
 		\end{algorithmic}
-	\caption{\texttt{buildTree}($\cdots$)}
+	\caption{\texttt{buildTree}($data$, $tree$, $comm, \cdots$)}
 	\end{algorithm}
+		
+\end{frame}
+
+\begin{frame}
+	\frametitle{Building the tree}
+	
+	\texttt{buildTree\_parallel} performs ORB using a multiple compute nodes
+	
+	\vspace{10pt}
+	
+	\begin{algorithm}[H]
+		\footnotesize
+		\begin{algorithmic}[1]
+			\STATE Call \texttt{getSortDim}($\cdots$): calculates $x,y,z$ mins, maxs, ranges, partition center, and returns $sortDim$
+			\STATE Sort $data$ over $sortDim$ using \texttt{parallelSort}($data$, $sortDim$, $comm$, $\cdots$ )
+			\IF{ $myRank < numNodes/2$ }
+				\STATE Create $tree.L$, $commL$
+				\STATE \texttt{buildTree\_parallel}( $data$, $tree.L$, $comm, \cdots$ )
+			\ELSE
+				\STATE Create $tree.R$, $commR$
+				\STATE \texttt{buildTree\_parallel}( $data$, $tree.R$, $comm, \cdots$ )
+			\ENDIF
+		\end{algorithmic}
+		\caption{\texttt{buildTree\_parallel}($data$, $tree$, $comm, \cdots$)}
+	\end{algorithm}
+	
+	\vspace{10pt}
+	
+	It is assumed that $tree.n > 1$ will never occur in \texttt{build/tree\_parallel} since we usually deal with large amounts of data
 		
 \end{frame}
 
@@ -212,35 +405,6 @@
 		\end{algorithmic}
 	\caption{\texttt{buildTree\_serial}($data$, $tree, \cdots$)}
 	\end{algorithm}
-		
-\end{frame}
-
-\begin{frame}
-	\frametitle{Building the tree}
-	
-	\texttt{buildTree\_parallel} performs ORB using a multiple compute nodes
-	
-	\vspace{10pt}
-	
-	\begin{algorithm}[H]
-		\footnotesize
-		\begin{algorithmic}[1]
-			\STATE Call \texttt{getSortDim}($\cdots$): calculates $x,y,z$ mins, maxs, ranges, partition center, and returns $sortDim$
-			\STATE Sort $data$ over $sortDim$ using \texttt{parallelSort}($data$, $sortDim$, $comm$, $\cdots$ )
-			\IF{ $myRank < numNodes/2$ }
-				\STATE Create $tree.L$, $commL$
-				\STATE \texttt{buildTree\_parallel}( $data$, $tree.L$, $comm, \cdots$ )
-			\ELSE
-				\STATE Create $tree.R$, $commR$
-				\STATE \texttt{buildTree\_parallel}( $data$, $tree.R$, $comm, \cdots$ )
-			\ENDIF
-		\end{algorithmic}
-		\caption{\texttt{buildTree\_parallel}($data$, $tree$, $comm, \cdots$)}
-	\end{algorithm}
-	
-	\vspace{10pt}
-	
-	It is assumed that $tree.n > 1$ will never occur in \texttt{build/tree\_parallel} since we usually deal with large amounts of data
 		
 \end{frame}
 
@@ -404,13 +568,13 @@
 			\item Local method
 			\item Based on the normalized gradient of the bin counts
 			\item Scaled so that bin edges remain properly ordered
-			\item \textbf{New:} Scaled to decrease of time to avoid oscillations
+			\item Scale decreases over time to avoid oscillations
 			\item \textbf{Pros:} able to handle nonlinearities in distribution, good at fine-tuning
 			\item \textbf{Cons:} edges from from dense regions are slow to converge, slower with more nodes
 		\end{itemize}
 	\end{block}
 	
-	\vspace{-5pt}
+	\vspace{-10pt}
 	
 	\begin{equation}
 		\begin{split}
@@ -455,6 +619,8 @@
 \begin{frame}
 	\frametitle{Parallel sorting}
 	
+	ALTERNATE
+	
 	Since both methods' pros and cons are disjoint, alternating between them gives a method which can outperform either individually
 	
 	\begin{block}{Demos:}
@@ -486,7 +652,7 @@
 	\end{Huge}
 \end{frame}
 
-\subsection{MATLAB visualitations}
+\subsection{MATLAB visualizations}
 
 \begin{frame}	
 	\frametitle{Validation}
@@ -494,9 +660,21 @@
 	\begin{block}{MATLAB Demos:}
 		\begin{itemize}
 			\item 2D animation of MATLAB prototype
-			\item 3D visualization at the end of the parallel phase of teh C++ implementation
+			\item 3D visualization at the end of the parallel phase of the C++ implementation
 		\end{itemize}
 	\end{block}
+	
+\end{frame}
+
+\begin{frame}	
+	\frametitle{Validation}
+	\vspace{-8pt}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.65\textwidth]{images/squares.png}
+		\vspace{-15pt}
+		\caption{Example of $k$-d tree partitions}
+	\end{figure}
 	
 \end{frame}
 
@@ -510,7 +688,8 @@
 		\begin{itemize}
 			\item Set search sphere center on a data point, use tiny radius, find 1 point
 			\item Set an arbitrary search sphere point, increase radius, points found increases monotonically
-			\item \texttt{dumpTree} writes 	 each compute node's tree to a file for analysis
+			\item Consistent results for different numbers of nodes
+			\item \texttt{dumpTree} writes each compute node's tree to a file for analysis
 		\end{itemize}
 	\end{block}
 	
@@ -568,6 +747,34 @@
 
 \end{frame}
 
+\begin{frame}	
+	\frametitle{Challenges}
+	
+	\begin{alertblock}{Obnoxious personality quirks and idiotic coding habits:}
+		% so put your complaints about each other here LOL (all that sand tho)
+		\begin{itemize}
+			\setlength\itemsep{0.5pt}
+			\item Graham: \\
+				\begin{itemize}
+					\setlength\itemsep{0.5pt}
+					\item Fixates on dumb, small things; slows team progress (can't see the forest for the trees)
+				\end{itemize}
+			\item James: \\
+				\begin{itemize}
+					\setlength\itemsep{0.5pt}
+					\item Who needs whitespace?
+				\end{itemize}
+			\item JJ: \\
+				\begin{itemize}
+					\setlength\itemsep{0.5pt}
+					\item Insistent usage of Visual Studio replaces neatly arranged tabs with ugly, inconsistent spaces (also doesn't update Makefile)
+					\item SO MUCH debug \texttt{cout} clutter
+				\end{itemize}
+		\end{itemize}
+	\end{alertblock}
+
+\end{frame}
+
 \subsection{Successes}
 
 \begin{frame}	
@@ -578,6 +785,33 @@
 			\item few merge conflicts and fast debugging through extreme coding and Git branches
 			\item visualizing output through MATLAB
 			\item efficient delegation of tasks
+		\end{itemize}
+	\end{exampleblock}
+
+\end{frame}
+
+\begin{frame}	
+	\frametitle{Successes}
+	
+	\begin{exampleblock}{Helpful personality quirks and proper coding habits:}
+		% so put your complaints about each other here LOL (all that sand tho)
+		\begin{itemize}
+			\setlength\itemsep{0.5pt}
+			\item Graham: \\
+				\begin{itemize}
+					\setlength\itemsep{0.5pt}
+					\item I can do math
+				\end{itemize}
+			\item James: \\
+				\begin{itemize}
+					\setlength\itemsep{0.5pt}
+					\item Engineering mindset provides more efficient solutions to problems
+				\end{itemize}
+			\item JJ: \\
+				\begin{itemize}
+					\setlength\itemsep{0.5pt}
+					\item C++ guru
+				\end{itemize}
 		\end{itemize}
 	\end{exampleblock}
 
@@ -599,329 +833,6 @@
 
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%
-%% Leftover for reference and copying code %%
-%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\begin{comment}
-
-%%%%%%%%%%%%%
-%%%%%%%%%%%%%
-\begin{frame}	
-	\begin{Huge}
-		\begin{center}
-			The Algorithm
-		\end{center}
-	\end{Huge}
-\end{frame}
-
-\begin{frame}	
-	\frametitle{The Algorithm}
-	
-	\begin{block}{Initial Phase}
-		\begin{itemize}
-			\item Initialize MPI
-			\item Read list of available data files
-			\item Distribute available data files to workers
-		\end{itemize}
-	\end{block}
-	
-	\begin{block}{Work Phase}
-		\begin{itemize}
-			\item Import data from files
-			\item Perform initial sort
-			\item Find uniform bins
-			\item Exchange data
-			\item Perform final sort
-		\end{itemize}
-	\end{block}
-\end{frame}
-
-\subsection{Distributing/Importing Files}
-
-\begin{frame}	
-	\frametitle{Distributing/Importing Files}
-	
-	\begin{block}{distributeFiles}
-		\begin{itemize}
-			\item Rank 0 reads files matching \texttt{datafile000000.txt}
-			\item Files are distributed round robin to workers
-		\end{itemize}
-	\end{block}
-	
-	\begin{block}{importFiles}
-		\begin{itemize}
-			\item Allocate 1D array of length: \\ \texttt{NumFiles} $\times$ \texttt{MaxLinesPerFile} $\times$ 4 columns
-			\item Each worker reads ASCII files and appends data to array
-		\end{itemize}
-	\end{block}
-\end{frame}
-
-\subsection{Sorting}
-
-\begin{frame}    
-    \frametitle{Sorting}
-    
-    We implemented Linked List Insertion Sort and Bubble Sort
-    
-    \begin{block}{Linked List Insertion Sort}
-        \begin{itemize}
-            \item Best Case N, Worst Case $N^2$
-            \item Selects items one at a time and inserts them in the appropriate place along a linked list
-            \item Then replaces the original array with the elements from the linked list
-        \end{itemize}
-    \end{block}
-    
-    \begin{block}{Bubble Sort}
-        \begin{itemize}
-            \item Use: time testing for efficiency
-            \item Not to be used during normal operations
-        \end{itemize}
-    \end{block}
-\end{frame}
-
-\subsection{Binning}
-
-\begin{frame}	
-	\frametitle{Binning}
-	
-	\begin{block}{Binary search}
-		\begin{itemize}
-			\item Since the data is sorted, we can use a binary search to find where the bin edges lie in index space
-			\item We can then subtract successive edges' indices to find the number of elements in that bin
-		\end{itemize}
-	\end{block}
-	
-	\begin{block}{Initial bin edges}
-		\begin{itemize}
-			\item As a first approximation, we assume that the bin edges are equally-spaced
-			\item We then improve this over time
-		\end{itemize}
-	\end{block}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Binning}
-	
-	\begin{block}{Adapting the bins}
-		for interior bin edges (endpoint bins stay constant):
-		\begin{equation}
-			\begin{split}
-				\Delta C & = 2.0 ( c_i^n - c_{i-1}^n ) / ( c_i^n + c_{i-1}^n ) \\
-				\Delta B & = b_{i+1}^n - b_i^n \\
-				b_i^{n+1} & = b_i^n + \alpha \Delta C \Delta B
-			\end{split}
-		\end{equation}
-		where $0 < \alpha < 0.5$ and $b_i^n < b_{i+1}^n$ for all $n$
-	\end{block}
-	
-	\begin{block}{Uniformity metric}
-		\begin{equation}
-			U^n = \textrm{max}( \dfrac{c_{\textrm{max}} - c_{\textrm{avg}}}{c_{\textrm{avg}}}, \dfrac{c_{\textrm{avg}} - c_{\textrm{min}}}{c_{\textrm{avg}}} )
-		\end{equation}
-	\end{block}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Binning}
-	
-	\begin{figure}[!htb]
-		\centering
-		\vspace{-5pt}
-		\includegraphics[scale = 0.25]{AdaptiveBinning_5Nodes_1000Lines_0475alpha}
-		\vspace{-10pt}
-		\caption{5 nodes, 1000 data points, $\alpha = 0.475$}
-	\end{figure}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Binning}
-	
-	\begin{figure}[!htb]
-		\centering
-		\vspace{-5pt}
-		\includegraphics[scale = 0.25]{AdaptiveBinning_10Nodes_1000Lines_0475alpha}
-		\vspace{-10pt}
-		\caption{10 nodes, 1000 data points, $\alpha = 0.475$}
-	\end{figure}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Binning}
-	
-	\begin{figure}[!htb]
-		\centering
-		\vspace{-5pt}
-		\includegraphics[scale = 0.25]{AdaptiveBinning_10Nodes_1000Lines_0250alpha}
-		\vspace{-10pt}
-		\caption{10 nodes, 1000 data points, $\alpha = 0.25$}
-	\end{figure}
-\end{frame}
-
-\subsection{Exchanging data}
-
-\begin{frame}    
-    \frametitle{Exchanging data: using swapArrayParts then cleanUp}
-    
-    \begin{block}{swapArrayParts}
-        \begin{itemize}
-            \item Takes a specified amount of data from one node and appends it to the end of the existing data for the receiving array
-            \item Inside the function: first transmits the length of data to be received then transfers the data
-            \item No data is to be deleted at this time
-            \item Allows for flexibility in implementation algorithm
-        \end{itemize}
-    \end{block}
-    
-    \begin{block}{cleanUp}
-        \begin{itemize}
-            \item To be used after all nodes have performed a swapArrayParts to all other nodes
-            \item Will go back through each nodes array removing data that had been transferred by swapArrayParts and resizing the array for each node
-        \end{itemize}
-    \end{block}
-\end{frame}
-
-%%%%%%%%%%%%
-%%% new section %%%
-%%%%%%%%%%%%
-\section{Testing}
-
-\begin{frame}	
-	\begin{Huge}
-		\begin{center}
-			Testing
-		\end{center}
-	\end{Huge}
-\end{frame}
-
-%\subsection{Results}
-
-\begin{frame}	
-	\frametitle{distributeFiles}
-	
-	\begin{figure}[!htb]
-		\centering
-		\vspace{-5pt}
-		\includegraphics[scale = 0.30]{distributeFiles.png}
-		\vspace{-10pt}
-		\caption{Time to read directory and distribute files to workers}
-	\end{figure}
-	
-\end{frame}
-
-\begin{frame}	
-	\frametitle{importFiles}
-	
-	\begin{figure}[!htb]
-		\centering
-		\vspace{-5pt}
-		\includegraphics[scale = 0.30]{importFiles.png}
-		\vspace{-10pt}
-		\caption{Time to import 1000 rows from each file}
-	\end{figure}
-	
-\end{frame}
-
-\begin{frame}	
-	\frametitle{initialSort}
-	
-	\begin{figure}[!htb]
-		\centering
-		\vspace{-5pt}
-		\includegraphics[scale = 0.30]{initialSort.png}
-		\vspace{-10pt}
-		\caption{Time to sort 501000 rows}
-	\end{figure}
-	
-\end{frame}
-
-
-%%%%%%%%%%%%
-%%
-%% Conclusions
-%%
-%%%%%%%%%%%%
-
-\section{Conclusions}
-
-\begin{frame}	
-	\begin{Huge}
-		\begin{center}
-			Conclusions
-		\end{center}
-	\end{Huge}
-\end{frame}
-
-\subsection{Challenges}
-
-\begin{frame}	
-	\frametitle{Challenges}
-	
-	\begin{block}{Integration}
-		\begin{itemize}
-			\item Identifying structure of parameters and return values
-			\item Needed better planning of data types up front
-		\end{itemize}
-	\end{block}
-	
-	\begin{block}{Git}
-		\begin{itemize}
-			\item Resolving merge conflicts
-			\item Basic Git workflow
-		\end{itemize}
-	\end{block}
-
-	\begin{block}{Coding}
-		\begin{itemize}
-			\item Forgot to remove debug controls while collecting performance data
-		\end{itemize}
-	\end{block}
-
-	\begin{block}{Testing}
-		\begin{itemize}
-			\item Long runtimes when testing with full dataset
-			\item Failures during long runs
-		\end{itemize}
-	\end{block}
-
-\end{frame}
-
-\subsection{Future Work}
-
-\begin{frame}	
-	\frametitle{Future Work}
-	
-	\begin{block}{Reading the data}
-		\begin{itemize}
-			\item Read binary datainstead of ASCII for speedup
-		\end{itemize}
-	\end{block}
-	
-	\begin{block}{Data types}
-		\begin{itemize}
-			\item For simplicity, use vectors/structs instead of arrays
-		\end{itemize}
-	\end{block}
-	
-	\begin{block}{Finish data swap}
-		\begin{itemize}
-			\item Resolve scaling issues (overflowing buffer)
-		\end{itemize}
-	\end{block}
-	
-	\begin{block}{Testing}
-		\begin{itemize}
-			\item Easier collection of performance data
-			\item Use loops in qsub files to automate multiple runs
-		\end{itemize}
-	\end{block}
-	
-\end{frame}
-
-\end{comment}
 
  
 \end{document}

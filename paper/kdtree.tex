@@ -39,7 +39,6 @@
 \newcommand\simpleparagraph[1]{%
   \stepcounter{paragraph}\paragraph*{\theparagraph\quad{}#1}}
 
-\usepackage{listings}
 \usepackage{color}
 \usepackage{xcolor}
 \usepackage{mdframed}
@@ -82,9 +81,7 @@ tabsize=3
 \maketitle
 
 \begin{abstract}
-In our first project, we implemented a parallel sorting algorithm which utilized a local gradient-type optimization search to equalize the amount of data across different compute nodes in order to achieve maximum efficiency. In this project, we applied this algorithm to the problem of parallel orthogonal recursive bisection (ORB), i.e., the construction of $k$-d trees. In order to do this, we had to heavily modify the sorting algorithm in several ways, including 1) turning it into a callable function, 2) letting the rank 0 head node perform work while still managing the tasks, 3) incorporating the use of different MPI communicators, and 4) altering the adaptive binning technique for better convergence.
-
-In this paper, we will discuss how our $k$-d tree algorithm works, how we solved the various issues plaguing parallel sort (mentioned above), and how we tested and validated our work. We conclude with a discussion of the major difficulties in completing this project and how these difficulties could be minimized in the future.
+In our first project, we implemented a parallel sorting algorithm which utilized a local gradient-type optimization search to equalize the amount of data across different compute nodes in order to achieve maximum efficiency. In this project, we applied this algorithm to the problem of parallel orthogonal recursive bisection (ORB), i.e., the construction of $k$-d trees. In order to do this, we had to heavily modify the sorting algorithm in several ways, including 1) turning it into a callable function, 2) letting the rank 0 head node perform work while still managing the tasks, 3) incorporating the use of different MPI communicators, and 4) altering the adaptive binning technique for better convergence. In this paper, we will discuss how our $k$-d tree algorithm works, how we solved the various issues plaguing parallel sort (mentioned above), and how we tested and validated our work. We conclude with a discussion of the major difficulties in completing this project and how these difficulties could be minimized in the future.
 \end{abstract}
 
 
@@ -97,14 +94,16 @@ In this paper, we will discuss how our $k$-d tree algorithm works, how we solved
 \section{Introduction}
 
 % farzi
-The purpose of this project was to create a parallel searching program by expanding on a previous parallel sorting project. Given a set of predetermined and imported data, we were to develop an orthogonal recursive bisection ORB algorithm that would facilitate in organizing the data into a $k$-d tree. The $k$-d tree will include information such as, daughters, parents, spacial indexing, center, and size of node. Additionally, the process should maximize the use of MPI and having multiple computing nodes performing the work. Because we will be having multiple computing nodes with MPI and eventually carry the tree into single computing nodes, the process will required both serial and parallel tree building and searching operations. The goal is to have an extremely efficient method of searching through the data. Eventually a search using three radii and twenty million points from an existing file will be performed and that output will be saved to a file for later comparison.
+The purpose of this project was to create a parallel searching algorithm by expanding on a previous parallel sorting project. Given a very large set of data ($10^{10}$ points), we developed an orthogonal recursive bisection (ORB) algorithm which organizes the data into a $k$-d tree. The $k$-d tree includes information such as daughter and parent nodes, spacial indexing and ranges, etc. Additionally, the implementation also maximized the use of MPI, having multiple computing nodes performing the work. Due to the recursive nature of the problem as well as our implementation of it, we required both serial and parallel tree-building functions. Eventually a search using three radii and $2 \times 10^7$ points from an existing file were performed and the output saved to a file.
 
 % farzi
 \subsection{Workflow}
-One of the major issues we encountered during our last project was overwriting each other’s GitHub submissions. Our resolution was to create a master branch and three sub branches. Each person was assigned a sub branch that they could modify as they pleased. However, a modification in the master branch parallel approved folder required two or more party members consent. This vastly reduced the amount of issues encountered during push/pull request.
+One of the major issues we encountered during the previous project was overwriting each others' GitHub submissions. Our resolution was to create a master branch and three sub branches. Each person was assigned a sub branch that they could modify as they pleased. However, a modification in the master branch required two or more team members' consent. This vastly reduced the amount of issues encountered during push/pull request.
 
-Another adjustment we made for our development process was to write our code together and in an accommodating space as opposed to assigning individual sections of code. We met on a regular basis, generally starting during our scheduled class period and extending through the lunch period. This allowed us to catch errors quickly, avoid merge conflicts and most significantly improved everyone's knowledge of how each component of the code works. 
-When the project was assigned each team member prototypes a version of serial $k$-d tree in their preferred language. After several meetings it was determined that Graham’s MatLab implementation would be used as the guide for the project. 
+Another adjustment we made for our development process was to use so-called ``extreme coding." In this context, only one team member actually writes/runs code while the other team members help plan, troubleshoot, debug, etc. We would meet in WPS 305 as opposed to the computer lab, due to the lack of noise, larger screens, and number of whiteboards. REgarding the coding itself, Graham was typically the coder with James watching and reviewing what was written and ran. JJ would usually have a second terminal open so that he could do small tests or refer to certain code sections (or Google search troublesome issues) when we had questions. We met on a regular basis, generally starting during our scheduled class period and extending through the lunch period. In summary, this technique allowed us to find errors quickly, debug quickly, avoid merge conflicts, and improved everyone's knowledge of how each component of the code operates.
+
+Also, when the project was assigned, each team member prototyped their own version of a serial $k$-d tree in their preferred language. After a discussion on the merits of each, it was determined that Graham’s MATLAB implementation would be used as the guide for the project. 
+
 
 \subsection{Variables and conventions}
 %%% NOTE %%%
@@ -170,9 +169,6 @@ Note that we distinguish between \textbf{tree} nodes and \textbf{compute} nodes 
 %%%%%%%%%
 
 \section{Implementation}
-%
-% JJ
-%
 
 \begin{center}
 \includegraphics[width=0.95\textwidth]{images/flow.png}
@@ -186,9 +182,9 @@ Note that we distinguish between \textbf{tree} nodes and \textbf{compute} nodes 
 
 \subsection{Development}
 
-The application was developed in a mixture of C and C++ on a Linux cluster. The compiler for the project was \texttt{g++} version 4.8.5-28 with the switch \texttt{-std=c++11} in order to utilize features introduced with that standard. The three most commonly used C++11 standards were placeholder type specifiers (i.e., \texttt{auto}), range based \texttt{for} loops, and the \texttt{nullptr} constant.
+The application was developed in a mixture of C and C++ on a Linux cluster. The compiler for the project was \texttt{g++} version 4.8.5-28 with the switch \texttt{-std=c++11} in order to utilize features introduced with that standard. The three most commonly used C++11 standards were placeholder type specifiers (i.e., \texttt{auto}), range-based \texttt{for} loops, and the \texttt{nullptr} constant.
 
-The C interface to MPI was selected for its familiarity and general support. While there are object-oriented C++ libraries such as \texttt{Boost.MPI} the authors elected to use the C version as they had experience with that environment and time to learn a new library was a limiting factor. Another concern was the installation of alternative libraries beyond Open MPI 2.1.1.
+The C interface to MPI was selected for its familiarity and general support. While there are object-oriented C++ libraries such as \texttt{Boost.MPI} the team elected to use the C version as they had experience with that environment and time to learn a new library was a limiting factor. Another concern was the installation of alternative libraries beyond Open MPI 2.1.1.
 
 Debugging was performed using the tools \texttt{gdb} and \texttt{valgrind}. \texttt{gdb} was used primarily while developing the serial code for building the tree to identify the source of segmentation faults. \texttt{valgrind} was instrumental in locating memory leaks and illegal memory references during the parallel development. Code was executed with the command:
 
@@ -196,8 +192,7 @@ Debugging was performed using the tools \texttt{gdb} and \texttt{valgrind}. \tex
 mpirun -np 4 valgrind ./main > dump.txt 2> dump2.txt
 \end{lstlisting}
 
-
-One major challenge during the debugging process was that output was not displayed in chronological order making it difficult to understand the flow of the code. A solution we implemented was to print a numeric identifier during the execution at the beginning of each line. Each section of code was assigned a five digit numeric value, and the \texttt{mpi} rank was printed along with this. 
+One major challenge during the debugging process was that output was not displayed in chronological order making it difficult to understand the flow of the code. A solution we implemented was to print a numeric identifier during the execution at the beginning of each line. Each section of code was assigned a five digit numeric value, and the \texttt{mpi} rank was printed along with this (an additional output sorting technique was use of \texttt{sleep(myRank)}):
 
 \begin{mdframed}[backgroundcolor=blue!20]
 	\setlength\itemsep{0.1pt}
