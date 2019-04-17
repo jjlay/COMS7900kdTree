@@ -1,17 +1,17 @@
 \beamer@sectionintoc {1}{Introduction}{3}{0}{1}
-\beamer@sectionintoc {2}{Implementation}{4}{0}{2}
-\beamer@subsectionintoc {2}{1}{\texttt {main}}{5}{0}{2}
-\beamer@subsectionintoc {2}{2}{KD tree}{6}{0}{2}
-\beamer@subsubsectionintoc {2}{2}{1}{Building the tree}{6}{0}{2}
-\beamer@subsubsectionintoc {2}{2}{2}{Searching the tree}{11}{0}{2}
-\beamer@subsectionintoc {2}{3}{Parallel sorting}{13}{0}{2}
-\beamer@subsubsectionintoc {2}{3}{1}{Changes}{13}{0}{2}
-\beamer@subsubsectionintoc {2}{3}{2}{\texttt {adaptBins}}{17}{0}{2}
-\beamer@sectionintoc {3}{Validation}{20}{0}{3}
-\beamer@subsectionintoc {3}{1}{MATLAB visualitations}{21}{0}{3}
-\beamer@subsectionintoc {3}{2}{Other tests}{22}{0}{3}
-\beamer@sectionintoc {4}{Results}{23}{0}{4}
-\beamer@sectionintoc {5}{Conclusions}{24}{0}{5}
-\beamer@subsectionintoc {5}{1}{Challenges}{25}{0}{5}
-\beamer@subsectionintoc {5}{2}{Successes}{26}{0}{5}
-\beamer@subsectionintoc {5}{3}{Future Work}{27}{0}{5}
+\beamer@sectionintoc {2}{Implementation}{6}{0}{2}
+\beamer@subsectionintoc {2}{1}{\texttt {main}}{7}{0}{2}
+\beamer@subsectionintoc {2}{2}{KD tree}{8}{0}{2}
+\beamer@subsubsectionintoc {2}{2}{1}{Building the tree}{8}{0}{2}
+\beamer@subsubsectionintoc {2}{2}{2}{Searching the tree}{13}{0}{2}
+\beamer@subsectionintoc {2}{3}{Parallel sorting}{15}{0}{2}
+\beamer@subsubsectionintoc {2}{3}{1}{Changes}{15}{0}{2}
+\beamer@subsubsectionintoc {2}{3}{2}{\texttt {adaptBins}}{19}{0}{2}
+\beamer@sectionintoc {3}{Validation}{22}{0}{3}
+\beamer@subsectionintoc {3}{1}{MATLAB visualitations}{23}{0}{3}
+\beamer@subsectionintoc {3}{2}{Other tests}{24}{0}{3}
+\beamer@sectionintoc {4}{Results}{25}{0}{4}
+\beamer@sectionintoc {5}{Conclusions}{26}{0}{5}
+\beamer@subsectionintoc {5}{1}{Challenges}{27}{0}{5}
+\beamer@subsectionintoc {5}{2}{Successes}{28}{0}{5}
+\beamer@subsectionintoc {5}{3}{Future Work}{29}{0}{5}
