@@ -97,14 +97,14 @@ In this paper, we will discuss how our $k$-d tree algorithm works, how we solved
 \section{Introduction}
 
 % farzi
-The purpose of this project was to create a parallel searching program by expanding on a previous parallel sorting project. Given a set of predetermined and imported data, we were to develop an orthogonal recursive bisection ORB algorithm that would facilitate in organizing the data into a KD tree. The KD tree will include information such as, daughters, parents, spacial indexing, center, and size of node. Additionally, the process should maximize the use of MPI and having multiple computing nodes performing the work. Because we will be having multiple computing nodes with MPI and eventually carry the tree into single computing nodes, the process will required both serial and parallel tree building and searching operations. The goal is to have an extremely efficient method of searching through the data. Eventually a search using three radii and twenty million points from an existing file will be performed and that output will be saved to a file for later comparison.
+The purpose of this project was to create a parallel searching program by expanding on a previous parallel sorting project. Given a set of predetermined and imported data, we were to develop an orthogonal recursive bisection ORB algorithm that would facilitate in organizing the data into a $k$-d tree. The $k$-d tree will include information such as, daughters, parents, spacial indexing, center, and size of node. Additionally, the process should maximize the use of MPI and having multiple computing nodes performing the work. Because we will be having multiple computing nodes with MPI and eventually carry the tree into single computing nodes, the process will required both serial and parallel tree building and searching operations. The goal is to have an extremely efficient method of searching through the data. Eventually a search using three radii and twenty million points from an existing file will be performed and that output will be saved to a file for later comparison.
 
 % farzi
 \subsection{Workflow}
 One of the major issues we encountered during our last project was overwriting each other’s GitHub submissions. Our resolution was to create a master branch and three sub branches. Each person was assigned a sub branch that they could modify as they pleased. However, a modification in the master branch parallel approved folder required two or more party members consent. This vastly reduced the amount of issues encountered during push/pull request.
 
 Another adjustment we made for our development process was to write our code together and in an accommodating space as opposed to assigning individual sections of code. We met on a regular basis, generally starting during our scheduled class period and extending through the lunch period. This allowed us to catch errors quickly, avoid merge conflicts and most significantly improved everyone's knowledge of how each component of the code works. 
-When the project was assigned each team member prototypes a version of serial KD tree in their preferred language. After several meetings it was determined that Graham’s MatLab implementation would be used as the guide for the project. 
+When the project was assigned each team member prototypes a version of serial $k$-d tree in their preferred language. After several meetings it was determined that Graham’s MatLab implementation would be used as the guide for the project. 
 
 \subsection{Variables and conventions}
 %%% NOTE %%%
@@ -251,9 +251,9 @@ Code was executed using both interactively by logging into a compute node using 
 
 \subsection{\texttt{main}}
 
-Our \texttt{main} program is divided into three main phases (each of which is comprised of multiple functions): data import, tree building, and tree searching. The data import phase collects all of the relevant filenames of the data files, reads them, and places them into a single 1D array. The tree building phase begins by initializing an empty Tree struct (see below for explanation of the struct) which is then passed into the \texttt{buildTree} function which alters the struct's contents. The entire tree can then be navigated by using the tree's left, right, and parent fields. The final tree searching phase takes the completed tree struct as an argument along with a search sphere. The number of points within the search sphere is calculated for each
+Our \texttt{main} program is divided into three main phases (each of which is comprised of multiple functions): data import, tree building, and tree searching. The data import phase collects all of the relevant filenames of the data files, reads them, and places them into a single 1D array. The tree building phase begins by initializing an empty \texttt{Tree} struct (see below for explanation of the struct) which is then passed into the \texttt{buildTree} function which alters the struct's contents. The entire tree can then be navigated by using the tree's left, right, and parent fields. The final tree searching phase takes the completed tree struct as an argument along with a search sphere. The number of points within the search sphere is calculated for each
 
-There are four variables which govern the performance of the KD tree and the size of the problem. First are the number of data files to read and the number of lines to read per file. These values are set in the beginning of \texttt{main} and they have a maximum value of 500 and 20,000,000, respectively. Third, is the number of compute nodes. In general, increasing this number should speed up execution of the program. Its value is set in the command line when running the program and its value must be smaller than the number of files. Last, is the number of lines to read from the 501-st data file. These are the centers of the search spheres. The value is set in \texttt{search501}.
+There are four variables which govern the performance of the $k$-d tree and the size of the problem. First are the number of data files to read and the number of lines to read per file. These values are set in the beginning of \texttt{main} and they have a maximum value of 500 and 20,000,000, respectively. Third, is the number of compute nodes. In general, increasing this number should speed up execution of the program. Its value is set in the command line when running the program and its value must be smaller than the number of files. Last, is the number of lines to read from the 501-st data file. These are the centers of the search spheres. The value is set in \texttt{search501}.
 
 
 %%%%%%%%%
@@ -364,7 +364,7 @@ This function accepts seven parameters:
 \texttt{\texttt{arrayLimit}}     & The maximum size of the allocated array \\
 \end{tabular}
 
-The \texttt{importFiles} function iterates over the list of files opens each for reading. It uses \texttt{fscanf} to read each line directly into the array pointed to by \texttt{myData} in order to minimize data movement. The file is closed when the end of the file is reached, \texttt{maxRowsPerFile} is met, or the total data read from all files equals \texttt{arrayLimit}. The number of rows is written to \texttt{rows} and the number of columns to \texttt{cols}. The variable \texttt{myRank} is passed for debugging purposes.
+The \texttt{importFiles} function iterates over the list of files opens each for reading. It uses \texttt{fscanf} to read each line directly into the array pointed to by \texttt{myData} in order to minimize data movement. The file is closed when the end of the file is reached, \texttt{maxRowsPerFile} is met, or the total data read from all files equals \texttt{arrayLimit}. The number of rows is written to \texttt{rows} and the number of columns to \texttt{cols}. The variable \texttt{myRank} is passed for debugging purposes. Results are returned through the references passed as variables.
 
 
 % build: we build the tree using ORB to partition the data
@@ -378,12 +378,12 @@ The \texttt{importFiles} function iterates over the list of files opens each for
 %
 %%%%%%%%%
 
-\subsection{K-d tree}
+\subsection{$k$-d tree}
 %
 % JJ, talk about the Tree struct and what all fields it has
 %
 
-The design of the k-d tree required storing information for organizing the parallel distribution of the data and the data held locally on the node. Rather than create two different type of structures, the code utilized a single C \texttt{struct} which originally was defined as:
+The design of the $k$-d tree required storing information for organizing the parallel distribution of the data and the data held locally on the node. Rather than create two different type of structures, the code utilized a single C \texttt{struct} which originally was defined as:
 
 \begin{minipage}{\linewidth}
 \lstset{language=C++, keepspaces=true}
@@ -656,10 +656,10 @@ We used the squared version of the formula to avoid computing the square root, t
 
 \paragraph{\texttt{search501}}
 %
-% JJ, edit if you wan since you wrote most of this
+% JJ, edit if you want since you wrote most of this
 %
 
-Each compute node calls this function which reads the data file \texttt{datafile00501.txt} whose contents are the centers of the search spheres. It then loops \texttt{searchTree\_serial} for all of the sphere centers for three different radii (0.01, 0.05, 0.10). The counts on each compute node are then stored. After all searches are complete, an \texttt{MPI\_Reduce} is performed by all nodes, thus adding all of the counts into a single array which is sent to \texttt{stdout}. When the job is submitted using \texttt{qsub}, the output is directed to a file with the name of the job.
+Each compute node calls this function which reads the data file \texttt{datafile00501.txt} whose contents are the centers of the search spheres. The function uses \texttt{importFiles} to read the file and passes the number of search rows in \texttt{maxRowsPerFile}. It then loops \texttt{searchTree\_serial} for all of the sphere centers for three different radii (0.01, 0.05, 0.10). The counts on each compute node are then stored. After all searches are complete, an \texttt{MPI\_Reduce} is performed by all nodes, thus adding all of the counts into a single array which is sent to \texttt{stdout}. When the job is submitted using \texttt{qsub}, the output is directed to a file with the name of the job.
 
 
 \subsection{Altered parallel sorting}
@@ -678,7 +678,7 @@ One of our first obstacles was modifying our original \texttt{parallelSort}  pro
 The second issue was our use of rank 0 which as the manager in our original \texttt{parallelSort} program. Our implantation of \texttt{parallelSort} had rank 0 manage while all the other ranks were compute nodes which contained and performed operations on the actual data. However, when utilizing a KD tree all of the ranks are needed as compute nodes otherwise each time the tree forked and a new communication branch was formed the process would lose a rank due to a new rank 0 being formed. To resolve this problem we had to make several clever adjustments in the sections of the code, most notably the adapt binning section. Other sections just needed to have the iteration increment from 0 instead of 1.
 
 \paragraph{Using different communicators}
-Since kdtree requires multiple comms, it was necessary that \texttt{parallelSort} (any many functions it contains) was given the current communicator. This was not a terribly difficult modification, but it was quite tedious since there were many functions which required alterations to their header files.
+Since $k$-d tree requires multiple comms, it was necessary that \texttt{parallelSort} (any many functions it contains) was given the current communicator. This was not a terribly difficult modification, but it was quite tedious since there were many functions which required alterations to their header files.
 
 
 \subsubsection{\texttt{adaptBins}}
@@ -722,11 +722,11 @@ We discovered that this adaptation technique performs very will in initial steps
 
 % GW, farzi
 \subsection{Two MATLAB demos}
-During our development of the code we wanted a way to verify the process was being performed accurately. Therefore, after the parallel side of the KD tree was complete we had our C++ code output the min and maxes of the X, Y, and Z columns and save those outputs to a file. We then wrote MATLAB code that would read in those files and plot a box that encapsulated the three values. This figure represents the boundaries of 25 nodes for a sample of data. As can be seen from this image, each of the bounding boxes vary in limiting size, however all the boxes contain a relatively equal number of points. That number can be verified through our parallel sorting operations. 
+During our development of the code we wanted a way to verify the process was being performed accurately. Therefore, after the parallel side of the $k$-d tree was complete we had our C++ code output the min and maxes of the X, Y, and Z columns and save those outputs to a file. We then wrote MATLAB code that would read in those files and plot a box that encapsulated the three values. This figure represents the boundaries of 25 nodes for a sample of data. As can be seen from this image, each of the bounding boxes vary in limiting size, however all the boxes contain a relatively equal number of points. That number can be verified through our parallel sorting operations. 
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{images/squares.png}
-\caption{Example of KD tree partitions}
+\caption{Example of $k$-d tree partitions}
 \end{figure}
 
 \subsubsection{2D animation of tree building}
