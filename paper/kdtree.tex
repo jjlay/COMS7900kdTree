@@ -491,7 +491,7 @@ The \texttt{struct} variables used for storing the data point within the tree an
 
 \paragraph{\texttt{buildTree}}
 % farzi, just add the listing
-This function gets the number of compute nodes $q$ available in the current communicator and determines which function to run. If $q>1$, then we can still do a parallel sort with 2 compute nodes, so \texttt{buildTree\_parallel} is entered. If $q=1$, then \texttt{buildTree\_serial} is entered.
+This function gets the number of compute nodes $q$ available in the current communicator and determines which function to run. If $q>1$, then we can still do a parallel sort with at least two compute nodes, so \texttt{buildTree\_parallel} is entered. If $q=1$, then \texttt{buildTree\_serial} is entered.
 
 
 %%%%%%%%%
@@ -507,7 +507,7 @@ This was the first function written after our initial prototyping phase was comp
 % JJ, you wanna write this since you wrote the program?
 %
 
-Upon completion, \texttt{buildTree\_serial} calls itself instead of \texttt{buildTree} since we still have $q=1$.
+Upon completion, \texttt{buildTree\_serial} recursively calls itself instead of \texttt{buildTree} since we still have $q=1$.
 
 
 \paragraph{\texttt{buildTree\_parallel}}
@@ -543,7 +543,7 @@ We used the squared version of the formula to avoid computing the square root, t
 % JJ, edit if you wan since you wrote most of this
 %
 
-Each compute node calls this function which reads the 501-st data file, whose contents are the centers of the search spheres. It then loops \texttt{searchTree\_serial} for all of the sphere centers for three different radii (0.01, 0.05, 0.10). The counts on each compute node are then stored. After all searches are complete, an MPI\_Reduce is performed by all nodes, thus adding all of the counts into a single array which is exported to a file.
+Each compute node calls this function which reads the data file \texttt{datafile00501.txt} whose contents are the centers of the search spheres. It then loops \texttt{searchTree\_serial} for all of the sphere centers for three different radii (0.01, 0.05, 0.10). The counts on each compute node are then stored. After all searches are complete, an \texttt{MPI\_Reduce} is performed by all nodes, thus adding all of the counts into a single array which is sent to \texttt{stdout}. When the job is submitted using \texttt{qsub}, the output is directed to a file with the name of the job.
 
 
 \subsection{Altered parallel sorting}
