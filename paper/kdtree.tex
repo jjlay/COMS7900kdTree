@@ -264,11 +264,14 @@ There are four variables which govern the performance of the KD tree and the siz
 
 \subsubsection{\texttt{listFiles}}\label{sec:listfiles}
 
+The \texttt{listFiles} function has the following definition:
+
+\lstset{language=C++, keepspaces=true}
 \begin{lstlisting}
-std::vector<std::string> listFiles(std::string path, int numFiles); 
+vector<string> listFiles(string path, int numFiles); 
 \end{lstlisting}
 
-The \texttt{listFiles} function accepts two parameters:
+It accepts two parameters:
 
 \begin{tabular}{l l}
 \texttt{path} & The path to the data files to be used \\
@@ -286,6 +289,22 @@ The return value is a Standard Template Library \texttt{vector} containing strin
 
 \subsubsection{\texttt{distributeFiles}}\label{sec:distributefiles}
 
+The \texttt{distributeFiles} function is defined as:
+
+\lstset{language=C++, keepspaces=true}
+\begin{lstlisting}
+void distributeFiles(vector<string> files, int numWorkers);
+\end{lstlisting}
+
+It accepts two paramters:
+
+\begin{tabular}{l l}
+\texttt{files} & The list of files returned by \texttt{listFiles} \\
+\texttt{numWorkers} & The number of nodes allocated for the job \\
+\end{tabular}
+
+The function does not return any values to the caller. It iterates over the list of files and sends them to the workers in a round-robin method to ensure that the data is distributed as evenly as possible without knowing the true length of each data file. Files are sent asynchronously since rank 0 participates in the construction of the tree and searching.
+
 
 %%%%%%%%%
 %
@@ -295,17 +314,58 @@ The return value is a Standard Template Library \texttt{vector} containing strin
 
 \subsubsection{\texttt{receiveFiles}}\label{sec:receivefiles}
 
+The \texttt{receiveFiles} function is defined as:
+
+\lstset{language=C++, keepspaces=true}
+\begin{lstlisting}
+vector<string> receiveFiles(int myRank);
+\end{lstlisting}
+
+It accepts a single parameter:
+
+\begin{tabular}{l l}
+\texttt{myRank} & The MPI rank of the current process \\
+\end{tabular}
+
+\texttt{receiveFiles} performs an \texttt{MPI\_Receive} to obtain a list of files sent by \texttt{distributeFiles}. These are stored in an STL \texttt{vector} and returned to the calling function.
+
 
 %%%%%%%%%
 %
-% Subsection: importData
+% Subsection: importFiles
 %
 %%%%%%%%%
 
-\subsubsection{\texttt{importData}}\label{sec:importdata}
-
+\subsubsection{\texttt{importFiles}}\label{sec:importFiles}
 
 % import: gets the list of files and imports their data into an array
+
+The \texttt{importFiles} function is defined as:
+
+\begin{minipage}{\linewidth}
+\lstset{language=C++, keepspaces=true}
+\begin{lstlisting}
+void importFiles(vector<string> files, int myRank,
+	float *myData, int *rows, int *cols, 
+	int maxRowsPerFile, unsigned long int arrayLimit);
+\end{lstlisting}
+\end{minipage}
+
+
+This function accepts seven parameters:
+
+\begin{tabular}{l l}
+\texttt{\texttt{files}}          & An STL vector of files from \texttt{receiveFiles} \\
+\texttt{\texttt{myRank}}         & The MPI rank of the current process \\
+\texttt{\texttt{myData}}         & A one-dimensional array in which to store the data from the files \\
+\texttt{\texttt{rows}}           & A pointer to a variable to store the number of rows imported \\
+\texttt{\texttt{cols}}           & A pointer to a variable to store the number of columns imported  \\
+\texttt{\texttt{maxRowsPerFile}} & The maximum number of rows to read from each file \\
+\texttt{\texttt{arrayLimit}}     & The maximum size of the allocated array \\
+\end{tabular}
+
+The \texttt{importFiles} function iterates over the list of files opens each for reading. It uses \texttt{fscanf} to read each line directly into the array pointed to by \texttt{myData} in order to minimize data movement. The file is closed when the end of the file is reached, \texttt{maxRowsPerFile} is met, or the total data read from all files equals \texttt{arrayLimit}. The number of rows is written to \texttt{rows} and the number of columns to \texttt{cols}. The variable \texttt{myRank} is passed for debugging purposes.
+
 
 % build: we build the tree using ORB to partition the data
 
@@ -325,6 +385,7 @@ The return value is a Standard Template Library \texttt{vector} containing strin
 
 The design of the k-d tree required storing information for organizing the parallel distribution of the data and the data held locally on the node. Rather than create two different type of structures, the code utilized a single C \texttt{struct} which originally was defined as:
 
+\begin{minipage}{\linewidth}
 \lstset{language=C++, keepspaces=true}
 \begin{lstlisting}
 struct Tree {
@@ -363,9 +424,12 @@ struct Tree {
 	double index;  // File row index from source data
 }
 \end{lstlisting}
+\end{minipage}
+
 
 Unfortunately, this structure proved to be too bloated when attempting to import all 10 billion rows of data as well as the 20 million rows of search rows. The simplified tree structure is:
 
+\begin{minipage}{\linewidth}
 \lstset{language=C++, keepspaces=true}
 \begin{lstlisting}
 struct Tree {
@@ -388,6 +452,8 @@ struct Tree {
 	float d[4];  // Data point
 }
 \end{lstlisting}
+\end{minipage}
+
 
 Another change was moving from \texttt{double} data types to \texttt{float} in order to conserve memory.
 
