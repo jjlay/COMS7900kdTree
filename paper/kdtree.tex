@@ -250,9 +250,59 @@ Code was executed using both interactively by logging into a compute node using 
 %%%%%%%%%
 
 \subsection{\texttt{main}}
+
 Our \texttt{main} program is divided into three main phases (each of which is comprised of multiple functions): data import, tree building, and tree searching. The data import phase collects all of the relevant filenames of the data files, reads them, and places them into a single 1D array. The tree building phase begins by initializing an empty Tree struct (see below for explanation of the struct) which is then passed into the \texttt{buildTree} function which alters the struct's contents. The entire tree can then be navigated by using the tree's left, right, and parent fields. The final tree searching phase takes the completed tree struct as an argument along with a search sphere. The number of points within the search sphere is calculated for each
 
 There are four variables which govern the performance of the KD tree and the size of the problem. First are the number of data files to read and the number of lines to read per file. These values are set in the beginning of \texttt{main} and they have a maximum value of 500 and 20,000,000, respectively. Third, is the number of compute nodes. In general, increasing this number should speed up execution of the program. Its value is set in the command line when running the program and its value must be smaller than the number of files. Last, is the number of lines to read from the 501-st data file. These are the centers of the search spheres. The value is set in \texttt{search501}.
+
+
+%%%%%%%%%
+%
+% Subsection: listFiles
+%
+%%%%%%%%%
+
+\subsubsection{\texttt{listFiles}}\label{sec:listfiles}
+
+\begin{lstlisting}
+std::vector<std::string> listFiles(std::string path, int numFiles); 
+\end{lstlisting}
+
+The \texttt{listFiles} function accepts two parameters:
+
+\begin{tabular}{l l}
+\texttt{path} & The path to the data files to be used \\
+\texttt{numFiles} & The maximum number of files to be used by the program \\
+\end{tabular}
+
+The return value is a Standard Template Library \texttt{vector} containing strings with the filenames. The vector has a maximum length of \texttt{numFiles}. Files are not gathered in alphabetical order but in the order returned from the operating system. For example, for \texttt{numFiles = 10}, it is unlikely that the files returned will be \texttt{datafile00001.txt} through \texttt{datafile00010.txt}.
+
+
+%%%%%%%%%
+%
+% Subsection: distributeFiles
+%
+%%%%%%%%%
+
+\subsubsection{\texttt{distributeFiles}}\label{sec:distributefiles}
+
+
+%%%%%%%%%
+%
+% Subsection: receiveFiles
+%
+%%%%%%%%%
+
+\subsubsection{\texttt{receiveFiles}}\label{sec:receivefiles}
+
+
+%%%%%%%%%
+%
+% Subsection: importData
+%
+%%%%%%%%%
+
+\subsubsection{\texttt{importData}}\label{sec:importdata}
 
 
 % import: gets the list of files and imports their data into an array
