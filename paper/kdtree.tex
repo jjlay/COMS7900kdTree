@@ -187,7 +187,7 @@ Note that we distinguish between \textbf{tree} nodes and \textbf{compute} nodes 
 
 The application was developed in a mixture of C and C++ on a Linux cluster. The compiler for the project was \texttt{g++} version 4.8.5-28 with the switch \texttt{-std=c++11} in order to utilize features introduced with that standard. The three most commonly used C++11 standards were placeholder type specifiers (i.e., \texttt{auto}), range-based \texttt{for} loops, and the \texttt{nullptr} constant.
 
-The C interface to MPI was selected for its familiarity and general support. While there are object-oriented C++ libraries such as \texttt{Boost.MPI} the authors elected to use the C version as they had experience with that environment and time to learn a new library was a limiting factor. Another concern was the installation of alternative libraries beyond Open MPI 2.1.1.
+The C interface to MPI was selected for its familiarity and general support. While there are object-oriented C++ libraries such as \texttt{Boost.MPI} the team elected to use the C version as they had experience with that environment and time to learn a new library was a limiting factor. Another concern was the installation of alternative libraries beyond Open MPI 2.1.1.
 
 Debugging was performed using the tools \texttt{gdb} and \texttt{valgrind}. \texttt{gdb} was used primarily while developing the serial code for building the tree to identify the source of segmentation faults. \texttt{valgrind} was instrumental in locating memory leaks and illegal memory references during the parallel development. Code was executed with the command:
 
@@ -195,8 +195,7 @@ Debugging was performed using the tools \texttt{gdb} and \texttt{valgrind}. \tex
 mpirun -np 4 valgrind ./main > dump.txt 2> dump2.txt
 \end{lstlisting}
 
-
-One major challenge during the debugging process was that output was not displayed in chronological order making it difficult to understand the flow of the code. A solution we implemented was to print a numeric identifier during the execution at the beginning of each line. Each section of code was assigned a five digit numeric value, and the \texttt{mpi} rank was printed along with this. 
+One major challenge during the debugging process was that output was not displayed in chronological order making it difficult to understand the flow of the code. A solution we implemented was to print a numeric identifier during the execution at the beginning of each line. Each section of code was assigned a five digit numeric value, and the \texttt{mpi} rank was printed along with this (an additional output sorting technique was use of \texttt{sleep(myRank)}):
 
 \begin{mdframed}[backgroundcolor=blue!20]
 	\setlength\itemsep{0.1pt}

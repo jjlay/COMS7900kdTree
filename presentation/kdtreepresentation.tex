@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[usernames,dvipsnames]{beamer}
 
 \usepackage[utf8]{inputenc}
 \usepackage{epstopdf}
@@ -11,6 +11,7 @@
 \usepackage{algorithmic}
 \usepackage[linesnumbered,ruled]{algorithm2e}
 \usepackage{graphicx}
+\usepackage{xcolor}
 \usepackage{listings}
 %\usepackage{lipsum}
 %\usepackage{dblfloatfix}
@@ -53,12 +54,13 @@ tabsize=3
 
 
 
-\title[Capstone]{Parallel Orthogonal Recursive Bisection}
+\title[Capstone]{Parallel Orthogonal Recursive Bisection (ORB)}
 
-\author{Team Metropolis:\\
-	James Farzi, JJ Lay, Graham West}
-\date{April 19, 2019}
+%\author{Team Metropolis:\\ James Farzi, JJ Lay, Graham West}
+%\date{April 19, 2019}
+\date{}
 
+%\titlegraphic{\includegraphics[width=0.9\textwidth]{images/DailyPlanet}}
 
 
 %%%%%%%%% BEGIN DOCUMENT %%%%%%%%%
@@ -68,7 +70,28 @@ tabsize=3
 \begin{document}
 
 % get title page 
-\frame{\titlepage}
+\begin{frame}
+	\titlepage
+	
+	\vspace{-65pt}
+		
+	\minipage{0.5\textwidth}
+		\centering
+		\textbf{\textcolor{red}{Team} \textcolor{Goldenrod}{Metro}\textcolor{blue}{polis:}} \\
+		James Farzi, JJ Lay, Graham West \\
+		\vspace{10pt}
+		April 19, 2019 \\
+		\vspace{10pt}
+		COMS 7900, Capstone \\
+%		\vspace{10pt}
+		\includegraphics[scale = 0.1]{images/PosterPlot_Ackley_Chain_good_00}
+	\endminipage\hfill %%%%%%%%%%%%%%%%%%%
+	\minipage{0.5\textwidth}
+		\centering
+		\includegraphics[scale = 0.18]{images/DailyPlanet}
+	\endminipage\hfill
+	
+\end{frame}
 
 \begin{frame}	
 	\frametitle{Outline}
@@ -110,14 +133,36 @@ tabsize=3
 
 \begin{frame}	
     \frametitle{Introduction}
-    	SUBLISTSSSSSS
     	\begin{block}{Workflow:}
     		\begin{itemize}
+			\setlength\itemsep{0.5pt}
+   			\item Prototyping: implementation based on Graham's MATLAB code
+   			\item Extreme coding is FUN...and powerful
     			\item Used C++ w/ C MPI calls
-    			\item Valgrind/gdb for debugging
-    			\item Using Git effectively (multiple branches, few merge conflicts)
-   			\item Extreme coding if FUN...and powerful
-   			\item Prototyping: we each wrote our own, implementation based on Graham's MATLAB code
+    			\item Using Git effectively:
+    				\begin{itemize}
+					\setlength\itemsep{0.5pt}
+    					\item Master and sub branches
+    					\item Reduced merge conflicts
+				\end{itemize}
+    			\item Execution:
+    				\begin{itemize}
+					\setlength\itemsep{0.5pt}
+    					\item \texttt{qlogin}
+    					\item \texttt{qsub}
+				\end{itemize}
+    			\item Debugging:
+    				\begin{itemize}
+					\setlength\itemsep{0.5pt}
+    					\item \texttt{valgrind}
+    					\item \texttt{gdb}
+				\end{itemize}
+   			\item Output sorting:
+    				\begin{itemize}
+					\setlength\itemsep{0.5pt}
+    					\item \texttt{sleep(myRank)}
+    					\item Prepend a numeric key on \texttt{cout}'s
+				\end{itemize}
     		\end{itemize}
     	\end{block}
 \end{frame}
