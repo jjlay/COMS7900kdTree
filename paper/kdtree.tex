@@ -170,9 +170,6 @@ Note that we distinguish between \textbf{tree} nodes and \textbf{compute} nodes 
 
 \section{Implementation}
 
-%\textcolor{red}{Here we discuss our implementation of the code}
-%\textcolor{red}{we used C++ with C MPI calls, mpirun, qsub/qlogin, valgrind}
-
 \begin{center}
 \includegraphics[width=0.95\textwidth]{images/flow.png}
 \end{center}
@@ -362,6 +359,31 @@ This function accepts seven parameters:
 The \texttt{importFiles} function iterates over the list of files opens each for reading. It uses \texttt{fscanf} to read each line directly into the array pointed to by \texttt{myData} in order to minimize data movement. The file is closed when the end of the file is reached, \texttt{maxRowsPerFile} is met, or the total data read from all files equals \texttt{arrayLimit}. The number of rows is written to \texttt{rows} and the number of columns to \texttt{cols}. The variable \texttt{myRank} is passed for debugging purposes. Results are returned through the references passed as variables.
 
 
+%%%%%%%%%
+%
+% Subsection: CalculateIndex
+%
+%%%%%%%%%
+
+\subsubsection{\texttt{CalculateIndex}}\label{sec:calculateindex}
+
+The \texttt{CalculateIndex} function is defined as:
+
+\begin{minipage}{\linewidth}
+\lstset{language=C++, keepspaces=true}
+\begin{lstlisting}
+float CalculateIndex(string filename)
+\end{lstlisting}
+\end{minipage}
+
+It accepts a single parameter \texttt{filename} which is the file being imported by \texttt{importFiles}. This function parses the numeric value to calculate the starting index for the rows:
+
+\begin{center}
+    I$_0$ = (\texttt{fileId} - 1) * \texttt{\_MAX\_ROWS\_}
+\end{center}
+
+This avoids the need to handle the integer overflow issue in the later data files. The value is stored as a \texttt{float} to allow a single array to hold both the coordinates from the file and the index.
+
 % build: we build the tree using ORB to partition the data
 
 % search: import the 501-st data file and perform a search on each, summing the total number of points found over several radii
@@ -514,8 +536,7 @@ The \texttt{struct} variables used during the initial division of the tree among
 \texttt{leftComm} & The MPI communicator of the \textit{left} child tree for the current node.  \\
 \texttt{rightComm} & The MPI communicator of the \textit{right} child tree for the current node.  \\
 \texttt{thisComm} & The MPI communicator of the current compute node.  \\
-\texttt{name} & The unique name of the tree node. \\
-\texttt{x1} & The minimum value of \textit{x} stored in this subtree.  \\
+texttt{x1} & The minimum value of \textit{x} stored in this subtree.  \\
 \texttt{x2} & The maximum value of \textit{x} stored in this subtree.  \\
 \texttt{y1} & The minimum value of \textit{y} stored in this subtree.  \\
 \texttt{y2} & The maximum value of \textit{y} stored in this subtree.  \\
@@ -553,7 +574,6 @@ The \texttt{struct} variables used during the final division of the local serial
 \texttt{r} & Pointer to the \textit{right} child of the current node. This value is \texttt{null} for the data point. \\
 \texttt{i} & The dimension that was split during the local tree construction. \\
 \texttt{source} & During the serial phase, this value is set to \texttt{\_Source\_buildTree\_serial}. \\
-\texttt{name} & The unique name of the node. \\
 \texttt{x1} & The minimum value of \textit{x} stored in this subtree. \\
 \texttt{x2} & The maximum value of \textit{x} stored in this subtree. \\
 \texttt{y1} & The minimum value of \textit{y} stored in this subtree. \\
@@ -583,7 +603,6 @@ The \texttt{struct} variables used for storing the data point within the tree an
  \texttt{l} & Pointer to the \textit{left} child of the current node. This value is \texttt{null} for the data point.  \\
  \texttt{r} & Pointer to the \textit{right} child of the current node. This value is \texttt{null} for the data point.  \\
  \texttt{source} & During the serial phase, this value is set to \texttt{\_Source\_buildTree\_serial}.  \\
- \texttt{name} & The unique name of the node.  \\
  \texttt{depth} & The depth within the tree of the current node. The top node has a depth of zero.  \\
  \texttt{n} & The number of points contained within the subtree where the current node is the root.  \\
  \texttt{d[4]} & The data point.  \\
@@ -802,7 +821,15 @@ The following recommendations could improve the course when offered next:
 
 \begin{itemize}
     \item Assign a job queue to each team with dedicated nodes for each to eliminate resource conflicts between teams.
-    \item 
+    \item Spend one lecture on using Git and Github
+    \item Provide a ``big picture'' view of how the first assignment of parallel sort will be used
+    \item Break the projects into smaller assignments:
+        \begin{itemize}
+            \item Initial assignment is simply having an MPI program that distributes files evenly across nodes and reads the data in
+            \item Parallel sort assignment
+            \item Build local $k$-d tree on each node and have each node read and search the 501 file
+            \item Final project is parallel $k$-d tree
+        \end{itemize}
 \end{itemize}
 
 
