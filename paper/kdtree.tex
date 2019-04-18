@@ -297,9 +297,9 @@ Source code was hosted on Github, and each team member had a personal branch for
 
 \subsection{\texttt{main}}
 
-Our \texttt{main} program is divided into three main phases (each of which is comprised of multiple functions): data import, tree building, and tree searching. The data import phase collects all of the relevant filenames of the data files, reads them, and places them into a single 1D array. The tree building phase begins by initializing an empty \texttt{Tree} struct (see below for explanation of the struct) which is then passed into the \texttt{buildTree} function which alters the struct's contents. The entire tree can then be navigated by using the tree's left, right, and parent fields. The final tree searching phase takes the completed tree struct as an argument along with a search sphere. The number of points within the search sphere is calculated for each
+Our \texttt{main} program is divided into three main phases (each of which is comprised of multiple functions): data import, tree building, and tree searching. The data import phase collects all of the relevant filenames of the data files, reads them, and places them into a single 1D array. The tree building phase begins by initializing an empty \texttt{Tree} struct (see below for explanation of the struct) which is then passed into the \texttt{buildTree} function which alters the struct's contents. The entire tree can then be navigated by using the tree's left, right, and parent fields. The final tree searching phase takes the completed tree struct as an argument along with a search sphere. The number of points within the search sphere is calculated for a list of search spheres and radii.
 
-There are four variables which govern the performance of the $k$-d tree and the size of the problem. First are the number of data files to read and the number of lines to read per file. These values are set in the beginning of \texttt{main} and they have a maximum value of 500 and 20,000,000, respectively. Third, is the number of compute nodes. In general, increasing this number should speed up execution of the program. Its value is set in the command line when running the program and its value must be smaller than the number of files. Last, is the number of lines to read from the 501-st data file. These are the centers of the search spheres. The value is set in \texttt{search501}.
+There are four variables which govern the performance of the $k$-d tree and the size of the problem. First and second are the number of data files and the number of lines per file to read. These values are set in the beginning of \texttt{main} and they have a maximum value of 500 and 20,000,000, respectively. Third, is the number of compute nodes. In general, increasing this number let's us increase the problem size. Its value is set in the command line when running the program and its value must be smaller than the number of files. Last, is the number of lines to read from the 501-st data file. These are the centers of the search spheres. The value is set in \texttt{search501}.
 
 
 %%%%%%%%%
@@ -317,12 +317,12 @@ The \texttt{listFiles} function has the following definition:
 vector<string> listFiles(string path, int numFiles); 
 \end{lstlisting}
 
-It accepts two parameters:
+It accepts two parameters: \\
 
 \begin{tabular}{l l}
 \texttt{path} & The path to the data files to be used \\
 \texttt{numFiles} & The maximum number of files to be used by the program \\
-\end{tabular}
+\end{tabular}\\
 
 The return value is a Standard Template Library \texttt{vector} containing strings with the filenames. The vector has a maximum length of \texttt{numFiles}. Files are not gathered in alphabetical order but in the order returned from the operating system. For example, for \texttt{numFiles = 10}, it is unlikely that the files returned will be \texttt{datafile00001.txt} through \texttt{datafile00010.txt}.
 
@@ -342,15 +342,14 @@ The \texttt{distributeFiles} function is defined as:
 void distributeFiles(vector<string> files, int numWorkers);
 \end{lstlisting}
 
-It accepts two paramters:
+It accepts two parameters: \\
 
 \begin{tabular}{l l}
 \texttt{files} & The list of files returned by \texttt{listFiles} \\
 \texttt{numWorkers} & The number of nodes allocated for the job \\
-\end{tabular}
+\end{tabular} \\
 
 The function does not return any values to the caller. It iterates over the list of files and sends them to the workers in a round-robin method to ensure that the data is distributed as evenly as possible without knowing the true length of each data file. Files are sent asynchronously since rank 0 participates in the construction of the tree and searching.
-
 
 %%%%%%%%%
 %
@@ -367,11 +366,11 @@ The \texttt{receiveFiles} function is defined as:
 vector<string> receiveFiles(int myRank);
 \end{lstlisting}
 
-It accepts a single parameter:
+It accepts a single parameter: \\
 
 \begin{tabular}{l l}
 \texttt{myRank} & The MPI rank of the current process \\
-\end{tabular}
+\end{tabular} \\
 
 \texttt{receiveFiles} performs an \texttt{MPI\_Receive} to obtain a list of files sent by \texttt{distributeFiles}. These are stored in an STL \texttt{vector} and returned to the calling function.
 
@@ -397,8 +396,7 @@ void importFiles(vector<string> files, int myRank,
 \end{lstlisting}
 \end{minipage}
 
-
-This function accepts seven parameters:
+This function accepts seven parameters: \\
 
 \begin{tabular}{l l}
 \texttt{\texttt{files}}          & An STL vector of files from \texttt{receiveFiles} \\
@@ -408,9 +406,9 @@ This function accepts seven parameters:
 \texttt{\texttt{cols}}           & A pointer to a variable to store the number of columns imported  \\
 \texttt{\texttt{maxRowsPerFile}} & The maximum number of rows to read from each file \\
 \texttt{\texttt{arrayLimit}}     & The maximum size of the allocated array \\
-\end{tabular}
+\end{tabular} \\
 
-The \texttt{importFiles} function iterates over the list of files opens each for reading. It uses \texttt{fscanf} to read each line directly into the array pointed to by \texttt{myData} in order to minimize data movement. The file is closed when the end of the file is reached, \texttt{maxRowsPerFile} is met, or the total data read from all files equals \texttt{arrayLimit}. The number of rows is written to \texttt{rows} and the number of columns to \texttt{cols}. The variable \texttt{myRank} is passed for debugging purposes. Results are returned through the references passed as variables.
+The \texttt{importFiles} function iterates over the list of files received and opens each for reading. It uses \texttt{fscanf} to read each line directly into the array pointed to by \texttt{myData} in order to minimize data movement. The file is closed when the end of the file is reached, \texttt{maxRowsPerFile} is met, or the total data read from all files equals \texttt{arrayLimit}. The number of rows is written to \texttt{rows} and the number of columns to \texttt{cols}. The variable \texttt{myRank} is passed for debugging purposes. Results are returned through the references passed as variables.
 
 A significant improvement would have been to convert the ASCII files to binary as other teams did. Also, since the local sort was verified to work, a presorted binary file for each node could be created allowing the program to bypass the ASCII to binary conversion, merging multiple files, and performing the initial sort. This would allow each node to simply perform an \texttt{fread} the entire array from the file with one command.
 
@@ -456,7 +454,7 @@ This avoids the need to handle the integer overflow issue in the later data file
 % JJ, talk about the Tree struct and what all fields it has
 %
 
-The design of the $k$-d tree required storing information for organizing the parallel distribution of the data and the data held locally on the node. Rather than create two different type of structures, the code utilized a single C \texttt{struct} which originally was defined as:
+The design of the $k$-d tree required storing information for organizing both the parallel distribution of the data and the data held locally on the node. Rather than create two different type of structures, the code utilized a single C \texttt{struct}. This \texttt{struct} underwent a massive overhaul/trimming near the end of the project in an attempt to decrease to total memory usage. Initially, the \texttt{struct} was defined as:
 
 \begin{minipage}{\linewidth}
 \lstset{language=C++, keepspaces=true}
@@ -500,7 +498,7 @@ struct Tree {
 \end{minipage}
 
 
-Unfortunately, this structure proved to be too bloated when attempting to import all 10 billion rows of data as well as the 20 million rows of search rows. The simplified tree structure is:
+This \texttt{struct} contains multiple fields which either were only used for debugging or not even used at all. Clearly, this structure proved to be too bloated when attempting to import all 10 billion rows of data as well as the 20 million rows of search rows. The so-called ``trimmed" tree \texttt{struct} is defined as:
 
 \begin{minipage}{\linewidth}
 \lstset{language=C++, keepspaces=true}
@@ -527,12 +525,19 @@ struct Tree {
 \end{lstlisting}
 \end{minipage}
 
+As can be seen, we made an additional change by changing all \texttt{double} data types to \texttt{float} types in order to conserve memory. This change affected every portion of the code, so we performed a global find and replace on all \texttt{.cpp, .h} files in our repository using the following:
 
-Another change was moving from \texttt{double} data types to \texttt{float} in order to conserve memory.
+\lstset{language=C++, keepspaces=true}
+\begin{lstlisting}
+	find ./ -type f -exec sed -i 's/DOUBLE/FLOAT/g' {} \;
+	find ./ -type f -exec sed -i 's/double/float/g' {} \;
+\end{lstlisting}
 
-During the parallel construction phase, nodes are separated into different MPI communicators as shown in Figure~\ref{fig:communicators}. The four \texttt{MPI\_Comm} variables store the references to the parent, child, and current communicators. The value \texttt{MPI\_COMM\_SELF} is used as a ``null'' value for these pointers to indicate no communicators exist in the given direction.
+This change only required us to alter the \texttt{fscanf} statement to read \texttt{float}'s as opposed to \texttt{long float}'s.
 
-Once the nodes became members of a communicator containing only itself, \texttt{buildTree} constructed the local serial tree using the same structure but using the \texttt{Tree} pointers rather than the \texttt{MPI\_Comm} variables.
+During the parallel construction phase, nodes are separated into different MPI communicators as shown in Figure~\ref{fig:communicators}. The four \texttt{MPI\_Comm} variables store the references to the parent, left and right children, and current communicators. The value \texttt{MPI\_COMM\_SELF} is used as a ``null'' value for these pointers to indicate no communicators exist in the given direction.
+
+Once the nodes became members of a communicator containing only itself, \texttt{buildTree\_serial} constructed the local serial tree using the same structure but using the \texttt{Tree} pointers rather than the \texttt{MPI\_Comm} variables.
 
 
 %%%%%%%%%
@@ -543,7 +548,7 @@ Once the nodes became members of a communicator containing only itself, \texttt{
 
 \subsubsection{Constants}\label{sec:constants}
 
-C preprocessor identifiers were defined and used in place of numeric constants for readability. Data points were defined as an array of \texttt{double} of size four consistently even when only three values were needed. The four positions were referenced using:
+C preprocessor identifiers were defined and used in place of numeric constants for readability. Data points were defined as an array of \texttt{float}'s of size four consistently even when only three values were needed. The four positions were referenced using:
 
 \lstset{language=C++, keepspaces=true}
 \begin{lstlisting}
@@ -553,7 +558,7 @@ C preprocessor identifiers were defined and used in place of numeric constants f
 #define _Z_       3
 \end{lstlisting}
 
-A single tree is create and populated by both the parallel and serial versions of \texttt{buildTree}. To aid with debugging, each node is marked with an identifier to show which function created it. The identifiers for the sources are:
+A single tree is created and populated by both the parallel and serial versions of \texttt{buildTree}. To aid with debugging, each node is marked with an identifier to show which function created it. The identifiers for the sources are:
 
 \lstset{language=C++, keepspaces=true}
 \begin{lstlisting}
@@ -570,8 +575,7 @@ A single tree is create and populated by both the parallel and serial versions o
 
 \subsubsection{Tree Node Naming}
 
-Each node in the tree is assigned a unique identifier determined by its position. The top node is named \texttt{t}. The two child nodes of \texttt{t} are \texttt{tl} and \texttt{tr}. An \texttt{l} or \texttt{r} is appended to the parent's name to designate the direction it is below the parent. The final node of the parallel section appends an \texttt{*} to designate the transition from parallel to serial. The node of the tree containing the data point appends an \texttt{!}.
-
+Each node in the tree is assigned a unique identifier determined by its position. The top node is named \texttt{t}. The two child nodes of \texttt{t} are \texttt{tl} and \texttt{tr}. An \texttt{l} or \texttt{r} is appended to the parent's name to designate the direction it is below the parent. The final node of the parallel section appends an \texttt{*} to designate the transition from parallel to serial. The node of the tree containing the data point appends an \texttt{!}. This was one of the fields which was trimmed away after debugging was completed.
 
 %%%%%%%%%
 %
@@ -581,7 +585,7 @@ Each node in the tree is assigned a unique identifier determined by its position
 
 \subsubsection{Parallel variables}
 
-The \texttt{struct} variables used during the initial division of the tree among the nodes and their purpose are:
+The \texttt{struct} variables used during the initial division of the tree among the nodes and their purpose are: \\
 
 \begin{tabular}{l l}
 \texttt{i} & The dimension that was split by the MPI communicator.  \\
@@ -589,8 +593,8 @@ The \texttt{struct} variables used during the initial division of the tree among
 & \texttt{\_Source\_buildTree\_parallel}.  \\
 \texttt{parentComm} & The parent MPI communicator that created this node. The\\
 &  root node stores a value of \texttt{MPI\_COMM\_SELF} in lieu of a null. \\
-\texttt{leftComm} & The MPI communicator of the \textit{left} child tree for the current node.  \\
-\texttt{rightComm} & The MPI communicator of the \textit{right} child tree for the current node.  \\
+\texttt{leftComm} & The MPI communicator of the \textit{left} child tree for the current compute node.  \\
+\texttt{rightComm} & The MPI communicator of the \textit{right} child tree for the current compute node.  \\
 \texttt{thisComm} & The MPI communicator of the current compute node.  \\
 texttt{x1} & The minimum value of \textit{x} stored in this subtree.  \\
 \texttt{x2} & The maximum value of \textit{x} stored in this subtree.  \\
@@ -604,7 +608,7 @@ texttt{x1} & The minimum value of \textit{x} stored in this subtree.  \\
 & node is the root.  \\
 \texttt{c[4]} & The center of the subtree. Index for the array is described in section \ref{sec:constants}. \\
 \texttt{radius} & The distance from the center of the subtree to the furthest point.  \\
-\end{tabular}
+\end{tabular} \\
 
 \begin{center}
    \begin{figure}[h!]
@@ -622,7 +626,7 @@ texttt{x1} & The minimum value of \textit{x} stored in this subtree.  \\
 
 \subsubsection{Serial variables}
 
-The \texttt{struct} variables used during the final division of the local serial tree on the compute nodes and their purpose are:
+The \texttt{struct} variables used during the final division of the local serial tree on the compute nodes and their purpose are: \\
 
 \begin{tabular}{l l}
 \texttt{p} & Pointer to the parent of the current node. This value is \texttt{null} for the top node. \\
@@ -641,7 +645,7 @@ The \texttt{struct} variables used during the final division of the local serial
 & is the root. \\
 \texttt{c[4]} & The center of the subtree. Index for the array is described in section \ref{sec:constants}. \\
 \texttt{radius} & The distance from the center of the subtree to the furthest point. \\
-\end{tabular}
+\end{tabular} \\
 
 
 %%%%%%%%%
