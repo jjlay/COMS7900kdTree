@@ -121,7 +121,7 @@ tabsize=3
     	
     	\begin{block}{Objectives:}
     		\begin{itemize}
-    			\item Given set of data
+    			\item Given a large set of data
     			\item Develop parallel orthogonal recursive bisection (ORB) algorithm
     			\item Utilize a $k$-d tree to organize data
     			\item Maximize use of MPI using multiple nodes
@@ -215,7 +215,17 @@ tabsize=3
 		
 \end{frame}
 
+%%%%%
+%
+% Subsection: Importing Data
+%
+%%%%%
+
 \subsection{Importing Data}
+
+%%%%
+% Importing data
+%%%%
 
 \begin{frame}
 	\frametitle{Importing Data}
@@ -240,11 +250,105 @@ tabsize=3
     			\item Returns a 1D array of length 4 $\times$ nFiles $\times$ nLinesPerFile
     			\item nFiles $\ge$ nNodes
     		\end{itemize}
+    		
+    		\texttt{CalculateIndex($\cdots$)}
+    		    \begin{itemize}
+    		        \item Calculates the starting index of the first row
+    		    \end{itemize}
     	\end{block}
 		
 \end{frame}
 
+%%%%
+% listFiles
+%%%%
+
+\begin{frame}
+	\frametitle{\texttt{listFiles}}
+	
+    		\texttt{listFiles}($\cdots$)
+    		\begin{itemize}
+    			\item Fetches a list of data filenames using OS calls (random order)
+    		\end{itemize}
+    		
+
+\end{frame}
+
+%%%%
+% distributeFiles
+%%%%
+
+\begin{frame}
+	\frametitle{\texttt{distributeFiles}}
+	
+    		\texttt{distributeFiles}($\cdots$), \texttt{receiveFiles}($\cdots$)
+    		\begin{itemize}
+    			\item Isend/Recv the list of filenames
+    			\item Round robin distribution of files
+    		\end{itemize}
+    		
+\end{frame}
+
+
+%%%%
+% receiveFiles
+%%%%
+
+\begin{frame}
+	\frametitle{\texttt{receiveFiles}}
+	
+    		\texttt{distributeFiles}($\cdots$), \texttt{receiveFiles}($\cdots$)
+    		\begin{itemize}
+    			\item Isend/Recv the list of filenames
+    			\item Round robin distribution of files
+    		\end{itemize}
+    		
+\end{frame}
+
+
+%%%%
+% importFiles
+%%%%
+
+\begin{frame}
+	\frametitle{\texttt{importFiles}}
+	
+    		\texttt{importFiles}($\cdots$)
+    		\begin{itemize}
+    			\item Reads the received filenames
+    			\item Read a set nFiles and nLinesPerFile
+    			\item Returns a 1D array of length 4 $\times$ nFiles $\times$ nLinesPerFile
+    			\item nFiles $\ge$ nNodes
+    		\end{itemize}
+    		
+\end{frame}
+
+
+%%%%
+% CalculateIndex
+%%%%
+
+\begin{frame}
+	\frametitle{\texttt{CalculateIndex}}
+	
+    		\texttt{CalculateIndex($\cdots$)}
+    		    \begin{itemize}
+    		        \item Calculates the starting index of the first row
+    		    \end{itemize}
+
+\end{frame}
+
+%%%%%
+%
+% Subsection: Tree Structure
+%
+%%%%%
+
 \subsection{Tree Structure}
+
+%%%%
+% Old tree structure
+%%%%
 
 \begin{frame}[fragile]
 	\frametitle{Tree Structure}
@@ -257,41 +361,70 @@ tabsize=3
     			\item tree naming
     		\end{itemize}
     	\end{block}
-    
-\begin{texttt}
-struct Tree \{
-	Tree *p;  // Parent
-	Tree *l;  // Left child
-	Tree *r;  // Right child
-
-	MPI\_Comm parentComm, leftComm, rightComm, thisComm;
-
-	float x1;  // Min x
-	float x2;  // Max x
-	float y1;  // Min y
-	float y2;  // Max y
-	float z1;  // Min z
-	float z2;  // Max z
-
-	float c[4];  // Center of this tree
-	float radius;
-
-	float d[4];  // Data point
-\}
-\end{texttt}
-
-		
 \end{frame}
+
+%%%%
+% New tree structure
+%%%%
+
+\begin{frame}[fragile]
+	\frametitle{Tree Structure}
+
+\begin{block}{New tree struct:}
+\lstset{
+   basicstyle=\tiny
+}
+\begin{lstlisting}{language=C++}
+struct Tree {
+   Tree *p;  // Parent
+   Tree *l;  // Left child
+   Tree *r;  // Right child
+
+   MPI_Comm parentComm, leftComm, rightComm, thisComm;
+
+   float x1;  // Min x
+   float x2;  // Max x
+   float y1;  // Min y
+   float y2;  // Max y
+   float z1;  // Min z
+   float z2;  // Max z
+
+   float c[4];  // Center of this tree
+   float radius;
+
+   float d[4];  // Data point
+}
+\end{lstlisting}
+\end{block}
+\end{frame}
+
+%%%%
+% C Constants
+%%%%
 
 \begin{frame}
 	\frametitle{C Constants}
 	
-    	\begin{block}{\texttt{definitions.h}:}
-	    	A header file containing numerous pre-process identifiers (\texttt{\#define}):
-    		\begin{itemize}
-    			\item \texttt{\_INDEX\_, \_X\_, \_Y\_, \_Z\_}
-    			\item Count limits (adapt bins max iterations, max nLinesPerFile, etc.)
-    			\item MPI tags (bin edge, bin count, uniformity, etc.)
+    \begin{block}{\texttt{definitions.h}:}
+        A header file containing numerous preprocessor identifiers (\texttt{\#define}) to improve code readability and reduce the number of constant values:
+        \begin{itemize}
+            \item Array indexing
+                \begin{itemize}
+                    \item \texttt{\#define \_X\_ 1} $\rightarrow$  \\
+                    \texttt{var = data[\_X\_]}
+                    \item \texttt{\#define mpi\_Max\_Filename 200} $\rightarrow$ \\
+                    \texttt{auto name = new char[mpi\_Max\_Filename]}
+                \end{itemize}
+            \item MPI tags
+                \begin{itemize}
+                    \item \texttt{\#define mpi\_Tag\_File 30} $\rightarrow$ \\
+                    \texttt{MPI\_Send(name, sz, MPI\_CHAR, Rank0, mpi\_Tag\_File, \ldots}
+                \end{itemize}
+            \item Count limits
+                \begin{itemize}
+                    \item \texttt{\#define abortCount 5000} $\rightarrow$ \\
+                    \texttt{while (i < abortCount)}
+                \end{itemize}
     		\end{itemize}
     	\end{block}
 		
@@ -316,15 +449,19 @@ struct Tree \{
 	\end{block}
 \end{frame}
 
+%%%
+% Building the tree
+% Communicator diagram
+%%%
+
 \begin{frame}
 	\frametitle{Building the tree}
-	
-   \begin{figure}[h!]
-   	\centering
-      \includegraphics[width=0.9\textwidth]{images/communicators.png}
-      \caption{Example of parallel variables using eight nodes}
-      \label{fig:communicators}
-   \end{figure}
+	    \begin{figure}[h!]
+       	    \centering
+            \includegraphics[width=0.5\textwidth]{images/communicators.png}
+            \caption{Example of parallel variables using eight nodes}
+            \label{fig:communicators}
+        \end{figure}
 \end{frame}
 
 \begin{frame}
@@ -758,17 +895,20 @@ struct Tree \{
 				\begin{itemize}
 					\setlength\itemsep{0.5pt}
 					\item Fixates on dumb, small things; slows team progress (can't see the forest for the trees)
+					\item So many windows open! How do you find anything?
 				\end{itemize}
 			\item James: \\
 				\begin{itemize}
 					\setlength\itemsep{0.5pt}
 					\item Who needs whitespace?
+					\item Memory leak? Just run it on more nodes!
 				\end{itemize}
 			\item JJ: \\
 				\begin{itemize}
 					\setlength\itemsep{0.5pt}
 					\item Insistent usage of Visual Studio replaces neatly arranged tabs with ugly, inconsistent spaces (also doesn't update Makefile)
 					\item SO MUCH debug \texttt{cout} clutter
+					\item Naming conventions? Who needs those?
 				\end{itemize}
 		\end{itemize}
 	\end{alertblock}
