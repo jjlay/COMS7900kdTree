@@ -1,34 +1,28 @@
 \frametitle{Tree Structure}
 
-    	\begin{block}{Old tree struct:}
-    		\begin{itemize}
-    			\item Contained extra debugging fields
-    			\item Contained completely unused fields
-    			\item Originally used doubles
-    			\item tree naming
-    		\end{itemize}
-    	\end{block}
+\begin{block}{New tree struct:}
+\lstset{
+   basicstyle=\tiny
+}
+\begin{lstlisting}{language=C++}
+struct Tree {
+   Tree *p;  // Parent
+   Tree *l;  // Left child
+   Tree *r;  // Right child
 
-\begin{texttt}
-struct Tree \{
-	Tree *p;  // Parent
-	Tree *l;  // Left child
-	Tree *r;  // Right child
+   MPI_Comm parentComm, leftComm, rightComm, thisComm;
 
-	MPI\_Comm parentComm, leftComm, rightComm, thisComm;
+   float x1;  // Min x
+   float x2;  // Max x
+   float y1;  // Min y
+   float y2;  // Max y
+   float z1;  // Min z
+   float z2;  // Max z
 
-	float x1;  // Min x
-	float x2;  // Max x
-	float y1;  // Min y
-	float y2;  // Max y
-	float z1;  // Min z
-	float z2;  // Max z
+   float c[4];  // Center of this tree
+   float radius;
 
-	float c[4];  // Center of this tree
-	float radius;
-
-	float d[4];  // Data point
-\}
-\end{texttt}
-
-
+   float d[4];  // Data point
+}
+\end{lstlisting}
+\end{block}
