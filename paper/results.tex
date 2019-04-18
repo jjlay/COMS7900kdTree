@@ -9,20 +9,20 @@
 
 \subsection{Timing Testing}
 
-The timing data collected does not provide a clear understanding of the scalability of the algorithms. Figure~\ref{fig:plane} displays the performance data collected for varying values of nodes and data rows. The height of the chart represents the time to execute the program. The x-axis is \texttt{log(TotalLines)}, the z-axis is the number of nodes the program was executed on, and the y-axis is the \texttt{log(Runtime)}.
+The timing data collected does not provide a clear understanding of the scalability of the algorithms. Figure \ref{fig:plane} displays the performance data collected for varying values of nodes and data rows. The height of the chart represents the time to execute the program. The x-axis is \texttt{log(TotalLines)}, the z-axis is the number of nodes the program was executed on, and the y-axis is the \texttt{log(Runtime)}.
 
 
-\begin{figure}
-\centering
-\includegraphics[width=0.7\textwidth]{./images/runtimes.png}
-\caption{Execution time versus nodes and total lines}
-\label{fig:plane}
+\begin{figure}[b!]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./images/runtimes.png}
+	\caption{Execution time versus nodes and total lines}
+	\label{fig:plane}
 \end{figure}
 
 
-The upper left of the plane is truncated due to the inability to execute the program for large datasets on fewer nodes. 20\% of the timing data had to be excluded due to varying multiple parameters simultaneously. The original plan had been to perform a fully-nested Analysis of Variance (ANOVA) test on the data to understand which parameters impacted performanced the greatest. However, due to the programming challenges encountered and cluster utilization, this did not occur. Another cause of the irregular performance is the sharing of the cluster. Teams would run tests using \texttt{qlogin} (including Team Metropolis) rather than submitting them through \texttt{qsub} to allow the job scheduler.
+The upper left of the plane is truncated due to the inability to execute the program for large datasets on fewer nodes. Roughly 20\% of the timing data had to be excluded due to varying multiple parameters simultaneously. The original plan had been to perform a fully-nested Analysis of Variance (ANOVA) test on the data to understand which parameters impacted performance the greatest. However, due to the programming challenges encountered and cluster utilization, this did not occur. Another cause of the irregular performance is the sharing of the cluster. Teams would run tests using \texttt{qlogin} (including Team Metropolis) rather than submitting them through \texttt{qsub} to allow the job scheduler.
 
-A subset of the performance data is presented in the following table.
+A subset of the performance data is presented in the following table. \\
 
 \begin{tabular}{r r r r r}
  & \multicolumn{4}{c}{\textbf{Execution times (seconds)}} \\
@@ -34,7 +34,7 @@ A subset of the performance data is presented in the following table.
   500,000,000 &        & 2,094.11 &  3,685.35 & \\
 1,000,000,000 &        & 4,146.69 &           &  \\
 2,000,000,000 &        &          &           & 21,355.30 \\ 
-\end{tabular}
+\end{tabular} \\
 
 The execution time of the program increases as more nodes are added while keeping the total data rows constant. One possible explanation for this is that on smaller numbers of nodes the job was not running on systems occupied by other teams. However, as the number of nodes increased, the job began contending for resources with other jobs.
 
@@ -52,7 +52,7 @@ The execution time of the program increases as more nodes are added while keepin
 \label{fig:allnums}
 \end{figure}
 
-Figure~\ref{fig:lownums} shows the runtimes for four different job sizes (32, 64, 128, and 200 nodes) with varying numbers of data rows from 50,000 to 50,000,000. Figure~\ref{fig:allnums} shows the runtimes from 50,000 to 2,000,000,000 (the largest job size that completed successfully).
+Figure \ref{fig:lownums} shows the runtimes for four different job sizes (32, 64, 128, and 200 nodes) with varying numbers of data rows from 50,000 to 50,000,000. Figure \ref{fig:allnums} shows the runtimes from 50,000 to 2,000,000,000 (the largest job size that completed successfully).
 
 
 \begin{figure}
@@ -63,7 +63,7 @@ Figure~\ref{fig:lownums} shows the runtimes for four different job sizes (32, 64
 \end{figure}
 
 
-Figure~\ref{fig:breakdown} provides a glimpse into the performance of the various functions of the program, and the results are provided in the following table.
+Figure \ref{fig:breakdown} provides a glimpse into the performance of the various functions of the program, and the results are provided in the following table. \\
 
 \begin{tabular}{l r r l}
 \textbf{Function}         & \textbf{Runtime}        & \textbf{Percent} & \textbf{Note} \\
@@ -77,8 +77,7 @@ BuildTree        & 34.353 seconds & 60.808\% & Builds parallel and serial trees.
 SearchTree       &  1.032 seconds & 1.827\% & Searches the constructed tree and \\
 & & &  produces results \\
 \textbf{Total}   & \textbf{56.494 seconds} & \textbf{100.000\%} & \\
-\end{tabular}
-
+\end{tabular} \\
 
 These results were not unexpected.
 
@@ -91,7 +90,7 @@ These results were not unexpected.
 
 \subsection{Search Results}
 
-The program exports a table at the end of the run displaying the number of points contained in each of three radii centered at each row of points from  \texttt{datafile00501.txt}. The first twenty rows of the output are shown below:
+The program exports a table at the end of the run displaying the number of points contained in each of three radii centered at each row of points from  \texttt{datafile00501.txt}. The first twenty rows of the output are shown below: \\
 
 \begin{minipage}{\linewidth}
 \begin{verbatim}
@@ -119,6 +118,6 @@ POINTS FOUND:
     0.399678     -0.069887      0.666980         12781       1560145      11866273
     0.823353      0.852015     -0.053596          3058        371959       2943893
 \end{verbatim}
-\end{minipage}
+\end{minipage} \\
 
-The program was tested using 
+% The program was tested using 

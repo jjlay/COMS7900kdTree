@@ -2,17 +2,17 @@
 \beamer@sectionintoc {2}{Implementation}{6}{0}{2}
 \beamer@subsectionintoc {2}{1}{\texttt {main}}{7}{0}{2}
 \beamer@subsectionintoc {2}{2}{Importing Data}{8}{0}{2}
-\beamer@subsectionintoc {2}{3}{Tree Structure}{9}{0}{2}
-\beamer@subsubsectionintoc {2}{3}{1}{Building the tree}{11}{0}{2}
-\beamer@subsubsectionintoc {2}{3}{2}{Searching the tree}{17}{0}{2}
-\beamer@subsectionintoc {2}{4}{Parallel sorting}{19}{0}{2}
-\beamer@subsubsectionintoc {2}{4}{1}{Changes}{19}{0}{2}
-\beamer@subsubsectionintoc {2}{4}{2}{\texttt {adaptBins}}{23}{0}{2}
-\beamer@sectionintoc {3}{Validation}{26}{0}{3}
-\beamer@subsectionintoc {3}{1}{MATLAB visualizations}{27}{0}{3}
-\beamer@subsectionintoc {3}{2}{Other tests}{29}{0}{3}
-\beamer@sectionintoc {4}{Results}{30}{0}{4}
-\beamer@sectionintoc {5}{Conclusions}{31}{0}{5}
-\beamer@subsectionintoc {5}{1}{Challenges}{32}{0}{5}
-\beamer@subsectionintoc {5}{2}{Successes}{34}{0}{5}
-\beamer@subsectionintoc {5}{3}{Future Work}{36}{0}{5}
+\beamer@subsectionintoc {2}{3}{Tree Structure}{14}{0}{2}
+\beamer@subsubsectionintoc {2}{3}{1}{Building the tree}{17}{0}{2}
+\beamer@subsubsectionintoc {2}{3}{2}{Searching the tree}{23}{0}{2}
+\beamer@subsectionintoc {2}{4}{Parallel sorting}{25}{0}{2}
+\beamer@subsubsectionintoc {2}{4}{1}{Changes}{25}{0}{2}
+\beamer@subsubsectionintoc {2}{4}{2}{\texttt {adaptBins}}{29}{0}{2}
+\beamer@sectionintoc {3}{Validation}{32}{0}{3}
+\beamer@subsectionintoc {3}{1}{MATLAB visualizations}{33}{0}{3}
+\beamer@subsectionintoc {3}{2}{Other tests}{35}{0}{3}
+\beamer@sectionintoc {4}{Results}{36}{0}{4}
+\beamer@sectionintoc {5}{Conclusions}{37}{0}{5}
+\beamer@subsectionintoc {5}{1}{Challenges}{38}{0}{5}
+\beamer@subsectionintoc {5}{2}{Successes}{40}{0}{5}
+\beamer@subsectionintoc {5}{3}{Future Work}{42}{0}{5}

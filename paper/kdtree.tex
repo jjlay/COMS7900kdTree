@@ -297,7 +297,7 @@ Source code was hosted on Github, and each team member had a personal branch for
 
 \subsection{\texttt{main}}
 
-Our \texttt{main} program is divided into three main phases (each of which is comprised of multiple functions): data import, tree building, and tree searching. The data import phase collects all of the relevant filenames of the data files, reads them, and places them into a single 1D array. The tree building phase begins by initializing an empty \texttt{Tree} struct (see below for explanation of the struct) which is then passed into the \texttt{buildTree} function which alters the struct's contents. The entire tree can then be navigated by using the tree's left, right, and parent fields. The final tree searching phase takes the completed tree struct as an argument along with a search sphere. The number of points within the search sphere is calculated for a list of search spheres and radii.
+Our \texttt{main} program is divided into three main phases (each of which is comprised of multiple functions): data import, tree building, and tree searching. The data import phase collects all of the relevant filenames of the data files, reads them, and places them into a single 1D array. The tree building phase begins by initializing an empty \texttt{Tree} \texttt{struct} (see below for explanation of the \texttt{struct}) which is then passed into the \texttt{buildTree} function which alters the \texttt{struct}'s contents. The entire tree can then be navigated by using the tree's left, right, and parent fields. The final tree searching phase takes the completed tree \texttt{struct} as an argument along with a search sphere. The number of points within the search sphere is calculated for a list of search spheres and radii.
 
 There are four variables which govern the performance of the $k$-d tree and the size of the problem. First and second are the number of data files and the number of lines per file to read. These values are set in the beginning of \texttt{main} and they have a maximum value of 500 and 20,000,000, respectively. Third, is the number of compute nodes. In general, increasing this number let's us increase the problem size. Its value is set in the command line when running the program and its value must be smaller than the number of files. Last, is the number of lines to read from the 501-st data file. These are the centers of the search spheres. The value is set in \texttt{search501}.
 
@@ -451,10 +451,10 @@ This avoids the need to handle the integer overflow issue in the later data file
 
 \subsection{$k$-d tree}
 %
-% JJ, talk about the Tree struct and what all fields it has
+% JJ, talk about the Tree \texttt{struct} and what all fields it has
 %
 
-The design of the $k$-d tree required storing information for organizing both the parallel distribution of the data and the data held locally on the node. Rather than create two different type of structures, the code utilized a single C \texttt{struct}. This \texttt{struct} underwent a massive overhaul/trimming near the end of the project in an attempt to decrease to total memory usage. Initially, the \texttt{struct} was defined as:
+The design of the $k$-d tree required storing information for organizing both the parallel distribution of the data and the data held locally on the node. Rather than create two different type of \texttt{struct}ures, the code utilized a single C \texttt{struct}. This \texttt{struct} underwent a massive overhaul/trimming near the end of the project in an attempt to decrease to total memory usage. Initially, the \texttt{struct} was defined as:
 
 \begin{minipage}{\linewidth}
 \lstset{language=C++, keepspaces=true}
@@ -498,7 +498,7 @@ struct Tree {
 \end{minipage}
 
 
-This \texttt{struct} contains multiple fields which either were only used for debugging or not even used at all. Clearly, this structure proved to be too bloated when attempting to import all 10 billion rows of data as well as the 20 million rows of search rows. The so-called ``trimmed" tree \texttt{struct} is defined as:
+This \texttt{struct} contains multiple fields which either were only used for debugging or not even used at all. Clearly, this \texttt{struct}ure proved to be too bloated when attempting to import all 10 billion rows of data as well as the 20 million rows of search rows. The so-called ``trimmed" tree \texttt{struct} is defined as:
 
 \begin{minipage}{\linewidth}
 \lstset{language=C++, keepspaces=true}
@@ -537,7 +537,7 @@ This change only required us to alter the \texttt{fscanf} statement to read \tex
 
 During the parallel construction phase, nodes are separated into different MPI communicators as shown in Figure~\ref{fig:communicators}. The four \texttt{MPI\_Comm} variables store the references to the parent, left and right children, and current communicators. The value \texttt{MPI\_COMM\_SELF} is used as a ``null'' value for these pointers to indicate no communicators exist in the given direction.
 
-Once the nodes became members of a communicator containing only itself, \texttt{buildTree\_serial} constructed the local serial tree using the same structure but using the \texttt{Tree} pointers rather than the \texttt{MPI\_Comm} variables.
+Once the nodes became members of a communicator containing only itself, \texttt{buildTree\_serial} constructed the local serial tree using the same \texttt{struct}ure but using the \texttt{Tree} pointers rather than the \texttt{MPI\_Comm} variables.
 
 
 %%%%%%%%%
@@ -611,7 +611,7 @@ texttt{x1} & The minimum value of \textit{x} stored in this subtree.  \\
 \end{tabular} \\
 
 \begin{center}
-   \begin{figure}[h!]
+   \begin{figure}[b!]
       \includegraphics[width=0.9\textwidth]{images/communicators.png}
       \caption{Example of parallel variables using eight nodes}
       \label{fig:communicators}
@@ -701,13 +701,13 @@ Upon completion, \texttt{buildTree\_serial} recursively calls itself instead of 
 
 
 \paragraph{\texttt{buildTree\_parallel}}
-This function performs essentially the same tasks as \texttt{buildTree\_serial}, but utilizing multiple nodes for speedup. Specifically, it takes advantage of \texttt{parallelSort} in order to speed up the partitioning of the data along the longest axis (determine by \texttt{getSortDim}, discussed below). After the data has been sorted, the data is split by placing lower half (w.r.t. the sorted data values) of the compute nodes into a left communicator and the upper half into a right communicator. Each half then calls \texttt{buildTree}.
+This function performs essentially the same tasks as \texttt{buildTree\_serial}, but utilizing multiple nodes. Specifically, it takes advantage of \texttt{parallelSort} in order to partition the data along the longest axis (determine by \texttt{getSortDim}, discussed below). After the data has been sorted, the data is split by placing lower half (w.r.t. the sorted data values) of the compute nodes into a left communicator and the upper half into a right communicator. Each half then calls \texttt{buildTree}.
 
 % Upon completion, \texttt{buildTree\_parallel} has spawned 2 new communicators (a left and a right) each of which has half as many compute nodes as the parent communicator. All of the nodes from each side then call \texttt{buildTree} so that they can perform the $q$ check.
 
 
 \paragraph{\texttt{getSortDim}}
-This function is used by \texttt{buildTree\_parallel} in order to determine which is the longest axis, i.e., the sort dimension. In addition to this, it also fills in the struct for the current tree node with the global min/max in all three dimensions. To do this, each node gets its own min/max for each axis and sends them to rank 0 (w.r.t. the current communicator). Rank 0 then determines the global min/max and them MPI\_Bcast's those values back to the other ranks. This allows each communicator to sort their data independently along different axes. The center of the bounding box defined by these values min's/max's is also stored in the tree struct. 
+This function is used by \texttt{buildTree\_parallel} in order to determine which is the longest axis, i.e., the sort dimension. In addition to this, it also fills in the \texttt{struct} for the current tree node with the global min/max in all three dimensions. To do this, each node determines its own min/max for each axis and sends them to rank 0 (w.r.t. the current communicator). Rank 0 then determines the global min/max and then MPI\_Bcast's those values back to the other ranks. This allows each communicator to sort their data independently along different axes. The center of the bounding box defined by these values min's/max's is also stored in the tree \texttt{struct}. 
 
 
 \subsubsection{Searching the tree}
@@ -716,11 +716,11 @@ This function is used by \texttt{buildTree\_parallel} in order to determine whic
 
 \paragraph{\texttt{searchTree\_serial}}
 % GW
-This function is called by all ranks and returns an integer which equals the number of points found by the rank that called it. It takes as arguments the point and radius (which specifies a search sphere) and the root of the tree created by \texttt{buildTree}. To perform the search, a check is done to determine of the search sphere intersects the bounding sphere of each data partition:
+This function is called by all ranks and returns an integer which equals the number of points found by the rank that called it. It takes as arguments the point and radius (which specifies a search sphere) and the root of the tree created by \texttt{buildTree}. To perform the search, a check is done to determine if the search sphere intersects the bounding sphere of each data partition:
 \begin{equation}
 		r^2_\textrm{sphere center to box center} \le (r_{sphere} + r_{box})^2
 \end{equation}
-We used the squared version of the formula to avoid computing the square root, thus saving time. If this check returns false, then there are no data points within the search sphere contained in that partition and the function exits. If true, then another check is performed to check if the left or right child tree are NULL. If they are both NULL, then by our definition of the tree, we have found a point that is a leaf of the tree, thus we increment the count and exit the function. Otherwise, we recursively call the function again using the correct child tree.
+We used the squared version of the formula to avoid computing the square root, thus saving time. If this check returns false, then there are no data points within the search sphere contained in that partition and the function exits. If true, then another check is performed to check if the left or right child trees are NULL. If they are both NULL, then by our definition of the tree, we have found a point that is a leaf of the tree, thus we increment the count and exit the function. Otherwise, we recursively call the function again using the correct child tree.
 
 %%%%%%%%%
 %
@@ -734,31 +734,28 @@ We used the squared version of the formula to avoid computing the square root, t
 %
 
 Each compute node calls this function which reads the data file \\
-\texttt{datafile00501.txt} whose contents are the centers of the search spheres. The function uses \texttt{importFiles} to read the file and passes the number of search rows in \texttt{maxRowsPerFile}. It then loops \texttt{searchTree\_serial} for all of the sphere centers for three different radii (0.01, 0.05, 0.10). The counts on each compute node are then stored. After all searches are complete, an \texttt{MPI\_Reduce} is performed by all nodes, thus adding all of the counts into a single array which is sent to \texttt{stdout}. When the job is submitted using \texttt{qsub}, the output is directed to a file with the name of the job.
-
-We did not make the final transition from local node searches to a parallel search even though both the parallel $k$-d tree and local $k$-tree were completed due to time and computing constraints. The necessary data structures are built and populated, and it should not take more than a few days to complete.
+\texttt{datafile00501.txt} whose contents are the centers of the search spheres. The function uses \texttt{importFiles} to read the file and passes the number of search rows in \texttt{maxRowsPerFile}. It then loops \texttt{searchTree\_serial} for all of the sphere centers for three different radii (0.01, 0.05, 0.10). The counts on each compute node are then stored. After all searches are complete, an \texttt{MPI\_Reduce} is performed by all nodes, thus adding all of the counts into a single array which is sent to \texttt{stdout}. When the job is submitted using \texttt{qsub}, the output is directed to a file with the name of the job. We did not make the final transition from local node searches to a parallel search due to time and computing constraints.
 
 \subsection{Altered parallel sorting}
 We had to adjust our parallel sorting algorithm a great extend to integrate it into the new project.
-
 
 \subsubsection{\texttt{parallelSort}}
 
 % GW, farzi
 
 \paragraph{Conversion to function}
-One of our first obstacles was modifying our original \texttt{parallelSort}  program to work for this project. The first issue was having \texttt{parallelSort} operate as a function. We accomplished this by removing the MPI setup and Data Import sections from \texttt{parallelSort} and placing them into a new Main. While doing this we encountered issues with how the data was passed using both a pointer and array notation. Because several functions within the \texttt{parallelSort} function would need to change both the number of rows and the data we had to pass as pointers and pointers to arrays. 
+One of our first obstacles was modifying our original \\
+\texttt{parallelSort} program to work for this project. The first issue was having \texttt{parallelSort} operate as a function. We accomplished this by removing the MPI setup and Data Import sections from \texttt{parallelSort} and placing them into a new \texttt{main}. While doing this we encountered issues with how the data was passed using both a pointer and array notation. Because several functions within the \texttt{parallelSort} function would need to change both the number of rows and the data we had to pass as pointers and pointers to arrays. 
 
 
 \paragraph{Making rank 0 do work}
-The second issue was our use of rank 0 which as the manager in our original \texttt{parallelSort} program. Our implantation of \texttt{parallelSort} had rank 0 manage while all the other ranks were compute nodes which contained and performed operations on the actual data. However, when utilizing a KD tree all of the ranks are needed as compute nodes otherwise each time the tree forked and a new communication branch was formed the process would lose a rank due to a new rank 0 being formed. To resolve this problem we had to make several clever adjustments in the sections of the code, most notably the adapt binning section. Other sections just needed to have the iteration increment from 0 instead of 1.
+The second issue was our use of rank 0 as the manager in our original \texttt{parallelSort} program. Our implementation of \texttt{parallelSort} had rank 0 manage while all the other ranks were contained and performed operations on the actual data. However, when utilizing a $k$-d tree, all of the ranks must assist in the workload, otherwise each time the tree forked and a new communication branch was formed, the process would lose a rank due to a new rank 0 being formed. To resolve this problem we had to make several clever adjustments in the sections of the code, most notably the adaptive binning section. Other sections just needed their initial iteration set to 0 instead of 1 or the conditional of an \texttt{if} statement changed.
 
 \paragraph{Using different communicators}
-Since $k$-d tree requires multiple comms, it was necessary that \texttt{parallelSort} (any many functions it contains) was given the current communicator. This was not a terribly difficult modification, but it was quite tedious since there were many functions which required alterations to their header files.
-
+Since parallel ORB requires multiple communicators, it was necessary that \texttt{parallelSort} (any many functions it contains) was given the current communicator as an argument. This was not a difficult modification, but it was quite tedious since there were many functions which required alterations to their header files.
 
 \subsubsection{\texttt{adaptBins}}
-Although our original adaptive binning scheme performed well, we wanted something which could do even better since $k$-d trees require many parallelSort calls. As a review, here is our original method:
+Although our original adaptive binning scheme performed relatively well, we wanted something even better since ORB requires many \texttt{parallelSort} calls. As a review, here is our original method:
 \begin{equation}
 	\begin{split}
 		\Delta C & = 2.0 ( C^{m}_{i+1} - C^{m}_i ) / ( C^{m}_{i+1} + C^{m}_i ) \\
@@ -767,7 +764,7 @@ Although our original adaptive binning scheme performed well, we wanted somethin
 	\end{split}
 \end{equation}
 % added scale factor
-where $C$ are the bin counts, $E$ are the bin edges, and $\alpha < 0.5$. This method will occasionally devolve into oscillatory behavior and not converge to the correct value. To combat this in the $k$-d tree project, we added a scale factor $S$ which decreases over time:
+where $C$ are the bin counts, $E$ are the bin edges, and $\alpha < 0.5$. This method will occasionally devolve into oscillatory behavior and not converge to the correct value. To combat this in the ORB project, we added a scale factor $S$ which decreases over time:
 \begin{equation}
 	\begin{split}
 		S(m) & = 1 - (1 - 0.1) (1 - \textrm{exp}(-0.03 m) \\
@@ -775,7 +772,7 @@ where $C$ are the bin counts, $E$ are the bin edges, and $\alpha < 0.5$. This me
 	\end{split}
 \end{equation}
 
-Since this method is local, it converges slowly at bin edges far away from high-density clusters. As such, we attempted to replace this method with a global method which uses linear interpolation to estimate where the bins would be evenly distributed. Define the function $\hat C(x)$ as the linear approximation of the cumulative count distribution of the data points (so that it normalizes to the number of data points, not unity). Then,
+Since this method is local, it converges slowly at bin edges far away from high-density clusters. As such, we considered replacing this method with a global method which uses linear interpolation to estimate where the bins would be evenly distributed. Define the function $\hat C(x)$ as the linear approximation of the cumulative count distribution of the data points (so that it normalizes to the number of data points, not unity). Then,
 \begin{equation}
 		\hat C(x) = \hat C(E^m_{i'}) + C^m_{i'} \dfrac{x - E^m_{i'}}{E^m_{{i'}+1} - E^m_{i'}} = (i+1) \dfrac{D}{N}
 \end{equation}
@@ -784,36 +781,34 @@ where $i'$ is the maximum index such that $\hat C(E_{i'}) < (i+1) \dfrac{D}{N}$ 
 		E^{m+1}_i = E^m_{i'} + \Big( (i+1) \dfrac{D}{N} - C(E^m_{i'}) \Big) (E^m_{{i'}+1} - E^m_{i'}) / C^m_{i'}
 \end{equation}
 
-We discovered that this adaptation technique performs very will in initial steps of adaptation, but is prone to oscillations near clusters of points. Now, since each of the two methods perform better and worse in different contexts, are solution was to simply alternate between at each step. This solved all of our convergence issues in testing. (Note that we still use the same binary search-based binning technique and stopping criterion from the previous project.)
-
-
-
-
+We discovered that this adaptation technique performs incredibly well, but is also prone to oscillations near clusters of points (but to a much lower frequency than the earlier method). In order to resolve this oscillation issue, are solution was to simply alternate between the two methods at each step. This solved all of our convergence issues. (Note that we still use the same binary search-based binning technique and stopping criterion from the previous project.)
 
 %%%%%%%%%%%%%
 %%% NEW SECTION %%%
 %%%%%%%%%%%%%
 \section{Validation}
 
-
 % GW, farzi
 \subsection{Two MATLAB demos}
-During our development of the code we wanted a way to verify the process was being performed accurately. Therefore, after the parallel side of the $k$-d tree was complete we had our C++ code output the min and maxes of the X, Y, and Z columns and save those outputs to a file. We then wrote MATLAB code that would read in those files and plot a box that encapsulated the three values. This figure represents the boundaries of 25 nodes for a sample of data. As can be seen from this image, each of the bounding boxes vary in limiting size, however all the boxes contain a relatively equal number of points. That number can be verified through our parallel sorting operations. 
-
-\begin{figure}
-\includegraphics[width=0.9\textwidth]{images/squares.png}
-\caption{Example of $k$-d tree partitions}
-\end{figure}
 
 \subsubsection{2D animation of tree building}
-When prototyping the code in MATLAB, we generated animated visualizations of the construction of a 2D tree. Due to the format, we cannot include the animation within this paper, but it shall be included in the presentation.
-
+When prototyping the code in MATLAB, we generated animated visualizations of the construction of a 2-d tree. Due to the format, we cannot include the animation within this paper, but it shall be included in the presentation.
 
 \subsubsection{3D tree partitions from different orientations}
-Another testing method we performed during our development was validation through variation of input parameters. We held constant the number of data points read, the searching point and search radius, but varied the number of nodes that were used in the process. Then we had each node output the number of data points within their tree that fell within the search point and radius. Although the number of points per tree would vary depending upon the number of nodes used, the sum of all those points would remain constant. From this test we confirmed that the search tree was working as intended. 
+During our development of the code we wanted a way to verify that ORB was being performed correctly. Therefore, after the parallel phase of the $k$-d tree was completed, we output the $x,y,z$ min's/max's of the each partition in the tree and saved the values to a file. We then wrote a MATLAB script that would plot boxes defined these values. Figure \ref{square} provides an example of the type of image this script produced. It depicts the boundaries of 25 partitions. As can be seen from this image, each of the bounding boxes vary in limiting size, however all the boxes contain a relatively equal number of points.
+
+\begin{figure}[b!]
+	\includegraphics[width=0.9\textwidth]{images/squares.png}
+	\caption{Example $k$-d tree at 25 partitions.}
+	\label{square}
+\end{figure}
 
 \subsection{Other}
-During the testing process we also varied the searching parameter radius in two ways. First, we made the search radius very large and as expected we encapsulated all points. Second, we reduced the search radius and the search point so that it should only include a single location and our results were perfect. 
+Another testing method we performed during our development was validation through variation of input parameters. We held constant the number of data points read, the searching point and search radius, but varied the number of nodes that were used in the process. Then we had each node output the number of data points within their tree that fell within the search point and radius. Although the number of points per tree would vary depending upon the number of nodes used, the sum of all those points would remain constant. From this test we confirmed that the search tree was working as intended. 
+
+We also varied the search radius in three ways. First, we made the search radius very large and---as expected---we found all points. Second, we the search radius to a very small number and the search point to a point within the data files. As expected, only one points was found. Third, we set the search point and ran several tests with increasing radii. As expected, the number of points found increased monotonically with the radius.
+
+These validation techniques make it clear to within a reasonable doubt that our code functions as intended.
 
 %%%%%%%%%
 %
@@ -836,7 +831,9 @@ During the testing process we also varied the searching parameter radius in two 
 
 \section{Conclusions}
 % everyone
-This project was an excellent test for managing MPI in the context of large amounts of data and long run times. It also provided an opportunity to work as a well-functioning team and develop a synergistic group dynamic. We were able to overcome significant setbacks. Below is a summary of different aspects of our performance, including some challenges which we struggled with as well as our successes and possible future work.
+This project was an excellent test for managing MPI in a memory-restricted environment.
+%the context of large amounts of data and long run times.
+It also provided an opportunity to work as a well-functioning team and develop a synergistic group dynamic. Together, we were able to overcome significant setbacks. Below is a summary of different aspects of our performance, including some challenges which we struggled with as well as our successes and possible future work.
 
 \medskip
 
@@ -844,16 +841,16 @@ This project was an excellent test for managing MPI in the context of large amou
 \begin{mdframed}[backgroundcolor=red!20]
 	Challenges:
 	\begin{itemize}
-		\item \texttt{parallelSort} conversions
-		\item memory leaks
-		\item \texttt{malloc} when you should \texttt{realloc}
-		\item multiple communicators (comm)
-		\item \texttt{adaptBins} convergence problems
-		\item debug print statement clutter
+		\item memory management (leaks, limited space, Signal 9)
 		\item array out of bounds issues
-		\item inconsistent usage pointer-to-pointer calls for *data[] and *rows (due to \texttt{swapArrayParts})
+		\item multiple communicators (comm)
 		\item no planning for function arguments and return values (constant editing of h-files)
 		\item testing was difficult due to cluster overloading and hardware errors
+		\item debug print statement clutter
+		\item inconsistent usage pointer-to-pointer calls for *data[] and *rows (due to \texttt{swapArrayParts})
+		\item \texttt{malloc} when you should \texttt{realloc}
+		\item \texttt{parallelSort} conversions
+		\item \texttt{adaptBins} convergence problems
 	\end{itemize}
 \end{mdframed}
 \end{minipage}
@@ -864,9 +861,10 @@ This project was an excellent test for managing MPI in the context of large amou
 \begin{mdframed}[backgroundcolor=green!20]
 	Successes:
 	\begin{itemize}
-		\item few merge conflicts and fast debugging through extreme coding and Git branches
-		\item visualizing output through MATLAB
+		\item few merge conflicts and fast coding through extreme coding and Git branches
 		\item efficient delegation of tasks
+		\item visualizing output through MATLAB
+		\item excellent validation techniques
 	\end{itemize}
 \end{mdframed}
 \end{minipage}
@@ -898,7 +896,7 @@ The following recommendations could improve the course when offered next:
 \begin{itemize}
     \item Assign a job queue to each team with dedicated nodes for each to eliminate resource conflicts between teams.
     \item Spend one lecture on using Git and Github
-    \item Provide a ``big picture'' view of how the first assignment of parallel sort will be used
+    \item Provide a ``big picture'' view of how the first assignment of parallel sort will be used in future projects
     \item Break the projects into smaller assignments:
         \begin{itemize}
             \item Initial assignment is simply having an MPI program that distributes files evenly across nodes and reads the data in
@@ -937,22 +935,29 @@ The following recommendations could improve the course when offered next:
 
 \subsection{Contributions}
 
-It is very difficult to state that any one team member was the sole contributor to a section of the code. After the parallel sort project, we adopted an ``extreme coding'' approach during which all three team members sat in front of a single console while one person typed. Almost all of the $k$-d tree code was developed this way. Rather than identify a single person as the developer, it is more appropriate to identify a ``technical lead'' for each section.
+It is very difficult to state that any one team member was the sole contributor to a section of the code. After the parallel sort project, we adopted an ``extreme coding'' approach during which all three team members sat in front of a single console while one person typed. Almost all of the $k$-d tree code was developed this way. Rather than identify a single person as the developer, it is more appropriate to identify a ``technical lead'' for each section. \\
 
 \begin{tabular}{l l c}
 \textbf{Function}  & \textbf{Lead Member} & \textbf{Magnitude of Work} \\
-listFiles & JJ Lay & 1 \\
-distributeFiles & JJ Lay & 1 \\
-receiveFiles & JJ Lay & 1 \\
-importFiles & JJ Lay & 1 \\
-localSort & James Farzidayeri & 3 \\
-parallelSort & James Farzidayeri & 5 \\
-swapArrays & James Farzidayeri & 5 \\
-adaptBins & Graham West & 5 \\
-search501 & JJ Lay & 2 \\
+GitHub guru & JJ Lay & 1 \\
+listFiles & JJ Lay & 2 \\
+distributeFiles & JJ Lay & 2 \\
+receiveFiles & JJ Lay & 2 \\
+importFiles & JJ Lay & 4 \\
+buildTree\_serial & JJ Lay & 4 \\
+searchTree\_serial & JJ Lay & 6 \\
+search501 & JJ Lay & 4 \\
+localSort & James Farzidayeri & 6 \\
+swapArrays & James Farzidayeri & 10 \\
+cleanUp & James Farzidayeri & 9 \\
+binData & Graham West & 5 \\
+adaptBins & Graham West & 8 \\
+uniformity & Graham West & 2 \\
 Paper & Graham West & 5 \\
-Presentation & Graham West & 3 \\
-\end{tabular}
+Presentation & Graham West & 5 \\
+parallelSort & Everyone & 10 \\
+buildTree\_parallel & Everyone & 10 \\
+\end{tabular} \\
 
 %%%%%%%%%%%%%
 %%% NEW SECTION %%%

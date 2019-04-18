@@ -28,7 +28,8 @@ basicstyle={\small\ttfamily},
 numbers=none,
 numberstyle=\tiny\color{gray},
 keywordstyle=\color{blue},
-commentstyle=\color{dkgreen},
+commentstyle=\color{green},
+%commentstyle=\color{dkgreen},
 stringstyle=\color{mauve},
 breaklines=true,
 breakatwhitespace=true,
@@ -756,20 +757,12 @@ struct Tree {
 \begin{frame}
 	\frametitle{Parallel sorting}
 	
-	ALTERNATE
-	
-	Since both methods' pros and cons are disjoint, alternating between them gives a method which can outperform either individually
-	
-	\begin{block}{Demos:}
-
+	\begin{block}{Solution:}
 		\begin{itemize}
-			\item thin dense distribution at boundary, nBins = 2, 3, 10
-			\item wide distribution in center, nBins = 2, 3, 10
-			\item 
+			\item Alternate between the old and new schemes on even and odd iterations
+			\item MATLAB demos
 		\end{itemize}
-
 	\end{block}
-	
 	
 \end{frame}
 
