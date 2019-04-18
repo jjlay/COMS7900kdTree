@@ -170,9 +170,6 @@ Note that we distinguish between \textbf{tree} nodes and \textbf{compute} nodes 
 
 \section{Implementation}
 
-%\textcolor{red}{Here we discuss our implementation of the code}
-%\textcolor{red}{we used C++ with C MPI calls, mpirun, qsub/qlogin, valgrind}
-
 \begin{center}
 \includegraphics[width=0.95\textwidth]{images/flow.png}
 \end{center}
@@ -237,6 +234,60 @@ cat dump.txt | sort | less
 
 
 Code was executed using both interactively by logging into a compute node using \texttt{qlogin} and as a batch job using \texttt{qsub}. Short runs of a few minutes were performed interactively when failures occurred quickly or to test a new section of code on smaller data sets. Longer runs that needed more than eight nodes were submitted to the Sun Grid Engine batch system.  
+
+\texttt{valgrind} was used to detect memory leaks and memory management issues. The code was compiled with the debug option \texttt{-ggdb} in order to include symbols. This tool was especially valuable as it could be run using the \texttt{mpirun} command.
+
+\begin{verbatim}
+==39048== Mismatched free() / delete / delete []
+==39048==    at 0x4C2BB78: realloc (vg_replace_malloc.c:785)
+==39048==    by 0x40B056: swapArrayParts(float**, int*, int*, int, int, int*, 
+             int, int, ompi_communicator_t*) (swapArrayParts.cpp:115)
+==39048==    by 0x407A05: parallelSort(int, int, float**, int*, int*, int, 
+             ompi_communicator_t*) (parallelSort.cpp:323)
+==39048==    by 0x4066CB: buildTree_parallel(float**, int*, int, Tree*, 
+             ompi_communicator_t*, int, int) (buildTree_parallel.cpp:61)
+==39048==    by 0x406034: buildTree(float**, int*, int, Tree*, 
+             ompi_communicator_t*, int, int, std::string) (buildTree.cpp:42)
+==39048==    by 0x402D82: main (main.cpp:177)
+==39048==  Address 0x8825ed0 is 0 bytes inside a block of size 200,032 alloc'd
+==39048==    at 0x4C2A8A8: operator new[](unsigned long) (vg_replace_malloc.c:423)
+==39048==    by 0x402BD2: main (main.cpp:146)
+\end{verbatim}
+
+At the end of execution \texttt{valgrind} provides a summary of issues including memory leakage.
+
+\begin{verbatim}
+==39047== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==39045== LEAK SUMMARY:
+==39045==    definitely lost: 237,355 bytes in 82 blocks
+==39045==    indirectly lost: 3,093,358 bytes in 25,667 blocks
+==39045==      possibly lost: 320,000,000 bytes in 1 blocks
+==39045==    still reachable: 156,179 bytes in 226 blocks
+==39045==         suppressed: 0 bytes in 0 blocks
+\end{verbatim}
+
+\texttt{gdb} was useful for identifying segmentation fault causes but required the code to be executed on a single core without MPI.
+
+Jobs were submitted to the Sun Grid Engine using \texttt{qsub} and a qsub file. The script used was:
+
+\begin{minipage}{\linewidth}
+\lstset{language=bash, keepspaces=true}
+\begin{lstlisting}
+#!/bin/bash
+##
+#$ -N MetropolisKdTree64
+#$ -pe mpi 64
+#$ -q amd8.q
+#$ -cwd
+
+mpirun -np $NSLOTS $HOME/COMS7900kdTree/code/kdTree/parallelApproved/main
+\end{lstlisting}
+\end{minipage}
+
+One improvement that would have made debugging and performance collection significantly easier would be to pass controlling variables as command line parameters. The two key variables are the number of rows to read from each file and the number of search points; these were controlled by constants in the code and required recompilation to test different settings.
+
+Source code was hosted on Github, and each team member had a personal branch for working. Pulls were performed irregularly as members needed to publish significant changes.
+
 
 %%%%%%%%%
 %
@@ -359,6 +410,33 @@ This function accepts seven parameters: \\
 
 The \texttt{importFiles} function iterates over the list of files received and opens each for reading. It uses \texttt{fscanf} to read each line directly into the array pointed to by \texttt{myData} in order to minimize data movement. The file is closed when the end of the file is reached, \texttt{maxRowsPerFile} is met, or the total data read from all files equals \texttt{arrayLimit}. The number of rows is written to \texttt{rows} and the number of columns to \texttt{cols}. The variable \texttt{myRank} is passed for debugging purposes. Results are returned through the references passed as variables.
 
+A significant improvement would have been to convert the ASCII files to binary as other teams did. Also, since the local sort was verified to work, a presorted binary file for each node could be created allowing the program to bypass the ASCII to binary conversion, merging multiple files, and performing the initial sort. This would allow each node to simply perform an \texttt{fread} the entire array from the file with one command.
+
+
+%%%%%%%%%
+%
+% Subsection: CalculateIndex
+%
+%%%%%%%%%
+
+\subsubsection{\texttt{CalculateIndex}}\label{sec:calculateindex}
+
+The \texttt{CalculateIndex} function is defined as:
+
+\begin{minipage}{\linewidth}
+\lstset{language=C++, keepspaces=true}
+\begin{lstlisting}
+float CalculateIndex(string filename)
+\end{lstlisting}
+\end{minipage}
+
+It accepts a single parameter \texttt{filename} which is the file being imported by \texttt{importFiles}. This function parses the numeric value to calculate the starting index for the rows:
+
+\begin{center}
+    I$_0$ = (\texttt{fileId} - 1) * \texttt{\_MAX\_ROWS\_}
+\end{center}
+
+This avoids the need to handle the integer overflow issue in the later data files. The value is stored as a \texttt{float} to allow a single array to hold both the coordinates from the file and the index.
 
 % build: we build the tree using ORB to partition the data
 
@@ -518,8 +596,7 @@ The \texttt{struct} variables used during the initial division of the tree among
 \texttt{leftComm} & The MPI communicator of the \textit{left} child tree for the current compute node.  \\
 \texttt{rightComm} & The MPI communicator of the \textit{right} child tree for the current compute node.  \\
 \texttt{thisComm} & The MPI communicator of the current compute node.  \\
-\texttt{name} & The unique name of the tree node. \\
-\texttt{x1} & The minimum value of \textit{x} stored in this subtree.  \\
+texttt{x1} & The minimum value of \textit{x} stored in this subtree.  \\
 \texttt{x2} & The maximum value of \textit{x} stored in this subtree.  \\
 \texttt{y1} & The minimum value of \textit{y} stored in this subtree.  \\
 \texttt{y2} & The maximum value of \textit{y} stored in this subtree.  \\
@@ -557,7 +634,6 @@ The \texttt{struct} variables used during the final division of the local serial
 \texttt{r} & Pointer to the \textit{right} child of the current node. This value is \texttt{null} for the data point. \\
 \texttt{i} & The dimension that was split during the local tree construction. \\
 \texttt{source} & During the serial phase, this value is set to \texttt{\_Source\_buildTree\_serial}. \\
-\texttt{name} & The unique name of the node. \\
 \texttt{x1} & The minimum value of \textit{x} stored in this subtree. \\
 \texttt{x2} & The maximum value of \textit{x} stored in this subtree. \\
 \texttt{y1} & The minimum value of \textit{y} stored in this subtree. \\
@@ -587,7 +663,6 @@ The \texttt{struct} variables used for storing the data point within the tree an
  \texttt{l} & Pointer to the \textit{left} child of the current node. This value is \texttt{null} for the data point.  \\
  \texttt{r} & Pointer to the \textit{right} child of the current node. This value is \texttt{null} for the data point.  \\
  \texttt{source} & During the serial phase, this value is set to \texttt{\_Source\_buildTree\_serial}.  \\
- \texttt{name} & The unique name of the node.  \\
  \texttt{depth} & The depth within the tree of the current node. The top node has a depth of zero.  \\
  \texttt{n} & The number of points contained within the subtree where the current node is the root.  \\
  \texttt{d[4]} & The data point.  \\
@@ -658,8 +733,10 @@ We used the squared version of the formula to avoid computing the square root, t
 % JJ, edit if you want since you wrote most of this
 %
 
-Each compute node calls this function which reads the data file \texttt{datafile00501.txt} whose contents are the centers of the search spheres. The function uses \texttt{importFiles} to read the file and passes the number of search rows in \texttt{maxRowsPerFile}. It then loops \texttt{searchTree\_serial} for all of the sphere centers for three different radii (0.01, 0.05, 0.10). The counts on each compute node are then stored. After all searches are complete, an \texttt{MPI\_Reduce} is performed by all nodes, thus adding all of the counts into a single array which is sent to \texttt{stdout}. When the job is submitted using \texttt{qsub}, the output is directed to a file with the name of the job.
+Each compute node calls this function which reads the data file \\
+\texttt{datafile00501.txt} whose contents are the centers of the search spheres. The function uses \texttt{importFiles} to read the file and passes the number of search rows in \texttt{maxRowsPerFile}. It then loops \texttt{searchTree\_serial} for all of the sphere centers for three different radii (0.01, 0.05, 0.10). The counts on each compute node are then stored. After all searches are complete, an \texttt{MPI\_Reduce} is performed by all nodes, thus adding all of the counts into a single array which is sent to \texttt{stdout}. When the job is submitted using \texttt{qsub}, the output is directed to a file with the name of the job.
 
+We did not make the final transition from local node searches to a parallel search even though both the parallel $k$-d tree and local $k$-tree were completed due to time and computing constraints. The necessary data structures are built and populated, and it should not take more than a few days to complete.
 
 \subsection{Altered parallel sorting}
 We had to adjust our parallel sorting algorithm a great extend to integrate it into the new project.
@@ -761,6 +838,9 @@ During the testing process we also varied the searching parameter radius in two 
 % everyone
 This project was an excellent test for managing MPI in the context of large amounts of data and long run times. It also provided an opportunity to work as a well-functioning team and develop a synergistic group dynamic. We were able to overcome significant setbacks. Below is a summary of different aspects of our performance, including some challenges which we struggled with as well as our successes and possible future work.
 
+\medskip
+
+\begin{minipage}{\linewidth}
 \begin{mdframed}[backgroundcolor=red!20]
 	Challenges:
 	\begin{itemize}
@@ -776,7 +856,11 @@ This project was an excellent test for managing MPI in the context of large amou
 		\item testing was difficult due to cluster overloading and hardware errors
 	\end{itemize}
 \end{mdframed}
+\end{minipage}
 
+\medskip
+
+\begin{minipage}{\linewidth}
 \begin{mdframed}[backgroundcolor=green!20]
 	Successes:
 	\begin{itemize}
@@ -785,7 +869,11 @@ This project was an excellent test for managing MPI in the context of large amou
 		\item efficient delegation of tasks
 	\end{itemize}
 \end{mdframed}
+\end{minipage}
 
+\medskip
+
+\begin{minipage}{\linewidth}
 \begin{mdframed}[backgroundcolor=blue!20]
 	Future work:
 	\begin{itemize}
@@ -793,6 +881,9 @@ This project was an excellent test for managing MPI in the context of large amou
 		\item use of coding techniques for personal research
 	\end{itemize}
 \end{mdframed}
+\end{minipage}
+
+\medskip
 
 %%%%%%%%%%%%%%%
 %
@@ -806,7 +897,16 @@ The following recommendations could improve the course when offered next:
 
 \begin{itemize}
     \item Assign a job queue to each team with dedicated nodes for each to eliminate resource conflicts between teams.
-    \item 
+    \item Spend one lecture on using Git and Github
+    \item Provide a ``big picture'' view of how the first assignment of parallel sort will be used
+    \item Break the projects into smaller assignments:
+        \begin{itemize}
+            \item Initial assignment is simply having an MPI program that distributes files evenly across nodes and reads the data in
+            \item Parallel sort assignment
+            \item Build local $k$-d tree on each node and have each node read and search the 501 file
+            \item Assignment to organize nodes into groups of MPI communicators and pass data through the tree
+            \item Final project is parallel $k$-d tree
+        \end{itemize}
 \end{itemize}
 
 
@@ -835,6 +935,24 @@ The following recommendations could improve the course when offered next:
   https://github.com/jjlay/COMS7900kdTree/tree/master/code/parallelSort
 \end{verbatim}
 
+\subsection{Contributions}
+
+It is very difficult to state that any one team member was the sole contributor to a section of the code. After the parallel sort project, we adopted an ``extreme coding'' approach during which all three team members sat in front of a single console while one person typed. Almost all of the $k$-d tree code was developed this way. Rather than identify a single person as the developer, it is more appropriate to identify a ``technical lead'' for each section.
+
+\begin{tabular}{l l c}
+\textbf{Function}  & \textbf{Lead Member} & \textbf{Magnitude of Work} \\
+listFiles & JJ Lay & 1 \\
+distributeFiles & JJ Lay & 1 \\
+receiveFiles & JJ Lay & 1 \\
+importFiles & JJ Lay & 1 \\
+localSort & James Farzidayeri & 3 \\
+parallelSort & James Farzidayeri & 5 \\
+swapArrays & James Farzidayeri & 5 \\
+adaptBins & Graham West & 5 \\
+search501 & JJ Lay & 2 \\
+Paper & Graham West & 5 \\
+Presentation & Graham West & 3 \\
+\end{tabular}
 
 %%%%%%%%%%%%%
 %%% NEW SECTION %%%
