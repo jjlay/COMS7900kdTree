@@ -28,7 +28,8 @@ basicstyle={\small\ttfamily},
 numbers=none,
 numberstyle=\tiny\color{gray},
 keywordstyle=\color{blue},
-commentstyle=\color{green},
+commentstyle=\color{OliveGreen},
+%commentstyle=\color{green},
 %commentstyle=\color{dkgreen},
 stringstyle=\color{mauve},
 breaklines=true,
@@ -80,12 +81,12 @@ tabsize=3
 		\centering
 		\textbf{Team Metropolis: \\
 		\textcolor{red}{James Farzi}, \textcolor{Goldenrod}{JJ Lay}, \\ \textcolor{blue}{Graham West}} \\
-		\vspace{10pt}
+		\vspace{7pt}
 		April 19, 2019 \\
-		\vspace{10pt}
+		\vspace{7pt}
 		COMS 7900, Capstone \\
-		\vspace{-1pt}
-		\includegraphics[scale = 0.1]{images/PosterPlot_Ackley_Chain_good_00}
+		\vspace{4pt}
+		\includegraphics[scale = 0.17]{images/MCMC_Plot}
 	\endminipage\hfill %%%%%%%%%%%%%%%%%%%
 	\minipage{0.5\textwidth}
 		\centering
@@ -126,8 +127,8 @@ tabsize=3
     			\item Develop parallel orthogonal recursive bisection (ORB) algorithm
     			\item Utilize a $k$-d tree to organize data
     			\item Maximize use of MPI using multiple nodes
-    			\item Require both serial/parallel build/search operations
-    			\item Search the $k$-d data with a list of points and 3 radii
+    			\item Requires both serial/parallel build/search operations
+    			\item Search for nearest neighbors in the $k$-d data with a list of points and 3 radii
     		\end{itemize}
     	\end{block}
 \end{frame}
@@ -489,7 +490,7 @@ struct Tree {
 \begin{frame}
 	\frametitle{Building the tree}
 	
-	\texttt{buildTree\_parallel} performs ORB using a multiple compute nodes
+	\texttt{buildTree\_parallel} performs ORB using multiple compute nodes
 	
 	\vspace{10pt}
 	
@@ -646,8 +647,8 @@ struct Tree {
 	\begin{block}{Making rank 0 do work:}
 		\begin{itemize}
 			\item Initially, rank 0 was just a master node which coordinated the other worker nodes
-			\item This technique is very inefficient for parallel ORB since it requires us to switch to serial mode sooner
-			\item The solution involved 1) cleverly altering a large number of if statements in the code and 2) changing how certain types of sends/recvs were handled
+			\item This technique is very inefficient for parallel ORB since it requires the to switch to serial mode to occur earlier in the tree
+			\item The solution involved 1) cleverly altering a large number of if statements in the code, 2) changing many loops to begin at 0 rather than 1, and 3) changing how certain types of sends/recvs were handled
 		\end{itemize}
 	\end{block}
 \end{frame}
@@ -816,9 +817,10 @@ struct Tree {
 	
 	\begin{block}{Other validation methods:}
 		\begin{itemize}
+			\item Set radius very large, find all points
 			\item Set search sphere center on a data point, use tiny radius, find 1 point
 			\item Set an arbitrary search sphere point, increase radius, points found increases monotonically
-			\item Consistent results for different numbers of nodes
+			\item Vary number of compute nodes (altering tree structure), find consistent number of points
 			\item \texttt{dumpTree} writes each compute node's tree to a file for analysis
 		\end{itemize}
 	\end{block}
@@ -862,16 +864,16 @@ struct Tree {
 	
 	\begin{alertblock}{Challenges:}
 		\begin{itemize}
-			\item \texttt{parallelSort} conversions
-			\item memory leaks
-			\item \texttt{malloc} when you should \texttt{realloc}
-			\item multiple communicators (comm)
-			\item \texttt{adaptBins} convergence problems
-			\item debug print statement clutter
-			\item array out of bounds issues
-			\item inconsistent usage pointer-to-pointer calls for *data[] and *rows (due to \texttt{swapArrayParts})
-			\item no planning for function arguments and return values (constant editing of h-files)
-			\item testing was difficult due to cluster overloading and hardware errors
+		\item memory management (leaks, limited space, Signal 9)
+		\item array out of bounds issues
+		\item multiple communicators (comm)
+		\item no planning for function arguments and return values (constant editing of h-files)
+		\item testing was difficult due to cluster overloading and hardware errors
+		\item debug print statement clutter
+		\item inconsistent usage pointer-to-pointer calls for *data[] and *rows (due to \texttt{swapArrayParts})
+		\item \texttt{malloc} when you should \texttt{realloc}
+		\item \texttt{parallelSort} conversions
+		\item \texttt{adaptBins} convergence problems
 		\end{itemize}
 	\end{alertblock}
 
@@ -880,28 +882,34 @@ struct Tree {
 \begin{frame}	
 	\frametitle{Challenges}
 	
-	\begin{alertblock}{Obnoxious personality quirks and idiotic coding habits:}
+	\begin{alertblock}{\small Annoying personality quirks and idiotic coding habits:}
 		% so put your complaints about each other here LOL (all that sand tho)
 		\begin{itemize}
-			\setlength\itemsep{0.5pt}
-			\item Graham: \\
+			\small
+			\setlength\itemsep{0.1pt}
+			\item Graham: \\ \vspace{-5pt}
 				\begin{itemize}
-					\setlength\itemsep{0.5pt}
-					\item Fixates on dumb, small things; slows team progress (can't see the forest for the trees)
+					\small
+					\setlength\itemsep{0.1pt}
+					\item Obsessive fixation on the most minor of convention details (can't see the forest for the trees)
 					\item So many windows open! How do you find anything?
+					\item Always has to try it the wrong way before doing what James suggested 10 minutes earlier \vspace{-5pt}
 				\end{itemize}
-			\item James: \\
+			\item James: \\ \vspace{-5pt}
 				\begin{itemize}
-					\setlength\itemsep{0.5pt}
+					\small
+					\setlength\itemsep{0.1pt}
 					\item Who needs whitespace?
-					\item Memory leak? Just run it on more nodes!
+					\item Pointers! Pointers everywhere!
+					\item Memory leak? Just run it on more nodes! \vspace{-5pt}
 				\end{itemize}
-			\item JJ: \\
+			\item JJ: \\ \vspace{-5pt}
 				\begin{itemize}
-					\setlength\itemsep{0.5pt}
-					\item Insistent usage of Visual Studio replaces neatly arranged tabs with ugly, inconsistent spaces (also doesn't update Makefile)
-					\item SO MUCH debug \texttt{cout} clutter
-					\item Naming conventions? Who needs those?
+					\small
+					\setlength\itemsep{0.1pt}
+					\item Insistent usage of Visual Studio replaces neatly arranged tabs with ugly, inconsistent spaces
+					\item SO MUCH debug/timing \texttt{cout} clutter
+					\item Naming conventions? Who needs those? (What's a camel case?)
 				\end{itemize}
 		\end{itemize}
 	\end{alertblock}
@@ -915,9 +923,10 @@ struct Tree {
 	
 	\begin{exampleblock}{Successes:}
 		\begin{itemize}
-			\item few merge conflicts and fast debugging through extreme coding and Git branches
-			\item visualizing output through MATLAB
-			\item efficient delegation of tasks
+		\item few merge conflicts and fast coding through extreme coding and Git branches
+		\item efficient delegation of tasks
+		\item visualizing output through MATLAB
+		\item excellent validation techniques
 		\end{itemize}
 	\end{exampleblock}
 
@@ -934,6 +943,7 @@ struct Tree {
 				\begin{itemize}
 					\setlength\itemsep{0.5pt}
 					\item I can do math
+					\item Obsessive attention to detail pays off when writing the paper/presentation
 				\end{itemize}
 			\item James: \\
 				\begin{itemize}
@@ -943,7 +953,7 @@ struct Tree {
 			\item JJ: \\
 				\begin{itemize}
 					\setlength\itemsep{0.5pt}
-					\item C++ guru
+					\item C++/Git guru
 				\end{itemize}
 		\end{itemize}
 	\end{exampleblock}
