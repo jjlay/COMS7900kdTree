@@ -11,6 +11,15 @@
 
 The timing data collected does not provide a clear understanding of the scalability of the algorithms. Figure~\ref{fig:plane} displays the performance data collected for varying values of nodes and data rows. The height of the chart represents the time to execute the program. The x-axis is \texttt{log(TotalLines)}, the z-axis is the number of nodes the program was executed on, and the y-axis is the \texttt{log(Runtime)}.
 
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth]{./images/runtimes.png}
+\caption{Execution time versus nodes and total lines}
+\label{fig:plane}
+\end{figure}
+
+
 The upper left of the plane is truncated due to the inability to execute the program for large datasets on fewer nodes. 20\% of the timing data had to be excluded due to varying multiple parameters simultaneously. The original plan had been to perform a fully-nested Analysis of Variance (ANOVA) test on the data to understand which parameters impacted performanced the greatest. However, due to the programming challenges encountered and cluster utilization, this did not occur. Another cause of the irregular performance is the sharing of the cluster. Teams would run tests using \texttt{qlogin} (including Team Metropolis) rather than submitting them through \texttt{qsub} to allow the job scheduler.
 
 A subset of the performance data is presented in the following table.
@@ -29,21 +38,14 @@ A subset of the performance data is presented in the following table.
 
 The execution time of the program increases as more nodes are added while keeping the total data rows constant. One possible explanation for this is that on smaller numbers of nodes the job was not running on systems occupied by other teams. However, as the number of nodes increased, the job began contending for resources with other jobs.
 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.7\textwidth]{./images/runtimes.png}
-\caption{Execution time versus nodes and total lines}
-\label{fig:plane}
-\end{figure}
-
-\begin{figure}[h!]
+\begin{figure}
 \centering
 \includegraphics[width=0.7\textwidth]{./images/Runtime1.png}
 \caption{Execution time versus nodes for total lines from 50,000 to 50,000,000}
 \label{fig:lownums}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}
 \centering
 \includegraphics[width=0.7\textwidth]{./images/Runtime2.png}
 \caption{Execution time versus nodes and total lines from 50,000 to 2,000,000,000}
@@ -53,7 +55,7 @@ The execution time of the program increases as more nodes are added while keepin
 Figure~\ref{fig:lownums} shows the runtimes for four different job sizes (32, 64, 128, and 200 nodes) with varying numbers of data rows from 50,000 to 50,000,000. Figure~\ref{fig:allnums} shows the runtimes from 50,000 to 2,000,000,000 (the largest job size that completed successfully).
 
 
-\begin{figure}[h!]
+\begin{figure}
 \centering
 \includegraphics[width=0.7\textwidth]{./images/Runtime3.png}
 \caption{Execution time by function for 5,000,000 total lines and 1,000 search rows}
@@ -61,7 +63,7 @@ Figure~\ref{fig:lownums} shows the runtimes for four different job sizes (32, 64
 \end{figure}
 
 
-Figure~\ref{fig:breakdown} provides a glimpse into the performance of the various functions of the program.
+Figure~\ref{fig:breakdown} provides a glimpse into the performance of the various functions of the program, and the results are provided in the following table.
 
 \begin{tabular}{l r r l}
 \textbf{Function}         & \textbf{Runtime}        & \textbf{Percent} & \textbf{Note} \\
@@ -76,6 +78,9 @@ SearchTree       &  1.032 seconds & 1.827\% & Searches the constructed tree and 
 & & &  produces results \\
 \textbf{Total}   & \textbf{56.494 seconds} & \textbf{100.000\%} & \\
 \end{tabular}
+
+
+These results were not unexpected.
 
 
 %%%%%%%%%
