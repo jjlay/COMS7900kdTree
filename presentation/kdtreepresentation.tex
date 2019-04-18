@@ -266,9 +266,12 @@ tabsize=3
 \begin{frame}
 	\frametitle{\texttt{listFiles}}
 	
-    		\texttt{listFiles}($\cdots$)
+    		\texttt{vector<string> listFiles(string path, int numFiles )}
     		\begin{itemize}
-    			\item Fetches a list of data filenames using OS calls (random order)
+    			\item Fetches a list of data filenames using \texttt{opendir} from \texttt{path}
+    			\item Files are returned in ``random'' order
+    			\item Returns list as a \texttt{vector} of \texttt{string}
+    			\item Maximum number of files returned is \texttt{numFiles}
     		\end{itemize}
     		
 
@@ -281,10 +284,12 @@ tabsize=3
 \begin{frame}
 	\frametitle{\texttt{distributeFiles}}
 	
-    		\texttt{distributeFiles}($\cdots$), \texttt{receiveFiles}($\cdots$)
+    		\texttt{void distributeFiles(vector<string> files, int numWorkers)}
     		\begin{itemize}
-    			\item Isend/Recv the list of filenames
+    		    \item Asynchronously transmits filenames in \texttt{files} to nodes
+    			\item Used \texttt{MPI\_Isend} since it sends to itself
     			\item Round robin distribution of files
+    			\item Transmits the string ``DONE!'' to all nodes at end
     		\end{itemize}
     		
 \end{frame}
@@ -297,10 +302,10 @@ tabsize=3
 \begin{frame}
 	\frametitle{\texttt{receiveFiles}}
 	
-    		\texttt{distributeFiles}($\cdots$), \texttt{receiveFiles}($\cdots$)
+    		\texttt{vector<string> receiveFiles(int myRank)}
     		\begin{itemize}
-    			\item Isend/Recv the list of filenames
-    			\item Round robin distribution of files
+    			\item Asychronously receives filenames from rank 0
+    			\item Used \texttt{MPI\_Irecv} and \texttt{MPI\_Wait}
     		\end{itemize}
     		
 \end{frame}
@@ -313,9 +318,14 @@ tabsize=3
 \begin{frame}
 	\frametitle{\texttt{importFiles}}
 	
-    		\texttt{importFiles}($\cdots$)
+	\begin{tabular}{l l}
+    		\texttt{void importFiles(} & \texttt{vector<string> files, int myRank,} \\
+	& \texttt{float *myData, int *rows, int *cols,} \\
+	& \texttt{int maxRowsPerFile,} \\
+	& \texttt{unsigned long int arrayLimit)} \\
+	\end{tabular}
+	
     		\begin{itemize}
-    			\item Reads the received filenames
     			\item Read a set nFiles and nLinesPerFile
     			\item Returns a 1D array of length 4 $\times$ nFiles $\times$ nLinesPerFile
     			\item nFiles $\ge$ nNodes
@@ -331,9 +341,12 @@ tabsize=3
 \begin{frame}
 	\frametitle{\texttt{CalculateIndex}}
 	
-    		\texttt{CalculateIndex($\cdots$)}
+    		\texttt{float CalculateIndex(string filename)}
     		    \begin{itemize}
-    		        \item Calculates the starting index of the first row
+    		        \item Calculates the starting index ($I_0$) of the first row of the given file
+    		        \item If $x$ is the five digit integer in the filename and $R_{\max}$ is the maximum number of rows in a file, then \\ 
+    		        $I_0 = (x - 1) * R_{\max}$
+                    \item Returns a float to avoid using a separate data type for the index and allows using a single 1D array for the four fields
     		    \end{itemize}
 
 \end{frame}
@@ -836,7 +849,9 @@ struct Tree {
 
 
 %%%%%%%%%%%%%
-%%% NEW SECTION %%%
+%%%
+%%% Section: Results
+%%%
 %%%%%%%%%%%%%
 \section{Results}
 
@@ -846,6 +861,109 @@ struct Tree {
 			Results
 		\end{center}
 	\end{Huge}
+\end{frame}
+
+%%%
+% By function analysis
+%%%
+
+\begin{frame}[fragile]	
+	\frametitle{Timing Data}
+	
+        	\begin{block}{By function}
+        		\begin{itemize}
+        			\item Test data was 5,000,000 total data rows and 1,000 search rows on 4 cores
+        			\item I/O was the primary bottleneck: disk for \texttt{importFiles} and network for \texttt{buildTree}
+        		\end{itemize}
+        	\end{block}
+        	\begin{figure}
+            \centering
+	        \includegraphics[width=0.40\textwidth]{images/Runtime3.png}
+	        \end{figure}
+\end{frame}
+
+
+%%%
+% Few total lines
+%%%
+
+\begin{frame}[fragile]	
+	\frametitle{Timing Data}
+	
+        	\begin{block}{Performance}
+        		\begin{itemize}
+        			\item For fewer that 45,000,000 data rows 128 nodes performed best
+        		\end{itemize}
+        	\end{block}
+        	\begin{figure}
+            \centering
+	        \includegraphics[width=0.7\textwidth]{images/Runtime1.png}
+	        \end{figure}
+\end{frame}
+
+%%%
+% More lines
+%%%
+
+\begin{frame}[fragile]	
+	\frametitle{Timing Data}
+	
+        	\begin{block}{Performance}
+        		\begin{itemize}
+        			\item Overall, 32 cores performed equivalently to 128 cores
+        			\item 200 cores was the worst performer
+        		\end{itemize}
+        	\end{block}
+        	\begin{figure}
+            \centering
+	        \includegraphics[width=0.65\textwidth]{images/Runtime2.png}
+	        \end{figure}
+\end{frame}
+
+%%%
+% Everything
+%%%
+
+\begin{frame}[fragile]	
+	\frametitle{Timing Data}
+	
+        	\begin{block}{Scalability}
+        		\begin{itemize}
+        			\item Overall, 32 cores performed equivalently to 128 cores
+        			\item 200 cores was the worst performer
+        		\end{itemize}
+        	\end{block}
+        	\begin{figure}
+            \centering
+	        \includegraphics[width=0.65\textwidth]{images/runtimes.png}
+	        \end{figure}
+\end{frame}
+
+%%%
+% Search
+%%%
+
+\begin{frame}[fragile]	
+	\frametitle{Search Results}
+	
+        	\begin{block}{Output}
+\begin{verbatim}
+POINTS FOUND:
+   X          Y          Z        0.01      0.05      0.10
+--------  ---------  ---------  -------  --------  --------
+0.581959   0.721012   0.969341   917205  55498018  92120227
+0.894312   0.362959   0.447526    13375   1634169  12135389
+0.801765  -0.037433   0.616920     4026    490535   3837163
+0.685972   0.346683   0.388596    29251   3420777  22785611
+0.716828   0.953059   0.275552     3771    462728   3675457
+0.113410   0.650905   0.795308   797814  53199022  78642100
+0.125404   0.282296   0.536048     1473    187628   1556214
+0.557424   0.471667  -0.075745     1559    190467   1523646
+0.557737   0.697675   0.934643   819217  52896281  92109359
+0.353073   0.840097  -0.000039     1631    195440   1564030
+0.365097   0.064303   0.803032    13811   1693414  12855261
+\end{verbatim}
+        	\end{block}
 \end{frame}
 
 
@@ -976,15 +1094,3 @@ struct Tree {
 
  
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
