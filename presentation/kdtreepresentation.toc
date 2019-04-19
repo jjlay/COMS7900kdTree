@@ -12,7 +12,7 @@
 \beamer@subsectionintoc {3}{1}{MATLAB visualizations}{33}{0}{3}
 \beamer@subsectionintoc {3}{2}{Other tests}{35}{0}{3}
 \beamer@sectionintoc {4}{Results}{36}{0}{4}
-\beamer@sectionintoc {5}{Conclusions}{37}{0}{5}
-\beamer@subsectionintoc {5}{1}{Challenges}{38}{0}{5}
-\beamer@subsectionintoc {5}{2}{Successes}{40}{0}{5}
-\beamer@subsectionintoc {5}{3}{Future Work}{42}{0}{5}
+\beamer@sectionintoc {5}{Conclusions}{42}{0}{5}
+\beamer@subsectionintoc {5}{1}{Challenges}{43}{0}{5}
+\beamer@subsectionintoc {5}{2}{Successes}{45}{0}{5}
+\beamer@subsectionintoc {5}{3}{Future Work}{47}{0}{5}
