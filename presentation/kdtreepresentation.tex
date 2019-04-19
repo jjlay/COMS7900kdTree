@@ -28,7 +28,8 @@ basicstyle={\small\ttfamily},
 numbers=none,
 numberstyle=\tiny\color{gray},
 keywordstyle=\color{blue},
-commentstyle=\color{dkgreen},
+commentstyle=\color{OliveGreen},
+%commentstyle=\color{dkgreen},
 stringstyle=\color{mauve},
 breaklines=true,
 breakatwhitespace=true,
@@ -79,12 +80,12 @@ tabsize=3
 		\centering
 		\textbf{Team Metropolis: \\
 		\textcolor{red}{James Farzi}, \textcolor{Goldenrod}{JJ Lay}, \\ \textcolor{blue}{Graham West}} \\
-		\vspace{10pt}
+		\vspace{7pt}
 		April 19, 2019 \\
-		\vspace{10pt}
+		\vspace{7pt}
 		COMS 7900, Capstone \\
-		\vspace{-1pt}
-		\includegraphics[scale = 0.1]{images/PosterPlot_Ackley_Chain_good_00}
+		\vspace{4pt}
+		\includegraphics[scale = 0.17]{images/MCMC_Plot}
 	\endminipage\hfill %%%%%%%%%%%%%%%%%%%
 	\minipage{0.5\textwidth}
 		\centering
@@ -266,14 +267,14 @@ tabsize=3
 \begin{frame}
 	\frametitle{\texttt{listFiles}}
 	
-    		\texttt{vector<string> listFiles(string path, int numFiles )}
+	\begin{block}{\texttt{vector<string> listFiles(string path, int numFiles )}}
     		\begin{itemize}
     			\item Fetches a list of data filenames using \texttt{opendir} from \texttt{path}
     			\item Files are returned in ``random'' order
     			\item Returns list as a \texttt{vector} of \texttt{string}
     			\item Maximum number of files returned is \texttt{numFiles}
     		\end{itemize}
-    		
+	\end{block}
 
 \end{frame}
 
@@ -284,14 +285,14 @@ tabsize=3
 \begin{frame}
 	\frametitle{\texttt{distributeFiles}}
 	
-    		\texttt{void distributeFiles(vector<string> files, int numWorkers)}
+	\begin{block}{\texttt{void distributeFiles(vector<string> files, int numWorkers)}}
     		\begin{itemize}
     		    \item Asynchronously transmits filenames in \texttt{files} to nodes
     			\item Used \texttt{MPI\_Isend} since it sends to itself
     			\item Round robin distribution of files
     			\item Transmits the string ``DONE!'' to all nodes at end
     		\end{itemize}
-    		
+	\end{block}
 \end{frame}
 
 
@@ -302,12 +303,12 @@ tabsize=3
 \begin{frame}
 	\frametitle{\texttt{receiveFiles}}
 	
-    		\texttt{vector<string> receiveFiles(int myRank)}
+	\begin{block}{\texttt{vector<string> receiveFiles(int myRank)}}
     		\begin{itemize}
     			\item Asychronously receives filenames from rank 0
     			\item Used \texttt{MPI\_Irecv} and \texttt{MPI\_Wait}
     		\end{itemize}
-    		
+	\end{block}
 \end{frame}
 
 
@@ -318,19 +319,20 @@ tabsize=3
 \begin{frame}
 	\frametitle{\texttt{importFiles}}
 	
+	\begin{block}{
 	\begin{tabular}{l l}
     		\texttt{void importFiles(} & \texttt{vector<string> files, int myRank,} \\
 	& \texttt{float *myData, int *rows, int *cols,} \\
 	& \texttt{int maxRowsPerFile,} \\
 	& \texttt{unsigned long int arrayLimit)} \\
 	\end{tabular}
-	
+	}
     		\begin{itemize}
     			\item Read a set nFiles and nLinesPerFile
     			\item Returns a 1D array of length 4 $\times$ nFiles $\times$ nLinesPerFile
     			\item nFiles $\ge$ nNodes
     		\end{itemize}
-    		
+    	\end{block}	
 \end{frame}
 
 
@@ -341,14 +343,14 @@ tabsize=3
 \begin{frame}
 	\frametitle{\texttt{CalculateIndex}}
 	
-    		\texttt{float CalculateIndex(string filename)}
+	\begin{block}{\texttt{float CalculateIndex(string filename)}}
     		    \begin{itemize}
     		        \item Calculates the starting index ($I_0$) of the first row of the given file
     		        \item If $x$ is the five digit integer in the filename and $R_{\max}$ is the maximum number of rows in a file, then \\ 
     		        $I_0 = (x - 1) * R_{\max}$
                     \item Returns a float to avoid using a separate data type for the index and allows using a single 1D array for the four fields
     		    \end{itemize}
-
+	\end{block}
 \end{frame}
 
 %%%%%
@@ -719,21 +721,36 @@ struct Tree {
 \begin{frame}
 	\frametitle{Parallel sorting}
 	
-	ALTERNATE
-	
-	Since both methods' pros and cons are disjoint, alternating between them gives a method which can outperform either individually
-	
-	\begin{block}{Demos:}
-
+	\begin{block}{Solution:}
 		\begin{itemize}
-			\item thin dense distribution at boundary, nBins = 2, 3, 10
-			\item wide distribution in center, nBins = 2, 3, 10
-			\item 
+			\item Alternate between the old and new schemes on even and odd iterations
+			\item MATLAB demos
 		\end{itemize}
-
 	\end{block}
 	
-	
+\end{frame}
+
+
+\subsection{Exchanging data}
+
+\begin{frame}    
+    \frametitle{Parallel sorting}
+    
+    \begin{block}{swapArrayParts}
+        \begin{itemize}
+            \item Takes a specified amount of data from one node and appends it to the end of the existing data for the receiving array
+            \item Inside the function- first transmits the length of data to be received then transfers the data
+            \item No data is to be deleted at this time
+            \item Allows for flexibility in implementation algorithm
+        \end{itemize}
+    \end{block}
+    
+    \begin{block}{cleanUp}
+        \begin{itemize}
+            \item To be used after all nodes have performed a swapArrayParts to all other nodes
+            \item Will go back through each nodes array removing data that had been transferred by swapArrayParts and resizing the array for each node
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 %%%%%%%%%%%%%
@@ -807,7 +824,7 @@ struct Tree {
 \begin{frame}
 	\frametitle{Searching the tree}
 	
-	\texttt{searchTree\_parallel} was in development.
+	\begin{block}{\texttt{searchTree\_parallel} was in development:}
 	
 	\begin{itemize}
 	    \item Tasks completed
@@ -823,6 +840,7 @@ struct Tree {
         	    \item Implement MPI calls between parent and children communicators
         	\end{itemize}
     \end{itemize}
+\end{block}
 
 \end{frame}
 
@@ -911,7 +929,7 @@ struct Tree {
 \begin{frame}[fragile]	
 	\frametitle{Timing Data}
 	
-        	\begin{block}{By function}
+        	\begin{block}{By function:}
         		\begin{itemize}
         			\item Test data was 5,000,000 total data rows and 1,000 search rows on 4 cores
         			\item I/O was the primary bottleneck: disk for \texttt{importFiles} and network for \texttt{buildTree}
@@ -931,9 +949,9 @@ struct Tree {
 \begin{frame}[fragile]	
 	\frametitle{Timing Data}
 	
-        	\begin{block}{Performance}
+        	\begin{block}{Performance:}
         		\begin{itemize}
-        			\item For fewer that 45,000,000 data rows 128 nodes performed best
+        			\item For fewer than 45,000,000 data rows, 128 nodes performed best
         		\end{itemize}
         	\end{block}
         	\begin{figure}
@@ -949,9 +967,9 @@ struct Tree {
 \begin{frame}[fragile]	
 	\frametitle{Timing Data}
 	
-        	\begin{block}{Performance}
+        	\begin{block}{Performance:}
         		\begin{itemize}
-        			\item Overall, 32 cores performed equivalently to 128 cores
+        			\item Overall, 32 cores performed equivalent to 128 cores
         			\item 200 cores was the worst performer
         		\end{itemize}
         	\end{block}
@@ -968,7 +986,7 @@ struct Tree {
 \begin{frame}[fragile]	
 	\frametitle{Timing Data}
 	
-        	\begin{block}{Scalability}
+        	\begin{block}{Scalability:}
         		\begin{itemize}
         			\item Overall, 32 cores performed equivalently to 128 cores
         			\item 200 cores was the worst performer
@@ -987,7 +1005,7 @@ struct Tree {
 \begin{frame}[fragile]	
 	\frametitle{Search Results}
 	
-        	\begin{block}{Output}
+        	\begin{block}{Output:}
 \begin{verbatim}
 POINTS FOUND:
    X          Y          Z        0.01      0.05      0.10
@@ -1052,24 +1070,24 @@ POINTS FOUND:
 		% so put your complaints about each other here LOL (all that sand tho)
 		\begin{itemize}
 			\setlength\itemsep{0.5pt}
-			\item Graham: \\
+			\item Graham: \\ \vspace{-5pt}
 				\begin{itemize}
 					\small
 					\setlength\itemsep{0.1pt}
 					\item Occasionally becomes side tracked addressing small things
 					\item So many windows open! How do you find anything?
 					\item Always has to try it the wrong way before doing what James suggested 10 minutes earlier
-					\item Makes an ``improvement", 15 minutes later reverts the `improvement" in order to improve - because there $IS$ a correct way to organize sand  \vspace{-5pt}
+					\item Makes an ``improvement", 15 minutes later reverts the `improvement" in order to improve - because there $IS$ a correct way to organize sand \vspace{-5pt}
 				\end{itemize}
-			\item James: \\
+			\item James: \\ \vspace{-5pt}
 				\begin{itemize}
-					\setlength\itemsep{0.5pt}
+					\setlength\itemsep{0.1pt}
 					\item Who needs whitespace?
 					\item Pointers! Pointers everywhere!
 					\item Memory leak? Just run it on more nodes!
 					\item Hey! Who put \texttt{sleep(myRank)} here? \vspace{-5pt}
 				\end{itemize}
-			\item JJ: \\
+			\item JJ: \\ \vspace{-5pt}
 				\begin{itemize}
 					\small
 					\setlength\itemsep{0.1pt}
